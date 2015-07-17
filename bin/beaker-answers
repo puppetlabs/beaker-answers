@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+
+require 'rubygems' unless defined?(Gem)
+require 'beaker-answers'
+
+VERSION_STRING =
+"
+                                 _ .--.
+                                ( `    )
+        beaker-answers       .-'      `--,
+                  _..----.. (             )`-.
+                .'_|` _|` _|(  .__,           )
+               /_|  _|  _|  _(        (_,  .-'
+              ;|  _|  _|  _|  '-'__,--'`--'
+              | _|  _|  _|  _| |
+          _   ||  _|  _|  _|  _| %s
+        _( `--.\\_|  _|  _|  _|/
+     .-'       )--,|  _|  _|.`
+    (__, (_      ) )_|  _| /
+      `-.__.\\ _,--'\\|__|__/
+                    ;____;
+                     \\YT/
+                      ||
+                     |\"\"|
+                     '=='
+Supports: %s
+"
+
+versions = BeakerAnswers::Answers.supported_versions.map{ |v| v.to_s }.join(', ')
+puts VERSION_STRING % [BeakerAnswers::Version::STRING, versions]
+
+exit 0
