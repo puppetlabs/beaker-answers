@@ -26,7 +26,7 @@ module BeakerAnswers
       # Everything's an agent
       agent_a = {
         :q_puppetagent_install => answer_for(options, :q_puppetagent_install, 'y'),
-        :q_puppet_cloud_install => answer_for(options, :q_puppet_cloud_install, 'y'),
+        :q_puppet_cloud_install => answer_for(options, :q_puppet_cloud_install, 'n'),
         :q_verify_packages => answer_for(options, :q_verify_packages, 'y'),
         :q_puppet_symlinks_install => answer_for(options, :q_puppet_symlinks_install, 'y'),
         :q_puppetagent_certname => answer_for(options, :q_puppetagent_certname, host.to_s),
