@@ -21,7 +21,7 @@ module BeakerAnswers
       orchestrator_db = {
         :q_orchestrator_database_name     => answer_for(@options, :q_orchestrator_database_name),
         :q_orchestrator_database_user     => answer_for(@options, :q_orchestrator_database_user),
-        :q_orchestrator_database_password => answer_for(@options, :q_orchestrator_database_password),
+        :q_orchestrator_database_password => "'#{answer_for(@options, :q_orchestrator_database_password)}'",
       }
       the_answers[master.name].merge!(orchestrator_db)
       the_answers[database.name].merge!(orchestrator_db)
