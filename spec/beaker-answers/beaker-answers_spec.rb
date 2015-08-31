@@ -337,13 +337,13 @@ describe BeakerAnswers::Version20153 do
   it 'should add orchestrator database answers to master' do
     expect( @answers['vm1'][:q_orchestrator_database_name] ).to be === 'pe-orchestrator'
     expect( @answers['vm1'][:q_orchestrator_database_user] ).to be === 'Orc3Str8R'
-    expect( @answers['vm1'][:q_orchestrator_database_password] ).to be === '~!@#$%^*-/ aZ'
+    expect( @answers['vm1'][:q_orchestrator_database_password] ).to be === "'~!@#$%^*-/ aZ'"
   end
 
   it 'should add orchestrator database answers to database' do
     expect( @answers['vm3'][:q_orchestrator_database_name] ).to be === 'pe-orchestrator'
     expect( @answers['vm3'][:q_orchestrator_database_user] ).to be === 'Orc3Str8R'
-    expect( @answers['vm3'][:q_orchestrator_database_password] ).to be === '~!@#$%^*-/ aZ'
+    expect( @answers['vm3'][:q_orchestrator_database_password] ).to be === "'~!@#$%^*-/ aZ'"
   end
 end
 
