@@ -29,6 +29,11 @@ describe BeakerAnswers do
     end
   end
 
+  it 'generates 2015.3 answers for 2015.3 hosts' do
+    @ver = '2015.3.0'
+    expect( answers ).to be_a_kind_of BeakerAnswers::Version20153
+  end
+
   it 'generates 4.0 answers for 2015 hosts' do
     @ver = '2015.1.2'
     expect( answers ).to be_a_kind_of BeakerAnswers::Version40
@@ -311,6 +316,34 @@ describe BeakerAnswers::Version40 do
     hosts.each do |host|
       expect( host[:answers] ).to be === @answers[host.name]
     end
+  end
+end
+
+describe BeakerAnswers::Version20153 do
+  let( :options )     { StringifyHash.new }
+  let( :basic_hosts ) { make_hosts( {'pe_ver' => @ver } ) }
+  let( :hosts ) { basic_hosts[0]['roles'] = ['master', 'agent']
+                  basic_hosts[1]['roles'] = ['dashboard', 'agent']
+                  basic_hosts[2]['roles'] = ['database', 'agent']
+                  basic_hosts }
+  let( :answers )     { BeakerAnswers::Answers.create(@ver, hosts, options) }
+  let( :upgrade_answers )     { BeakerAnswers::Answers.create(@ver, hosts, options.merge( {:type => :upgrade}) ) }
+
+  before :each do
+    @ver = '2015.3'
+    @answers = answers.answers
+  end
+
+  it 'should add orchestrator database answers to master' do
+    expect( @answers['vm1'][:q_orchestrator_database_name] ).to be === 'pe-orchestrator'
+    expect( @answers['vm1'][:q_orchestrator_database_user] ).to be === 'Orc3Str8R'
+    expect( @answers['vm1'][:q_orchestrator_database_password] ).to be === '~!@#$%^*-/ aZ'
+  end
+
+  it 'should add orchestrator database answers to database' do
+    expect( @answers['vm3'][:q_orchestrator_database_name] ).to be === 'pe-orchestrator'
+    expect( @answers['vm3'][:q_orchestrator_database_user] ).to be === 'Orc3Str8R'
+    expect( @answers['vm3'][:q_orchestrator_database_password] ).to be === '~!@#$%^*-/ aZ'
   end
 end
 

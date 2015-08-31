@@ -7,7 +7,7 @@ module BeakerAnswers
 
     # The version of PE that this set of answers is appropriate for
     def self.pe_version_matcher
-      /(\A3\.99)|(\A4\.0)|(\A2015)/
+      /(\A3\.99)|(\A4\.0)|(\A2015\.[012])/
     end
 
     def generate_answers
