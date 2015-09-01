@@ -1,11 +1,35 @@
 # default - History
 ## Tags
-* [LATEST - 31 Aug, 2015 (42b63e85)](#LATEST)
+* [LATEST - 1 Sep, 2015 (33430738)](#LATEST)
+* [0.2.1 - 31 Aug, 2015 (5aa509e2)](#0.2.1)
 * [0.2.0 - 31 Aug, 2015 (6447f9bc)](#0.2.0)
 * [0.1.0 - 26 Aug, 2015 (ef47972d)](#0.1.0)
 
 ## Details
-### <a name = "LATEST">LATEST - 31 Aug, 2015 (42b63e85)
+### <a name = "LATEST">LATEST - 1 Sep, 2015 (33430738)
+
+* (GEM) update beaker-answers version to 0.2.2 (33430738)
+
+* Merge pull request #5 from nicklewis/master-requires-database-host (17ff153b)
+
+
+```
+Merge pull request #5 from nicklewis/master-requires-database-host
+
+(APPMGMT-882) Set q_database_host answer on master
+```
+* (APPMGMT-882) Set q_database_host answer on master (fcd44f68)
+
+
+```
+(APPMGMT-882) Set q_database_host answer on master
+
+The master now needs to find the database host in order to setup the
+orchestrator.
+```
+### <a name = "0.2.1">0.2.1 - 31 Aug, 2015 (5aa509e2)
+
+* (HISTORY) update beaker-answers history for gem release 0.2.1 (5aa509e2)
 
 * (GEM) update beaker-answers version to 0.2.1 (42b63e85)
 
