@@ -334,6 +334,11 @@ describe BeakerAnswers::Version20153 do
     @answers = answers.answers
   end
 
+  it 'should add database server answers to master' do
+    expect( @answers['vm1'][:q_database_host] ).to be === 'vm3'
+    expect( @answers['vm1'][:q_database_port] ).to be === 5432
+  end
+
   it 'should add orchestrator database answers to master' do
     expect( @answers['vm1'][:q_orchestrator_database_name] ).to be === 'pe-orchestrator'
     expect( @answers['vm1'][:q_orchestrator_database_user] ).to be === 'Orc3Str8R'
