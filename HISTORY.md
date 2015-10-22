@@ -1,12 +1,37 @@
 # default - History
 ## Tags
-* [LATEST - 1 Sep, 2015 (33430738)](#LATEST)
+* [LATEST - 22 Oct, 2015 (5abaf7e5)](#LATEST)
+* [0.2.2 - 1 Sep, 2015 (6c5d8035)](#0.2.2)
 * [0.2.1 - 31 Aug, 2015 (5aa509e2)](#0.2.1)
 * [0.2.0 - 31 Aug, 2015 (6447f9bc)](#0.2.0)
 * [0.1.0 - 26 Aug, 2015 (ef47972d)](#0.1.0)
 
 ## Details
-### <a name = "LATEST">LATEST - 1 Sep, 2015 (33430738)
+### <a name = "LATEST">LATEST - 22 Oct, 2015 (5abaf7e5)
+
+* (GEM) update beaker-answers version to 0.3.0 (5abaf7e5)
+
+* Merge pull request #6 from objectverbobject/BKR-591/add_support_for_2016.1 (fa50896a)
+
+
+```
+Merge pull request #6 from objectverbobject/BKR-591/add_support_for_2016.1
+
+(BKR-549) Add answers for 2016.1
+```
+* (BKR-549) Add answers for 2016.1 (6211780b)
+
+
+```
+(BKR-549) Add answers for 2016.1
+
+This is just to get the initial pipelines up and running; there are no
+answers new to 2016.1 yet, so it will just inherit the_answers generated
+by Version20153.
+```
+### <a name = "0.2.2">0.2.2 - 1 Sep, 2015 (6c5d8035)
+
+* (HISTORY) update beaker-answers history for gem release 0.2.2 (6c5d8035)
 
 * (GEM) update beaker-answers version to 0.2.2 (33430738)
 
