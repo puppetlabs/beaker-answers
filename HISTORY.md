@@ -1,13 +1,38 @@
 # default - History
 ## Tags
-* [LATEST - 22 Oct, 2015 (5abaf7e5)](#LATEST)
+* [LATEST - 2 Nov, 2015 (367ecd87)](#LATEST)
+* [0.3.0 - 22 Oct, 2015 (0c56067d)](#0.3.0)
 * [0.2.2 - 1 Sep, 2015 (6c5d8035)](#0.2.2)
 * [0.2.1 - 31 Aug, 2015 (5aa509e2)](#0.2.1)
 * [0.2.0 - 31 Aug, 2015 (6447f9bc)](#0.2.0)
 * [0.1.0 - 26 Aug, 2015 (ef47972d)](#0.1.0)
 
 ## Details
-### <a name = "LATEST">LATEST - 22 Oct, 2015 (5abaf7e5)
+### <a name = "LATEST">LATEST - 2 Nov, 2015 (367ecd87)
+
+* (GEM) update beaker-answers version to 0.3.1 (367ecd87)
+
+* Merge pull request #7 from demophoon/answer/master/app-services (14a247c2)
+
+
+```
+Merge pull request #7 from demophoon/answer/master/app-services
+
+(maint) Add q_use_application_services question
+```
+* (maint) Add q_use_application_services question (91210f8b)
+
+
+```
+(maint) Add q_use_application_services question
+
+Currently in integration CI all installs are not setting the
+q_use_application_services answer. When that answer is set to nothing
+the pe-classification script does not enable application services.
+```
+### <a name = "0.3.0">0.3.0 - 22 Oct, 2015 (0c56067d)
+
+* (HISTORY) update beaker-answers history for gem release 0.3.0 (0c56067d)
 
 * (GEM) update beaker-answers version to 0.3.0 (5abaf7e5)
 
