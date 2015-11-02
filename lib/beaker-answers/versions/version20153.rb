@@ -23,11 +23,13 @@ module BeakerAnswers
         :q_orchestrator_database_user     => answer_for(@options, :q_orchestrator_database_user),
         :q_orchestrator_database_password => "'#{answer_for(@options, :q_orchestrator_database_password)}'",
       }
+
       the_answers[master.name].merge!(orchestrator_db)
       the_answers[database.name].merge!(orchestrator_db)
 
       the_answers[master.name][:q_database_host] = answer_for(@options, :q_database_host, database.to_s)
       the_answers[master.name][:q_database_port] = answer_for(@options, :q_database_port)
+      the_answers[master.name][:q_use_application_services] = "'#{answer_for(@options, :q_use_application_services, 'y')}'"
 
       the_answers
     end
