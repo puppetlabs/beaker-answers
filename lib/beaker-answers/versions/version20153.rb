@@ -30,8 +30,8 @@ module BeakerAnswers
 
       the_answers[master.name][:q_database_host] = answer_for(@options, :q_database_host, database.to_s)
       the_answers[master.name][:q_database_port] = answer_for(@options, :q_database_port)
-      the_answers[master.name][:q_use_application_services] = "'#{answer_for(@options, :q_use_application_services, 'y')}'"
-      the_answers[console.name][:q_use_application_services] = "'#{answer_for(@options, :q_use_application_services, 'y')}'"
+      the_answers[master.name][:q_use_application_services] = answer_for(@options, :q_use_application_services, 'y')
+      the_answers[console.name][:q_use_application_services] = answer_for(@options, :q_use_application_services, 'y')
 
       the_answers
     end
