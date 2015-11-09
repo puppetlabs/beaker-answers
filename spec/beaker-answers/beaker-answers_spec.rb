@@ -350,6 +350,11 @@ describe BeakerAnswers::Version20153 do
     expect( @answers['vm3'][:q_orchestrator_database_user] ).to be === 'Orc3Str8R'
     expect( @answers['vm3'][:q_orchestrator_database_password] ).to be === "'~!@#$%^*-/ aZ'"
   end
+
+  it 'should add q_use_application_services answers to master and console' do
+    expect( @answers['vm1'][:q_use_application_services] ).to be === 'y'
+    expect( @answers['vm2'][:q_use_application_services] ).to be === 'y'
+  end
 end
 
 describe BeakerAnswers::Version32 do
