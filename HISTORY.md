@@ -1,6 +1,7 @@
 # default - History
 ## Tags
-* [LATEST - 2 Nov, 2015 (367ecd87)](#LATEST)
+* [LATEST - 10 Nov, 2015 (fbcdbd73)](#LATEST)
+* [0.3.1 - 2 Nov, 2015 (e5922067)](#0.3.1)
 * [0.3.0 - 22 Oct, 2015 (0c56067d)](#0.3.0)
 * [0.2.2 - 1 Sep, 2015 (6c5d8035)](#0.2.2)
 * [0.2.1 - 31 Aug, 2015 (5aa509e2)](#0.2.1)
@@ -8,7 +9,42 @@
 * [0.1.0 - 26 Aug, 2015 (ef47972d)](#0.1.0)
 
 ## Details
-### <a name = "LATEST">LATEST - 2 Nov, 2015 (367ecd87)
+### <a name = "LATEST">LATEST - 10 Nov, 2015 (fbcdbd73)
+
+* (GEM) update beaker-answers version to 0.3.2 (fbcdbd73)
+
+* Merge pull request #8 from highb/maint/app_services_on_console (6d3ad2b2)
+
+
+```
+Merge pull request #8 from highb/maint/app_services_on_console
+
+(PE-12849) Add q_use_application_services to console
+```
+* (PE-12849) Update specs, remove unnecessary string (85945826)
+
+
+```
+(PE-12849) Update specs, remove unnecessary string
+
+Prior to this commit there were no specs to test the
+`q_use_application_services` answer on 2015.3.
+This commit adds specs for that answer, as well as
+de-quoting the answer.
+```
+* (PE-12849) Add q_use_application_services to console (44fa342b)
+
+
+```
+(PE-12849) Add q_use_application_services to console
+
+Both the master and console must be given the
+`q_use_application_services` answer, since the console
+needs to know that it needs classify the orchestrator.
+```
+### <a name = "0.3.1">0.3.1 - 2 Nov, 2015 (e5922067)
+
+* (HISTORY) update beaker-answers history for gem release 0.3.1 (e5922067)
 
 * (GEM) update beaker-answers version to 0.3.1 (367ecd87)
 
