@@ -1,6 +1,7 @@
 # default - History
 ## Tags
-* [LATEST - 10 Nov, 2015 (fbcdbd73)](#LATEST)
+* [LATEST - 12 Feb, 2016 (3577bbf2)](#LATEST)
+* [0.3.2 - 10 Nov, 2015 (f699c033)](#0.3.2)
 * [0.3.1 - 2 Nov, 2015 (e5922067)](#0.3.1)
 * [0.3.0 - 22 Oct, 2015 (0c56067d)](#0.3.0)
 * [0.2.2 - 1 Sep, 2015 (6c5d8035)](#0.2.2)
@@ -9,7 +10,23 @@
 * [0.1.0 - 26 Aug, 2015 (ef47972d)](#0.1.0)
 
 ## Details
-### <a name = "LATEST">LATEST - 10 Nov, 2015 (fbcdbd73)
+### <a name = "LATEST">LATEST - 12 Feb, 2016 (3577bbf2)
+
+* (GEM) update beaker-answers version to 0.4.0 (3577bbf2)
+
+* Merge pull request #9 from kevpl/bkr700_20162_base (f33b9fae)
+
+
+```
+Merge pull request #9 from kevpl/bkr700_20162_base
+
+(BKR-700) added base answers for 2016.2
+```
+* (BKR-700) added base answers for 2016.2 (50d0bb30)
+
+### <a name = "0.3.2">0.3.2 - 10 Nov, 2015 (f699c033)
+
+* (HISTORY) update beaker-answers history for gem release 0.3.2 (f699c033)
 
 * (GEM) update beaker-answers version to 0.3.2 (fbcdbd73)
 
