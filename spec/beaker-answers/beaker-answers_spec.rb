@@ -29,6 +29,36 @@ describe BeakerAnswers do
     end
   end
 
+  context 'when we are upgrading to a version > 3.8' do
+    supported_general_upgrade_versions = [ '2015.1.0',
+                                           '2016.1.0',
+                                           '2016.2.1']
+    supported_general_upgrade_versions.each do |version|
+      it "still creates the full install answers" do
+        @ver = version
+        options[:type] = :upgrade
+        expect( answers ).to be_a_kind_of BeakerAnswers::Answers
+        expect( answers ).to_not be_a_kind_of BeakerAnswers::Upgrade
+      end
+    end
+  end
+
+  it 'generates upgrade38 answers when type is upgrade and the version 3.8' do
+    @ver = '3.8.3'
+    options[:type] = :upgrade
+    expect( answers ).to be_a_kind_of BeakerAnswers::Upgrade38
+  end
+
+  it 'generates 2016.2 answers for 2016.2 hosts' do
+    @ver = '2016.2.0'
+    expect( answers ).to be_a_kind_of BeakerAnswers::Version20162
+  end
+
+  it 'generates 2016.1 answers for 2016.1 hosts' do
+    @ver = '2016.1.0'
+    expect( answers ).to be_a_kind_of BeakerAnswers::Version20161
+  end
+
   it 'generates 2015.3 answers for 2015.3 hosts' do
     @ver = '2015.3.0'
     expect( answers ).to be_a_kind_of BeakerAnswers::Version20153
