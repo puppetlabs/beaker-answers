@@ -1,6 +1,7 @@
 # default - History
 ## Tags
-* [LATEST - 12 Feb, 2016 (3577bbf2)](#LATEST)
+* [LATEST - 28 Apr, 2016 (32ef620e)](#LATEST)
+* [0.4.0 - 12 Feb, 2016 (96d0d7cf)](#0.4.0)
 * [0.3.2 - 10 Nov, 2015 (f699c033)](#0.3.2)
 * [0.3.1 - 2 Nov, 2015 (e5922067)](#0.3.1)
 * [0.3.0 - 22 Oct, 2015 (0c56067d)](#0.3.0)
@@ -10,7 +11,36 @@
 * [0.1.0 - 26 Aug, 2015 (ef47972d)](#0.1.0)
 
 ## Details
-### <a name = "LATEST">LATEST - 12 Feb, 2016 (3577bbf2)
+### <a name = "LATEST">LATEST - 28 Apr, 2016 (32ef620e)
+
+* (GEM) update beaker-answers version to 0.4.1 (32ef620e)
+
+* Merge pull request #11 from tvpartytonight/BKR-763 (554f0405)
+
+
+```
+Merge pull request #11 from tvpartytonight/BKR-763
+
+(BKR-763) Supply only necessary answers on upgrade
+```
+* (BKR-763) Supply only necessary answers on upgrade (5b1e9782)
+
+
+```
+(BKR-763) Supply only necessary answers on upgrade
+
+Previous to this commit, answer files were generated in full during
+upgrade scenarios; this does not match the user workflow or what is
+documented for upgrades, so we should only supply answers needed. The
+answers `create` method now checks the `:type` in options and creates a
+separate branch of `Answers` named `Upgrade`.
+
+This change only affects PE 3.8 and higher; all lower versions will
+continue to produce an entire answers file.
+```
+### <a name = "0.4.0">0.4.0 - 12 Feb, 2016 (96d0d7cf)
+
+* (HISTORY) update beaker-answers history for gem release 0.4.0 (96d0d7cf)
 
 * (GEM) update beaker-answers version to 0.4.0 (3577bbf2)
 
