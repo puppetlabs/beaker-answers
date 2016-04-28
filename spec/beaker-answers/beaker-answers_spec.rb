@@ -417,11 +417,12 @@ describe BeakerAnswers::Upgrade38 do
   end
 
   context 'when no special answers are provided' do
-    it "each answer should have only two keys" do
+    it "each answer should have only three keys" do
       @answers.each do |vmname, answer|
         expect(answer[:q_install]).to eq('y')
         expect(answer[:q_enable_future_parser]).to eq('y')
-        expect(answer.length).to eq(2)
+        expect(answer[:q_exit_for_nc_migrate]).to eq('n')
+        expect(answer.length).to eq(3)
       end
     end
   end
