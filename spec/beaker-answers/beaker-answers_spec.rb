@@ -29,35 +29,6 @@ describe BeakerAnswers do
     end
   end
 
-  context 'when we are upgrading to a version > 3.8' do
-    supported_general_upgrade_versions = [ '2015.1.0',
-                                           '2016.1.0',
-                                           '2016.2.1']
-    supported_general_upgrade_versions.each do |version|
-      it "the version #{version} generates general upgrade answers" do
-        @ver = version
-        options[:type] = :upgrade
-        expect( answers ).to be_a_kind_of BeakerAnswers::Upgrade
-      end
-    end
-  end
-
-  it 'generates upgrade38 answers when type is upgrade and the version 3.8' do
-    @ver = '3.8.3'
-    options[:type] = :upgrade
-    expect( answers ).to be_a_kind_of BeakerAnswers::Upgrade38
-  end
-
-  it 'generates 2016.2 answers for 2016.2 hosts' do
-    @ver = '2016.2.0'
-    expect( answers ).to be_a_kind_of BeakerAnswers::Version20162
-  end
-
-  it 'generates 2016.1 answers for 2016.1 hosts' do
-    @ver = '2016.1.0'
-    expect( answers ).to be_a_kind_of BeakerAnswers::Version20161
-  end
-
   it 'generates 2015.3 answers for 2015.3 hosts' do
     @ver = '2015.3.0'
     expect( answers ).to be_a_kind_of BeakerAnswers::Version20153
@@ -345,99 +316,6 @@ describe BeakerAnswers::Version40 do
     hosts.each do |host|
       expect( host[:answers] ).to be === @answers[host.name]
     end
-  end
-end
-
-describe BeakerAnswers::Upgrade do
-
-  let( :options )     { StringifyHash.new }
-  let( :basic_hosts ) { make_hosts( {'pe_ver' => @ver } ) }
-  let( :hosts ) { basic_hosts[0]['roles'] = ['master', 'agent']
-                  basic_hosts[1]['roles'] = ['dashboard', 'agent']
-                  basic_hosts[2]['roles'] = ['database', 'agent']
-                  basic_hosts }
-  let( :answers )     { BeakerAnswers::Answers.create(@ver, hosts, options.merge({:type => :upgrade}) ) }
-
-  before :each do
-    @ver = '2015.3'
-    @answers = answers.answers
-  end
-
-  context 'when per host custom answers are provided for the master and dashboard' do
-    let( :hosts ) { basic_hosts[0]['roles'] = ['master', 'agent']
-                    basic_hosts[0][:custom_answers] = { :q_custom0 => '0LOOK' }
-                    basic_hosts[1]['roles'] = ['dashboard', 'agent']
-                    basic_hosts[1][:custom_answers] = { :q_custom1 => 'LOOKLOOK',
-                                                        :q_custom2 => "LOOK3"}
-                    basic_hosts[2]['roles'] = ['database', 'agent']
-                    basic_hosts }
-
-    it 'adds those custom answers to the master' do
-      expect( @answers['vm1'][:q_custom0] ).to be === '0LOOK'
-      expect( @answers['vm1'][:q_install] ).to eq('y')
-      expect( @answers['vm1'].size).to eq(2)
-    end
-
-    it 'adds custom answers to the dashboard' do
-      expect( @answers['vm2'][:q_custom1] ).to be === 'LOOKLOOK'
-      expect( @answers['vm2'][:q_custom2] ).to be === 'LOOK3'
-      expect( @answers['vm2'][:q_install] ).to eq('y')
-      expect( @answers['vm2'].size).to eq(3)
-    end
-
-    it 'does not add custom answers for the database' do
-      expect(@answers['vm3'][:q_install]).to eq('y')
-      expect(@answers['vm3'].length).to eq(1)
-    end
-  end
-
-  context 'when no custom answers are provided' do
-    it "each answer should have only one key for :q_install" do
-      @answers.each do |vmname, answer|
-        expect(answer[:q_install]).to eq('y')
-        expect(answer.length).to eq(1)
-      end
-    end
-  end
-end
-
-describe BeakerAnswers::Upgrade38 do
-
-  let( :options )     { StringifyHash.new }
-  let( :basic_hosts ) { make_hosts( {'pe_ver' => @ver } ) }
-  let( :hosts ) { basic_hosts[0]['roles'] = ['master', 'agent']
-                  basic_hosts[1]['roles'] = ['dashboard', 'agent']
-                  basic_hosts[2]['roles'] = ['database', 'agent']
-                  basic_hosts }
-  let( :answers )     { BeakerAnswers::Answers.create(@ver, hosts, options.merge({:type => :upgrade}) ) }
-
-  before :each do
-    @ver = '3.8'
-    @answers = answers.answers
-  end
-
-  context 'when no special answers are provided' do
-    it "each answer should have only two keys" do
-      @answers.each do |vmname, answer|
-        expect(answer[:q_install]).to eq('y')
-        expect(answer[:q_enable_future_parser]).to eq('y')
-        expect(answer.length).to eq(2)
-      end
-    end
-  end
-
-  context 'when we set :q_enable_future_parser in global options' do
-    let( :options ) {
-      options = StringifyHash.new
-      options[:answers] = { :q_enable_future_parser => 'thefutureparser!!!'}
-      options
-    }
-    it 'sets that parser option from the global options' do
-      @answers.each do |vmname, answer|
-        expect(answer[:q_enable_future_parser]).to eq('thefutureparser!!!')
-      end
-    end
-
   end
 end
 
