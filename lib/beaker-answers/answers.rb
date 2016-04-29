@@ -4,7 +4,6 @@ module BeakerAnswers
   class Answers
 
     DEFAULT_ANSWERS =  StringifyHash.new.merge({
-      :q_install                                     => 'y',
       :q_puppet_enterpriseconsole_auth_user_email    => 'admin@example.com',
       :q_puppet_enterpriseconsole_auth_password      => '~!@#$%^*-/ aZ',
       :q_puppet_enterpriseconsole_smtp_port          => 25,
@@ -48,12 +47,6 @@ module BeakerAnswers
       BeakerAnswers.constants.select {|c| BeakerAnswers.const_get(c).is_a?(Class) && BeakerAnswers.const_get(c).respond_to?(:pe_version_matcher)}
     end
 
-    # Determine the list of supported upgrade PE versions, return as an array
-    # @return [Array<String>] An array of the supported versions
-    def self.supported_upgrade_versions
-      BeakerAnswers.constants.select {|c| BeakerAnswers.const_get(c).is_a?(Class) && BeakerAnswers.const_get(c).respond_to?(:upgrade_version_matcher)}
-    end
-
     # When given a Puppet Enterprise version, a list of hosts and other
     # qualifying data this method will return the appropriate object that can be used
     # to generate answer file data.
@@ -65,15 +58,6 @@ module BeakerAnswers
     # @return [Hash] A hash (keyed from hosts) containing hashes of answer file
     #   data.
     def self.create version, hosts, options
-      # if :upgrade is detected, then we return the simpler upgrade answers
-      if options[:type] == :upgrade
-        self.supported_upgrade_versions.each do |upgrade_version_class|
-          if BeakerAnswers.const_get(upgrade_version_class).send(:upgrade_version_matcher) =~ version
-            return BeakerAnswers.const_get(upgrade_version_class).send(:new, version, hosts, options)
-          end
-        end
-        warn 'Only upgrades to version 3.8 and above generate specific upgrade answers. Defaulting to full answers.'
-      end
 
       # finds all potential version classes
       # discovers new version classes as they are added, no more crazy case statement
