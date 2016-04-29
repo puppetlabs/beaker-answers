@@ -1,6 +1,7 @@
 # default - History
 ## Tags
-* [LATEST - 28 Apr, 2016 (32ef620e)](#LATEST)
+* [LATEST - 28 Apr, 2016 (331f9d3e)](#LATEST)
+* [0.4.1 - 28 Apr, 2016 (d9d14510)](#0.4.1)
 * [0.4.0 - 12 Feb, 2016 (96d0d7cf)](#0.4.0)
 * [0.3.2 - 10 Nov, 2015 (f699c033)](#0.3.2)
 * [0.3.1 - 2 Nov, 2015 (e5922067)](#0.3.1)
@@ -11,7 +12,29 @@
 * [0.1.0 - 26 Aug, 2015 (ef47972d)](#0.1.0)
 
 ## Details
-### <a name = "LATEST">LATEST - 28 Apr, 2016 (32ef620e)
+### <a name = "LATEST">LATEST - 28 Apr, 2016 (331f9d3e)
+
+* (GEM) update beaker-answers version to 0.4.2 (331f9d3e)
+
+* Merge pull request #13 from tvpartytonight/BKR-763 (0d363027)
+
+
+```
+Merge pull request #13 from tvpartytonight/BKR-763
+
+Revert "(BKR-763) Supply only necessary answers on upgrade"
+```
+* Revert "(BKR-763) Supply only necessary answers on upgrade" (8647174a)
+
+
+```
+Revert "(BKR-763) Supply only necessary answers on upgrade"
+
+This reverts commit 5b1e9782de49e80fa3d02e0854626589791e6d26.
+```
+### <a name = "0.4.1">0.4.1 - 28 Apr, 2016 (d9d14510)
+
+* (HISTORY) update beaker-answers history for gem release 0.4.1 (d9d14510)
 
 * (GEM) update beaker-answers version to 0.4.1 (32ef620e)
 
