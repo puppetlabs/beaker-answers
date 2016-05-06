@@ -387,27 +387,6 @@ describe BeakerAnswers::Version20153 do
   end
 end
 
-describe BeakerAnswers::Version20162 do
-  let( :options )     { StringifyHash.new }
-  let( :basic_hosts ) { make_hosts( {'pe_ver' => @ver } ) }
-  let( :hosts ) { basic_hosts[0]['roles'] = ['master', 'agent']
-                  basic_hosts[1]['roles'] = ['dashboard', 'agent']
-                  basic_hosts[2]['roles'] = ['database', 'agent']
-                  basic_hosts }
-  let( :answers )     { BeakerAnswers::Answers.create(@ver, hosts, options) }
-  let( :upgrade_answers )     { BeakerAnswers::Answers.create(@ver, hosts, options.merge( {:type => :upgrade}) ) }
-
-  before :each do
-    @ver = '2016.2'
-    @answers = answers.answers
-  end
-
-  it 'should add orchestrator database answers to console' do
-    expect( @answers['vm2'][:q_orchestrator_database_name] ).to be === 'pe-orchestrator'
-    expect( @answers['vm2'][:q_orchestrator_database_user] ).to be === 'Orc3Str8R'
-  end
-end
-
 describe BeakerAnswers::Version32 do
   let( :options )     { StringifyHash.new }
   let( :basic_hosts ) { make_hosts( {'pe_ver' => @ver } ) }

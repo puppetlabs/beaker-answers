@@ -62,6 +62,9 @@ module BeakerAnswers
     # @param [Array<Beaker::Host>] hosts An array of host objects.
     # @param [Hash] options options for answer files
     # @option options [Symbol] :type Should be one of :upgrade or :install.
+    # @option type [Symbol] :format Should be one of :bash or :hiera
+    #   Setting :bash will result in the "classic" PE answer file being generated
+    #   Setting :hiera will generate the new PE hiera config file format
     # @return [Hash] A hash (keyed from hosts) containing hashes of answer file
     #   data.
     def self.create version, hosts, options
@@ -81,7 +84,7 @@ module BeakerAnswers
       version_classes.each do |vc|
         # check to see if the version matches the regex for this class of answers
         if BeakerAnswers.const_get(vc).send(:pe_version_matcher) =~ version
-          return BeakerAnswers.const_get(vc).send(:new, version, hosts, options)
+          return BeakerAnswers.const_get(vc).send(:new, version, hosts, options, type)
         end
       end
       raise NotImplementedError, "Don't know how to generate answers for #{version}"
@@ -113,12 +116,16 @@ module BeakerAnswers
     # @param [Array<Beaker::Host>] hosts An array of host objects.
     # @param [Hash] options options for answer files
     # @option options [Symbol] :type Should be one of :upgrade or :install.
+    # @option type [Symbol] :format Should be one of :bash or :hiera
+    #   Setting :bash will result in the "classic" PE answer file being generated
+    #   Setting :hiera will generate the new PE hiera config file format
     # @return [Hash] A hash (keyed from hosts) containing hashes of answer file
     #   data.
-    def initialize(version, hosts, options)
+    def initialize(version, hosts, options, type)
       @version = version
       @hosts = hosts
       @options = options
+      @type = type
     end
 
     # Generate the answers hash based upon version, host and option information
@@ -131,6 +138,24 @@ module BeakerAnswers
     # @return [Hash] A hash of answers keyed by host.name
     def answers
       @answers ||= generate_answers
+    end
+
+    # This converts a data hash provided by answers, and returns a Puppet
+    # Enterprise compatible hiera config file ready for use.
+    #
+    # @param [Beaker::Host] host Host object in question to generate the answer
+    #   file for.
+    # @return [String] a string of parseable hocon
+    # @example Generating an answer file for a series of hosts
+    #   hosts.each do |host|
+    #     answers = Beaker::Answers.new("2.0", hosts, "master")
+    #     create_remote_file host, "/mypath/answer", answers.answer_hiera(host)
+    #  end
+    def answer_hiera(host)
+      # Render pretty JSON, because it is a subset of HOCON
+      json = JSON.pretty_generate(answers[host.name])
+      hocon = Hocon::Parser::ConfigDocumentFactory.parse_string(json)
+      hocon.render
     end
 
     # This converts a data hash provided by answers, and returns a Puppet

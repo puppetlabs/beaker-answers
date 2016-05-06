@@ -3,4 +3,5 @@ module BeakerAnswers
   require 'require_all'
   require 'beaker-answers/answers'
   require 'beaker-answers/version'
+  require 'hocon'
 end

@@ -26,7 +26,34 @@ module BeakerAnswers
 
       the_answers[console.name].merge!(orchestrator_db)
 
-      the_answers
+      if @type == :bash
+        return the_answers
+      elsif @type == :hiera
+        flattened_answers = {}
+        the_answers.each_pair do |host, answers|
+          flattened_answers.merge!(answers)
+        end
+
+        # The hiera answer file format will get all answers, regardless of role it is being installed on
+        hiera_hash = {}
+        hiera_hash["console_admin_password"] = "#{answer_for(@options, :q_puppet_enterpriseconsole_auth_password)}"
+        hiera_hash["puppet_enterprise::certificate_authority_host"] = flattened_answers[:q_puppetmaster_certname]
+        hiera_hash["puppet_enterprise::puppet_master_host"] = flattened_answers[:q_puppetmaster_certname]
+        hiera_hash["puppet_enterprise::console_host"] = flattened_answers[:q_puppetmaster_enterpriseconsole_hostname]
+        hiera_hash["puppet_enterprise::puppetdb_host"] = flattened_answers[:q_puppetdb_hostname]
+        hiera_hash["puppet_enterprise::database_host"] = flattened_answers[:q_database_host]
+        hiera_hash["puppet_enterprise::pcp_broker_host"] = flattened_answers[:q_puppetmaster_certname]
+        hiera_hash["puppet_enterprise::mcollective_middleware_hosts"] = [flattened_answers[:q_puppetmaster_certname]]
+        hiera_hash["puppet_enterprise::puppetdb_database_password"] = flattened_answers[:q_puppetdb_database_password]
+        hiera_hash["puppet_enterprise::classifier_database_password"] = flattened_answers[:q_classifier_database_password]
+        hiera_hash["puppet_enterprise::activity_database_password"] = flattened_answers[:q_activity_database_password]
+        hiera_hash["puppet_enterprise::rbac_database_password"] = flattened_answers[:q_rbac_database_password]
+        hiera_hash["puppet_enterprise::orchestrator_database_password"] = flattened_answers[:q_orchestrator_database_password]
+
+        return hiera_hash
+      else
+        raise "Don't know how to generate answers for format #{@format}"
+      end
     end
   end
 end
