@@ -24,7 +24,9 @@ describe BeakerAnswers::Version20162 do
     let( :answers )     { BeakerAnswers::Answers.create(@ver, hosts, options, :hiera) }
 
     it 'should not have nil keys or values' do
-      expect(@answers.select { |k, v| k.nil? || v.nil? }.length).to be === 0
+      @answers.each_pair { |k, v|
+        expect([k, v]).not_to include(nil)
+      }
     end
 
     it 'should have values equal to the default answers' do
@@ -36,6 +38,41 @@ describe BeakerAnswers::Version20162 do
       expect(@answers["puppet_enterprise::database_host"]).to be === basic_hosts[2].name
       expect(@answers["puppet_enterprise::pcp_broker_host"]).to be === basic_hosts[0].name
       expect(@answers["puppet_enterprise::mcollective_middleware_hosts"]).to be === [basic_hosts[0].name]
+    end
+
+    context 'when database cert auth is enabled' do
+      let( :options ) do
+        {
+          :database_cert_auth => true
+        }
+      end
+
+      it 'should not include the default database passwords' do
+        expect(@answers).not_to include("puppet_enterprise::puppetdb_database_password")
+        expect(@answers).not_to include("puppet_enterprise::classifier_database_password")
+        expect(@answers).not_to include("puppet_enterprise::activity_database_password")
+        expect(@answers).not_to include("puppet_enterprise::rbac_database_password")
+        expect(@answers).not_to include("puppet_enterprise::orchestrator_database_password")
+      end
+    end
+
+    context 'when overriding answers' do
+      let( :options ) do
+        {
+          :answers => {
+            'puppet_enterprise' =>  { 'certificate_authority_host' => 'enterpriseca.vm' },
+            'puppet_enterprise::console_host' => 'enterpriseconsole.vm'
+          }
+        }
+      end
+
+      it 'should override the defaults when multi-level hash :answers are given' do
+        expect(@answers["puppet_enterprise::certificate_authority_host"]).to be === 'enterpriseca.vm'
+      end
+
+      it 'should override the defaults when a :: delimited key is given' do
+        expect(@answers["puppet_enterprise::console_host"]).to be === 'enterpriseconsole.vm'
+      end
     end
   end
 end

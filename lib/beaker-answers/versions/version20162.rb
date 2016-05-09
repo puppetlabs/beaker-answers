@@ -14,6 +14,8 @@ module BeakerAnswers
       the_answers = super
 
       return the_answers if @options[:masterless]
+      master = only_host_with_role(@hosts, 'master')
+      puppetdb = only_host_with_role(@hosts, 'database')
       console = only_host_with_role(@hosts, 'dashboard')
 
       # To allow SSL cert based auth in the new installer while maintaining the legacy
@@ -29,26 +31,30 @@ module BeakerAnswers
       if @type == :bash
         return the_answers
       elsif @type == :hiera
-        flattened_answers = {}
-        the_answers.each_pair do |host, answers|
-          flattened_answers.merge!(answers)
-        end
-
         # The hiera answer file format will get all answers, regardless of role it is being installed on
         hiera_hash = {}
-        hiera_hash["console_admin_password"] = "#{answer_for(@options, :q_puppet_enterpriseconsole_auth_password)}"
-        hiera_hash["puppet_enterprise::certificate_authority_host"] = flattened_answers[:q_puppetmaster_certname]
-        hiera_hash["puppet_enterprise::puppet_master_host"] = flattened_answers[:q_puppetmaster_certname]
-        hiera_hash["puppet_enterprise::console_host"] = flattened_answers[:q_puppetmaster_enterpriseconsole_hostname]
-        hiera_hash["puppet_enterprise::puppetdb_host"] = flattened_answers[:q_puppetdb_hostname]
-        hiera_hash["puppet_enterprise::database_host"] = flattened_answers[:q_database_host]
-        hiera_hash["puppet_enterprise::pcp_broker_host"] = flattened_answers[:q_puppetmaster_certname]
-        hiera_hash["puppet_enterprise::mcollective_middleware_hosts"] = [flattened_answers[:q_puppetmaster_certname]]
-        hiera_hash["puppet_enterprise::puppetdb_database_password"] = flattened_answers[:q_puppetdb_database_password]
-        hiera_hash["puppet_enterprise::classifier_database_password"] = flattened_answers[:q_classifier_database_password]
-        hiera_hash["puppet_enterprise::activity_database_password"] = flattened_answers[:q_activity_database_password]
-        hiera_hash["puppet_enterprise::rbac_database_password"] = flattened_answers[:q_rbac_database_password]
-        hiera_hash["puppet_enterprise::orchestrator_database_password"] = flattened_answers[:q_orchestrator_database_password]
+        hiera_hash["console_admin_password"] = answer_for(@options, "console_admin_password")
+        hiera_hash["puppet_enterprise::use_application_services"] = answer_for(@options, "puppet_enterprise::use_application_services")
+        hiera_hash["puppet_enterprise::certificate_authority_host"] = answer_for(@options, "puppet_enterprise::certificate_authority_host", master.name)
+        hiera_hash["puppet_enterprise::puppet_master_host"] = answer_for(@options, "puppet_enterprise::puppet_master_host", master.name)
+        hiera_hash["puppet_enterprise::console_host"] = answer_for(@options, "puppet_enterprise::console_host", console.name)
+        hiera_hash["puppet_enterprise::puppetdb_host"] = answer_for(@options, "puppet_enterprise::puppetdb_host", puppetdb.name)
+        hiera_hash["puppet_enterprise::database_host"] = answer_for(@options, "puppet_enterprise::database_host", puppetdb.name)
+        hiera_hash["puppet_enterprise::pcp_broker_host"] = answer_for(@options, "puppet_enterprise::pcp_broker_host", master.name)
+        hiera_hash["puppet_enterprise::mcollective_middleware_hosts"] = [answer_for(@options, "puppet_enterprise::mcollective_middleware_hosts", master.name)]
+
+        unless @options[:database_cert_auth]
+          hiera_hash["puppet_enterprise::puppetdb_database_password"] = answer_for(@options, "puppet_enterprise::puppetdb_database_password")
+          hiera_hash["puppet_enterprise::classifier_database_password"] = answer_for(@options, "puppet_enterprise::classifier_database_password")
+          hiera_hash["puppet_enterprise::activity_database_password"] = answer_for(@options, "puppet_enterprise::activity_database_password")
+          hiera_hash["puppet_enterprise::rbac_database_password"] = answer_for(@options, "puppet_enterprise::rbac_database_password")
+          hiera_hash["puppet_enterprise::orchestrator_database_password"] = answer_for(@options, "puppet_enterprise::orchestrator_database_password")
+        end
+
+        # Override with any values provided in the :answers key hash
+        if @options[:answers]
+          hiera_hash.merge!(flatten_keys_to_joined_string(@options[:answers]))
+        end
 
         return hiera_hash
       else

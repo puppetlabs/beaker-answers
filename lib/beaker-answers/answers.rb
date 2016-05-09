@@ -41,6 +41,17 @@ module BeakerAnswers
       :q_pe_check_for_updates                        => 'n',
     })
 
+    DEFAULT_HIERA_ANSWERS = StringifyHash.new.merge(flatten_keys_to_joined_string({
+      'console_admin_password' => DEFAULT_ANSWERS[:q_puppet_enterpriseconsole_auth_password],
+      'puppet_enterprise' => {
+        'puppetdb_database_password'     => DEFAULT_ANSWERS[:q_puppetdb_password],
+        'classifier_database_password'   => DEFAULT_ANSWERS[:q_classifier_database_password],
+        'activity_database_password'     => DEFAULT_ANSWERS[:q_activity_database_password],
+        'rbac_database_password'         => DEFAULT_ANSWERS[:q_rbac_database_password],
+        'orchestrator_database_password' => DEFAULT_ANSWERS[:q_orchestrator_database_password],
+        'use_application_services'       => true,
+      }
+    }))
 
     # Determine the list of supported PE versions, return as an array
     # @return [Array<String>] An array of the supported versions
@@ -92,14 +103,21 @@ module BeakerAnswers
 
     # The answer value for a provided question.  Use the user answer when available, otherwise return the default
     # @param [Hash] options options for answer file
-    # @option options [Symbol] :answer Contains a hash of user provided question name and answer value pairs.
+    # @option options [Symbol] :answers Contains a hash of user provided question name and answer value pairs.
     # @param [String] default Should there be no user value for the provided question name return this default
     # @return [String] The answer value
     def answer_for(options, q, default = nil)
-      answer = DEFAULT_ANSWERS[q]
+      if @type == :bash
+        answer = DEFAULT_ANSWERS[q]
+        answers = options[:answers]
+      elsif @type == :hiera
+        answer = DEFAULT_HIERA_ANSWERS[q]
+        answers = flatten_keys_to_joined_string(options[:answers]) if options[:answers]
+      end
+
       # check to see if there is a value for this in the provided options
-      if options[:answers] && options[:answers][q]
-        answer = options[:answers][q]
+      if answers && answers[q]
+        answer = answers[q]
       end
       # use the default if we don't have anything
       if not answer
@@ -188,7 +206,6 @@ module BeakerAnswers
       end
       found_hosts.first
     end
-
   end
 
   # pull in all the available answer versions
