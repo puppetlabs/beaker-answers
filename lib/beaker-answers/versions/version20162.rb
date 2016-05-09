@@ -43,6 +43,19 @@ module BeakerAnswers
         hiera_hash["puppet_enterprise::pcp_broker_host"] = answer_for(@options, "puppet_enterprise::pcp_broker_host", master.name)
         hiera_hash["puppet_enterprise::mcollective_middleware_hosts"] = [answer_for(@options, "puppet_enterprise::mcollective_middleware_hosts", master.name)]
 
+        # Database names/users. Required for password and cert-based auth
+        hiera_hash["puppet_enterprise::puppetdb_database_name"] = answer_for(@options, "puppet_enterprise::puppetdb_database_name")
+        hiera_hash["puppet_enterprise::puppetdb_database_user"] = answer_for(@options, "puppet_enterprise::puppetdb_database_user")
+        hiera_hash["puppet_enterprise::classifier_database_name"] = answer_for(@options, "puppet_enterprise::classifier_database_name")
+        hiera_hash["puppet_enterprise::classifier_database_user"] = answer_for(@options, "puppet_enterprise::classifier_database_user")
+        hiera_hash["puppet_enterprise::activity_database_name"] = answer_for(@options, "puppet_enterprise::activity_database_name")
+        hiera_hash["puppet_enterprise::activity_database_user"] = answer_for(@options, "puppet_enterprise::activity_database_user")
+        hiera_hash["puppet_enterprise::rbac_database_name"] = answer_for(@options, "puppet_enterprise::rbac_database_name")
+        hiera_hash["puppet_enterprise::rbac_database_user"] = answer_for(@options, "puppet_enterprise::rbac_database_user")
+        hiera_hash["puppet_enterprise::orchestrator_database_name"] = answer_for(@options, "puppet_enterprise::orchestrator_database_name")
+        hiera_hash["puppet_enterprise::orchestrator_database_user"] = answer_for(@options, "puppet_enterprise::orchestrator_database_user")
+
+        # We only need to specify passwords if we are using password auth
         unless @options[:database_cert_auth]
           hiera_hash["puppet_enterprise::puppetdb_database_password"] = answer_for(@options, "puppet_enterprise::puppetdb_database_password")
           hiera_hash["puppet_enterprise::classifier_database_password"] = answer_for(@options, "puppet_enterprise::classifier_database_password")

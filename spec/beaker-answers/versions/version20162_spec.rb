@@ -38,6 +38,21 @@ describe BeakerAnswers::Version20162 do
       expect(@answers["puppet_enterprise::database_host"]).to be === basic_hosts[2].name
       expect(@answers["puppet_enterprise::pcp_broker_host"]).to be === basic_hosts[0].name
       expect(@answers["puppet_enterprise::mcollective_middleware_hosts"]).to be === [basic_hosts[0].name]
+      expect(@answers["puppet_enterprise::activity_database_name"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_activity_database_name]
+      expect(@answers["puppet_enterprise::activity_database_password"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_activity_database_password]
+      expect(@answers["puppet_enterprise::activity_database_user"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_activity_database_user]
+      expect(@answers["puppet_enterprise::classifier_database_name"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_classifier_database_name]
+      expect(@answers["puppet_enterprise::classifier_database_password"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_classifier_database_password]
+      expect(@answers["puppet_enterprise::classifier_database_user"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_classifier_database_user]
+      expect(@answers["puppet_enterprise::orchestrator_database_name"]). to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_orchestrator_database_name]
+      expect(@answers["puppet_enterprise::orchestrator_database_password"]). to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_orchestrator_database_password]
+      expect(@answers["puppet_enterprise::orchestrator_database_user"]). to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_orchestrator_database_user]
+      expect(@answers["puppet_enterprise::puppetdb_database_name"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_puppetdb_database_name]
+      expect(@answers["puppet_enterprise::puppetdb_database_password"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_puppetdb_password]
+      expect(@answers["puppet_enterprise::puppetdb_database_user"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_puppetdb_database_user]
+      expect(@answers["puppet_enterprise::rbac_database_name"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_rbac_database_name]
+      expect(@answers["puppet_enterprise::rbac_database_password"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_rbac_database_password]
+      expect(@answers["puppet_enterprise::rbac_database_user"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_rbac_database_user]
     end
 
     context 'when database cert auth is enabled' do
