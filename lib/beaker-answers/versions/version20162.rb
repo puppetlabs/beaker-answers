@@ -53,7 +53,11 @@ module BeakerAnswers
 
         # Override with any values provided in the :answers key hash
         if @options[:answers]
-          hiera_hash.merge!(flatten_keys_to_joined_string(@options[:answers]))
+          if @options[:answers].keys.any? { |k| k.start_with?('q_') }
+            raise "q_ answers are not supported when using the hiera answers type"
+          else
+            hiera_hash.merge!(flatten_keys_to_joined_string(@options[:answers]))
+          end
         end
 
         return hiera_hash
