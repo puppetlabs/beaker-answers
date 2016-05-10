@@ -117,12 +117,15 @@ module BeakerAnswers
     # @param [String] default Should there be no user value for the provided question name return this default
     # @return [String] The answer value
     def answer_for(options, q, default = nil)
-      if @type == :bash
+      case @type
+      when :bash
         answer = DEFAULT_ANSWERS[q]
         answers = options[:answers]
-      elsif @type == :hiera
+      when :hiera
         answer = DEFAULT_HIERA_ANSWERS[q]
         answers = flatten_keys_to_joined_string(options[:answers]) if options[:answers]
+      else
+        raise NotImplementedError, "Don't know how to determine answers for #{@type}"
       end
 
       # check to see if there is a value for this in the provided options

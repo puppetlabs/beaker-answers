@@ -15,12 +15,13 @@ module BeakerAnswers
 
       return the_answers if @options[:masterless]
 
-      if @type == :bash
+      case @type
+      when :bash
         return generate_bash_answers(the_answers)
-      elsif @type == :hiera
+      when :hiera
         return generate_hiera_config
       else
-        raise "Don't know how to generate answers for format #{@type}"
+        raise NotImplementedError, "Don't know how to generate answers for #{@type}"
       end
     end
 
