@@ -75,7 +75,7 @@ module BeakerAnswers
 
         return hiera_hash
       else
-        raise "Don't know how to generate answers for format #{@format}"
+        raise "Don't know how to generate answers for format #{@type}"
       end
     end
   end
