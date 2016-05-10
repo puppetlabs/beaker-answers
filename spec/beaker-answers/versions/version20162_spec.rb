@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'json'
 
 describe BeakerAnswers::Version20162 do
   let( :options )     { StringifyHash.new }
@@ -20,8 +21,13 @@ describe BeakerAnswers::Version20162 do
     expect( @answers['vm2'][:q_orchestrator_database_user] ).to be === 'Orc3Str8R'
   end
 
+  it 'should generate valid answers if #answer_string is called' do
+    expect( answers.answer_string(basic_hosts[2]) ).to match /q_orchestrator_database_name=pe-orchestrator/
+  end
+
   context 'when generating a hiera config' do
     let( :answers )     { BeakerAnswers::Answers.create(@ver, hosts, options, :hiera) }
+    let( :answer_hiera )     { answers.answer_hiera }
 
     it 'should not have nil keys or values' do
       @answers.each_pair { |k, v|
@@ -53,6 +59,12 @@ describe BeakerAnswers::Version20162 do
       expect(@answers["puppet_enterprise::rbac_database_name"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_rbac_database_name]
       expect(@answers["puppet_enterprise::rbac_database_password"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_rbac_database_password]
       expect(@answers["puppet_enterprise::rbac_database_user"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_rbac_database_user]
+    end
+
+    it 'should generate valid json if #answer_hiera is called' do
+      expect(answer_hiera).not_to be_empty
+      expect { JSON.load(answer_hiera) }.not_to raise_error
+      expect(answer_hiera).to match "puppet_enterprise::puppet_master_host.*:.*#{basic_hosts[0].name}"
     end
 
     context 'when database cert auth is enabled' do

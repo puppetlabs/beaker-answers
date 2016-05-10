@@ -1,3 +1,7 @@
+require 'json'
+require 'hocon'
+require 'hocon/parser/config_document_factory'
+
 module BeakerAnswers
   # This class provides methods for generating PE answer file
   # information.
@@ -181,17 +185,15 @@ module BeakerAnswers
     # This converts a data hash provided by answers, and returns a Puppet
     # Enterprise compatible hiera config file ready for use.
     #
-    # @param [Beaker::Host] host Host object in question to generate the answer
-    #   file for.
     # @return [String] a string of parseable hocon
     # @example Generating an answer file for a series of hosts
     #   hosts.each do |host|
     #     answers = Beaker::Answers.new("2.0", hosts, "master")
-    #     create_remote_file host, "/mypath/answer", answers.answer_hiera(host)
+    #     create_remote_file host, "/mypath/answer", answers.answer_hiera
     #  end
-    def answer_hiera(host)
+    def answer_hiera
       # Render pretty JSON, because it is a subset of HOCON
-      json = JSON.pretty_generate(answers[host.name])
+      json = JSON.pretty_generate(answers)
       hocon = Hocon::Parser::ConfigDocumentFactory.parse_string(json)
       hocon.render
     end
