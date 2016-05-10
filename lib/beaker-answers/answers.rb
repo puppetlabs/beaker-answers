@@ -3,6 +3,10 @@ module BeakerAnswers
   # information.
   class Answers
 
+    # This is a temporary default for deciding which configuration file format
+    # to fall back to in 2016.2.0.  Once we have cutover to MEEP, it should be
+    # removed.
+    DEFAULT_FORMAT = :bash
     DEFAULT_ANSWERS =  StringifyHash.new.merge({
       :q_install                                     => 'y',
       :q_puppet_enterpriseconsole_auth_user_email    => 'admin@example.com',
@@ -83,9 +87,6 @@ module BeakerAnswers
     # @param [Array<Beaker::Host>] hosts An array of host objects.
     # @param [Hash] options options for answer files
     # @option options [Symbol] :type Should be one of :upgrade or :install.
-    # @option options [Symbol] :format Should be one of :bash or :hiera
-    #   Setting :bash will result in the "classic" PE answer file being generated
-    #   Setting :hiera will generate the new PE hiera config file format
     # @return [Hash] A hash (keyed from hosts) containing hashes of answer file
     #   data.
     def self.create version, hosts, options
@@ -111,10 +112,14 @@ module BeakerAnswers
       raise NotImplementedError, "Don't know how to generate answers for #{version}"
     end
 
-    # The answer value for a provided question.  Use the user answer when available, otherwise return the default
+    # The answer value for a provided question.  Use the user answer when
+    # available, otherwise return the default.
+    #
     # @param [Hash] options options for answer file
-    # @option options [Symbol] :answers Contains a hash of user provided question name and answer value pairs.
-    # @param [String] default Should there be no user value for the provided question name return this default
+    # @option options [Symbol] :answers Contains a hash of user provided
+    #   question name and answer value pairs.
+    # @param [String] default Should there be no user value for the provided
+    #   question name return this default
     # @return [String] The answer value
     def answer_for(options, q, default = nil)
       case @format
@@ -157,7 +162,8 @@ module BeakerAnswers
     # @param [Array<Beaker::Host>] hosts An array of host objects.
     # @param [Hash] options options for answer files
     # @option options [Symbol] :type Should be one of :upgrade or :install.
-    # @option options [Symbol] :format Should be one of :bash or :hiera
+    # @option options [Symbol] :format Should be one of :bash or :hiera. This
+    #   is a temporary setting which only has an impact on version201620 answers.
     #   Setting :bash will result in the "classic" PE answer file being generated
     #   Setting :hiera will generate the new PE hiera config file format
     # @return [Hash] A hash (keyed from hosts) containing hashes of answer file
@@ -166,7 +172,7 @@ module BeakerAnswers
       @version = version
       @hosts = hosts
       @options = options
-      @format = (options[:format] || :bash).to_sym
+      @format = (options[:format] || DEFAULT_FORMAT).to_sym
     end
 
     # Generate the answers hash based upon version, host and option information
@@ -182,22 +188,6 @@ module BeakerAnswers
     end
 
     # This converts a data hash provided by answers, and returns a Puppet
-    # Enterprise compatible hiera config file ready for use.
-    #
-    # @return [String] a string of parseable hocon
-    # @example Generating an answer file for a series of hosts
-    #   hosts.each do |host|
-    #     answers = Beaker::Answers.new("2.0", hosts, "master")
-    #     create_remote_file host, "/mypath/answer", answers.answer_hiera
-    #  end
-    def answer_hiera
-      # Render pretty JSON, because it is a subset of HOCON
-      json = JSON.pretty_generate(answers)
-      hocon = Hocon::Parser::ConfigDocumentFactory.parse_string(json)
-      hocon.render
-    end
-
-    # This converts a data hash provided by answers, and returns a Puppet
     # Enterprise compatible answer file ready for use.
     #
     # @param [Beaker::Host] host Host object in question to generate the answer
@@ -210,6 +200,14 @@ module BeakerAnswers
     #  end
     def answer_string(host)
       answers[host.name].map { |k,v| "#{k}=#{v}" }.join("\n")
+    end
+
+    def answer_hiera
+      raise(NotImplementedError, "Hiera configuration is not available in this version of PE (#{self.class})")
+    end
+
+    def installer_configuration_string(host)
+      answer_string(host)
     end
 
     #Find a single host with the role provided.  Raise an error if more than one host is found to have the

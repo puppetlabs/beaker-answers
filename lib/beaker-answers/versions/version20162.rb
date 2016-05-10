@@ -42,7 +42,8 @@ module BeakerAnswers
     end
 
     def generate_hiera_config
-      # The hiera answer file format will get all answers, regardless of role it is being installed on
+      # The hiera answer file format will get all answers, regardless of role
+      # it is being installed on
       hiera_hash = {}
 
       # Add the correct host values for this beaker configuration
@@ -118,6 +119,31 @@ module BeakerAnswers
       end
 
       return get_defaults_or_answers(defaults_to_set)
+    end
+
+    # This converts a data hash provided by answers, and returns a Puppet
+    # Enterprise compatible hiera config file ready for use.
+    #
+    # @return [String] a string of parseable hocon
+    # @example Generating an answer file for a series of hosts
+    #   hosts.each do |host|
+    #     answers = Beaker::Answers.new("2.0", hosts, "master")
+    #     create_remote_file host, "/mypath/answer", answers.answer_hiera
+    #  end
+    def answer_hiera
+      # Render pretty JSON, because it is a subset of HOCON
+      json = JSON.pretty_generate(answers)
+      hocon = Hocon::Parser::ConfigDocumentFactory.parse_string(json)
+      hocon.render
+    end
+
+    def installer_configuration_string(host)
+      case @format
+        when :bash then answer_string(host)
+        when :hiera then answer_hiera
+        else
+          raise NotImplementedError, "Don't know how to generate for configuration #{@format}"
+      end
     end
   end
 end
