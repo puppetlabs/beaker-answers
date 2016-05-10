@@ -83,7 +83,7 @@ module BeakerAnswers
     # @param [Array<Beaker::Host>] hosts An array of host objects.
     # @param [Hash] options options for answer files
     # @option options [Symbol] :type Should be one of :upgrade or :install.
-    # @option type [Symbol] :format Should be one of :bash or :hiera
+    # @option options [Symbol] :format Should be one of :bash or :hiera
     #   Setting :bash will result in the "classic" PE answer file being generated
     #   Setting :hiera will generate the new PE hiera config file format
     # @return [Hash] A hash (keyed from hosts) containing hashes of answer file
@@ -105,7 +105,7 @@ module BeakerAnswers
       version_classes.each do |vc|
         # check to see if the version matches the regex for this class of answers
         if BeakerAnswers.const_get(vc).send(:pe_version_matcher) =~ version
-          return BeakerAnswers.const_get(vc).send(:new, version, hosts, options, type)
+          return BeakerAnswers.const_get(vc).send(:new, version, hosts, options)
         end
       end
       raise NotImplementedError, "Don't know how to generate answers for #{version}"
@@ -117,7 +117,7 @@ module BeakerAnswers
     # @param [String] default Should there be no user value for the provided question name return this default
     # @return [String] The answer value
     def answer_for(options, q, default = nil)
-      case @type
+      case @format
       when :bash
         answer = DEFAULT_ANSWERS[q]
         answers = options[:answers]
@@ -125,7 +125,7 @@ module BeakerAnswers
         answer = DEFAULT_HIERA_ANSWERS[q]
         answers = flatten_keys_to_joined_string(options[:answers]) if options[:answers]
       else
-        raise NotImplementedError, "Don't know how to determine answers for #{@type}"
+        raise NotImplementedError, "Don't know how to determine answers for #{@format}"
       end
 
       # check to see if there is a value for this in the provided options
@@ -157,16 +157,16 @@ module BeakerAnswers
     # @param [Array<Beaker::Host>] hosts An array of host objects.
     # @param [Hash] options options for answer files
     # @option options [Symbol] :type Should be one of :upgrade or :install.
-    # @option type [Symbol] :format Should be one of :bash or :hiera
+    # @option options [Symbol] :format Should be one of :bash or :hiera
     #   Setting :bash will result in the "classic" PE answer file being generated
     #   Setting :hiera will generate the new PE hiera config file format
     # @return [Hash] A hash (keyed from hosts) containing hashes of answer file
     #   data.
-    def initialize(version, hosts, options, type)
+    def initialize(version, hosts, options)
       @version = version
       @hosts = hosts
       @options = options
-      @type = type
+      @format = (options[:format] || :bash).to_sym
     end
 
     # Generate the answers hash based upon version, host and option information

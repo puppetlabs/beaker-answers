@@ -15,13 +15,13 @@ module BeakerAnswers
 
       return the_answers if @options[:masterless]
 
-      case @type
+      case @format
       when :bash
         return generate_bash_answers(the_answers)
       when :hiera
         return generate_hiera_config
       else
-        raise NotImplementedError, "Don't know how to generate answers for #{@type}"
+        raise NotImplementedError, "Don't know how to generate answers for #{@format}"
       end
     end
 
@@ -59,7 +59,7 @@ module BeakerAnswers
       # Override with any values provided in the :answers key hash
       if @options[:answers]
         if @options[:answers].keys.any? { |k| k.start_with?('q_') }
-          raise "q_ answers are not supported when using the hiera answers type"
+          raise "q_ answers are not supported when using the hiera answers format"
         else
           hiera_hash.merge!(flatten_keys_to_joined_string(@options[:answers]))
         end

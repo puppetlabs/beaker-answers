@@ -26,8 +26,8 @@ describe BeakerAnswers::Version20162 do
   end
 
   context 'when generating a hiera config' do
-    let( :answers )     { BeakerAnswers::Answers.create(@ver, hosts, options, :hiera) }
-    let( :answer_hiera )     { answers.answer_hiera }
+    let( :options )      { { :format => 'hiera' } }
+    let( :answer_hiera ) { answers.answer_hiera }
 
     it 'should not have nil keys or values' do
       @answers.each_pair { |k, v|
@@ -70,6 +70,7 @@ describe BeakerAnswers::Version20162 do
     context 'when database cert auth is enabled' do
       let( :options ) do
         {
+          :format             => 'hiera',
           :database_cert_auth => true
         }
       end
@@ -86,6 +87,7 @@ describe BeakerAnswers::Version20162 do
     context 'when overriding answers' do
       let( :options ) do
         {
+          :format  => 'hiera',
           :answers => {
             'puppet_enterprise' =>  { 'certificate_authority_host' => 'enterpriseca.vm' },
             'puppet_enterprise::console_host' => 'enterpriseconsole.vm'
