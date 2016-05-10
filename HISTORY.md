@@ -1,6 +1,7 @@
 # default - History
 ## Tags
-* [LATEST - 28 Apr, 2016 (331f9d3e)](#LATEST)
+* [LATEST - 10 May, 2016 (92edeb28)](#LATEST)
+* [0.4.2 - 28 Apr, 2016 (79ccd5de)](#0.4.2)
 * [0.4.1 - 28 Apr, 2016 (d9d14510)](#0.4.1)
 * [0.4.0 - 12 Feb, 2016 (96d0d7cf)](#0.4.0)
 * [0.3.2 - 10 Nov, 2015 (f699c033)](#0.3.2)
@@ -12,7 +13,31 @@
 * [0.1.0 - 26 Aug, 2015 (ef47972d)](#0.1.0)
 
 ## Details
-### <a name = "LATEST">LATEST - 28 Apr, 2016 (331f9d3e)
+### <a name = "LATEST">LATEST - 10 May, 2016 (92edeb28)
+
+* (GEM) update beaker-answers version to 0.4.3 (92edeb28)
+
+* Merge pull request #14 from ericwilliamson/task/master/legacy-ssl-auth-support (bef1af14)
+
+
+```
+Merge pull request #14 from ericwilliamson/task/master/legacy-ssl-auth-support
+
+(PE-14877) Pass in orchestrator db to console
+```
+* (PE-14877) Pass in orchestrator db to console (f1d09078)
+
+
+```
+(PE-14877) Pass in orchestrator db to console
+
+To allow SSL cert based auth in the new installer while maintaining the legacy
+bash script, the console node now needs to know about the orchestrator database user
+and name if they are specified to be non default
+```
+### <a name = "0.4.2">0.4.2 - 28 Apr, 2016 (79ccd5de)
+
+* (HISTORY) update beaker-answers history for gem release 0.4.2 (79ccd5de)
 
 * (GEM) update beaker-answers version to 0.4.2 (331f9d3e)
 
