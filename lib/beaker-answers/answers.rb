@@ -136,6 +136,16 @@ module BeakerAnswers
       answer
     end
 
+    def get_defaults_or_answers(defaults_to_set)
+      config = {}
+
+      defaults_to_set.each do |key|
+          config[key] = answer_for(@options, key)
+      end
+
+      return config
+    end
+
     # When given a Puppet Enterprise version, a list of hosts and other
     # qualifying data this method will return a hash (keyed from the hosts)
     # of default Puppet Enterprise answer file data hashes.

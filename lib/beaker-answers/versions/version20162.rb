@@ -18,7 +18,7 @@ module BeakerAnswers
       if @type == :bash
         return generate_bash_answers(the_answers)
       elsif @type == :hiera
-        return generate_hiera_answers
+        return generate_hiera_config
       else
         raise "Don't know how to generate answers for format #{@type}"
       end
@@ -40,43 +40,20 @@ module BeakerAnswers
       return answers
     end
 
-    def generate_hiera_answers
-      master = only_host_with_role(@hosts, 'master')
-      puppetdb = only_host_with_role(@hosts, 'database')
-      console = only_host_with_role(@hosts, 'dashboard')
-
+    def generate_hiera_config
       # The hiera answer file format will get all answers, regardless of role it is being installed on
       hiera_hash = {}
-      hiera_hash["console_admin_password"] = answer_for(@options, "console_admin_password")
-      hiera_hash["puppet_enterprise::use_application_services"] = answer_for(@options, "puppet_enterprise::use_application_services")
-      hiera_hash["puppet_enterprise::certificate_authority_host"] = answer_for(@options, "puppet_enterprise::certificate_authority_host", master.name)
-      hiera_hash["puppet_enterprise::puppet_master_host"] = answer_for(@options, "puppet_enterprise::puppet_master_host", master.name)
-      hiera_hash["puppet_enterprise::console_host"] = answer_for(@options, "puppet_enterprise::console_host", console.name)
-      hiera_hash["puppet_enterprise::puppetdb_host"] = answer_for(@options, "puppet_enterprise::puppetdb_host", puppetdb.name)
-      hiera_hash["puppet_enterprise::database_host"] = answer_for(@options, "puppet_enterprise::database_host", puppetdb.name)
-      hiera_hash["puppet_enterprise::pcp_broker_host"] = answer_for(@options, "puppet_enterprise::pcp_broker_host", master.name)
-      hiera_hash["puppet_enterprise::mcollective_middleware_hosts"] = [answer_for(@options, "puppet_enterprise::mcollective_middleware_hosts", master.name)]
 
-      # Database names/users. Required for password and cert-based auth
-      hiera_hash["puppet_enterprise::puppetdb_database_name"] = answer_for(@options, "puppet_enterprise::puppetdb_database_name")
-      hiera_hash["puppet_enterprise::puppetdb_database_user"] = answer_for(@options, "puppet_enterprise::puppetdb_database_user")
-      hiera_hash["puppet_enterprise::classifier_database_name"] = answer_for(@options, "puppet_enterprise::classifier_database_name")
-      hiera_hash["puppet_enterprise::classifier_database_user"] = answer_for(@options, "puppet_enterprise::classifier_database_user")
-      hiera_hash["puppet_enterprise::activity_database_name"] = answer_for(@options, "puppet_enterprise::activity_database_name")
-      hiera_hash["puppet_enterprise::activity_database_user"] = answer_for(@options, "puppet_enterprise::activity_database_user")
-      hiera_hash["puppet_enterprise::rbac_database_name"] = answer_for(@options, "puppet_enterprise::rbac_database_name")
-      hiera_hash["puppet_enterprise::rbac_database_user"] = answer_for(@options, "puppet_enterprise::rbac_database_user")
-      hiera_hash["puppet_enterprise::orchestrator_database_name"] = answer_for(@options, "puppet_enterprise::orchestrator_database_name")
-      hiera_hash["puppet_enterprise::orchestrator_database_user"] = answer_for(@options, "puppet_enterprise::orchestrator_database_user")
+      # Add the correct host values for this beaker configuration
+      hiera_hash.merge!(hiera_host_config)
 
-      # We only need to specify passwords if we are using password auth
-      unless @options[:database_cert_auth]
-        hiera_hash["puppet_enterprise::puppetdb_database_password"] = answer_for(@options, "puppet_enterprise::puppetdb_database_password")
-        hiera_hash["puppet_enterprise::classifier_database_password"] = answer_for(@options, "puppet_enterprise::classifier_database_password")
-        hiera_hash["puppet_enterprise::activity_database_password"] = answer_for(@options, "puppet_enterprise::activity_database_password")
-        hiera_hash["puppet_enterprise::rbac_database_password"] = answer_for(@options, "puppet_enterprise::rbac_database_password")
-        hiera_hash["puppet_enterprise::orchestrator_database_password"] = answer_for(@options, "puppet_enterprise::orchestrator_database_password")
-      end
+      hiera_hash.merge!(get_defaults_or_answers([
+        "console_admin_password",
+        "puppet_enterprise::use_application_services",
+      ]))
+
+      # Set database connection details and credentials
+      hiera_hash.merge!(hiera_db_config)
 
       # Override with any values provided in the :answers key hash
       if @options[:answers]
@@ -88,6 +65,58 @@ module BeakerAnswers
       end
 
       return hiera_hash
+    end
+
+    def hiera_host_config
+      config = {}
+      ns = "puppet_enterprise"
+
+      master = only_host_with_role(@hosts, 'master')
+      puppetdb = only_host_with_role(@hosts, 'database')
+      console = only_host_with_role(@hosts, 'dashboard')
+
+      config["#{ns}::certificate_authority_host"] = answer_for(@options, "#{ns}::certificate_authority_host", master.name)
+      config["#{ns}::puppet_master_host"] = answer_for(@options, "#{ns}::puppet_master_host", master.name)
+      config["#{ns}::console_host"] = answer_for(@options, "#{ns}::console_host", console.name)
+      config["#{ns}::puppetdb_host"] = answer_for(@options, "#{ns}::puppetdb_host", puppetdb.name)
+      config["#{ns}::database_host"] = answer_for(@options, "#{ns}::database_host", puppetdb.name)
+      config["#{ns}::pcp_broker_host"] = answer_for(@options, "#{ns}::pcp_broker_host", master.name)
+      config["#{ns}::mcollective_middleware_hosts"] = [answer_for(@options, "#{ns}::mcollective_middleware_hosts", master.name)]
+
+      return config
+    end
+
+    def hiera_db_config
+      ns = "puppet_enterprise"
+      defaults_to_set = []
+
+      # Database names/users. Required for password and cert-based auth
+      defaults_to_set += [
+        "#{ns}::puppetdb_database_name",
+        "#{ns}::puppetdb_database_name",
+        "#{ns}::puppetdb_database_user",
+        "#{ns}::classifier_database_name",
+        "#{ns}::classifier_database_user",
+        "#{ns}::activity_database_name",
+        "#{ns}::activity_database_user",
+        "#{ns}::rbac_database_name",
+        "#{ns}::rbac_database_user",
+        "#{ns}::orchestrator_database_name",
+        "#{ns}::orchestrator_database_user",
+      ]
+
+      # We only need to specify passwords if we are using password auth
+      unless @options[:database_cert_auth]
+        defaults_to_set += [
+          "#{ns}::puppetdb_database_password",
+          "#{ns}::classifier_database_password",
+          "#{ns}::activity_database_password",
+          "#{ns}::rbac_database_password",
+          "#{ns}::orchestrator_database_password",
+        ]
+      end
+
+      return get_defaults_or_answers(defaults_to_set)
     end
   end
 end
