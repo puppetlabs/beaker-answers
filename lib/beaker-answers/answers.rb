@@ -1,7 +1,3 @@
-require 'json'
-require 'hocon'
-require 'hocon/parser/config_document_factory'
-
 module BeakerAnswers
   # This class provides methods for generating PE answer file
   # information.
