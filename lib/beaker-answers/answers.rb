@@ -50,7 +50,7 @@ module BeakerAnswers
       'puppet_enterprise' => {
         'puppetdb_database_name'         => DEFAULT_ANSWERS[:q_puppetdb_database_name],
         'puppetdb_database_user'         => DEFAULT_ANSWERS[:q_puppetdb_database_user],
-        'puppetdb_database_password'     => DEFAULT_ANSWERS[:q_puppetdb_password],
+        'puppetdb_database_password'     => DEFAULT_ANSWERS[:q_puppetdb_database_password],
         'classifier_database_name'       => DEFAULT_ANSWERS[:q_classifier_database_name],
         'classifier_database_user'       => DEFAULT_ANSWERS[:q_classifier_database_user],
         'classifier_database_password'   => DEFAULT_ANSWERS[:q_classifier_database_password],

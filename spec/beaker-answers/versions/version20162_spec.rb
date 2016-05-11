@@ -54,7 +54,7 @@ describe BeakerAnswers::Version20162 do
       expect(@answers["puppet_enterprise::orchestrator_database_password"]). to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_orchestrator_database_password]
       expect(@answers["puppet_enterprise::orchestrator_database_user"]). to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_orchestrator_database_user]
       expect(@answers["puppet_enterprise::puppetdb_database_name"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_puppetdb_database_name]
-      expect(@answers["puppet_enterprise::puppetdb_database_password"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_puppetdb_password]
+      expect(@answers["puppet_enterprise::puppetdb_database_password"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_puppetdb_database_password]
       expect(@answers["puppet_enterprise::puppetdb_database_user"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_puppetdb_database_user]
       expect(@answers["puppet_enterprise::rbac_database_name"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_rbac_database_name]
       expect(@answers["puppet_enterprise::rbac_database_password"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_rbac_database_password]
