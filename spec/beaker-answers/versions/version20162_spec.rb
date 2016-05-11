@@ -64,6 +64,28 @@ describe BeakerAnswers::Version20162 do
       expect(answer_hiera).to match "puppet_enterprise::puppet_master_host.*:.*#{basic_hosts[0].name}"
     end
 
+    context 'with legacy answers present' do
+      let(:string_answer) { { 'q_puppet_enterpriseconsole_auth_password' => 'password' } }
+      let(:symbol_answer) { { :q_puppet_enterpriseconsole_auth_password => 'password' } }
+      let(:answers) { BeakerAnswers::Answers.create(ver, hosts, options) }
+
+      context 'when key is a string' do
+        let(:options) { { :format => 'hiera' }.merge(:answers => string_answer) }
+
+        it 'raises a TypeError' do
+          expect { answers.answers }.to raise_error(TypeError, /q_ answers are not supported/)
+        end
+      end
+
+      context 'when key is a symbol' do
+        let(:options) { { :format => 'hiera' }.merge(:answers => symbol_answer) }
+
+        it 'raises a TypeError' do
+          expect { answers.answers }.to raise_error(TypeError, /q_ answers are not supported/)
+        end
+      end
+    end
+
     context 'when database cert auth is enabled' do
       let( :options ) do
         {
