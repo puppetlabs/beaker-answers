@@ -95,7 +95,6 @@ module BeakerAnswers
       # Database names/users. Required for password and cert-based auth
       defaults_to_set += [
         "#{ns}::puppetdb_database_name",
-        "#{ns}::puppetdb_database_name",
         "#{ns}::puppetdb_database_user",
         "#{ns}::classifier_database_name",
         "#{ns}::classifier_database_user",
