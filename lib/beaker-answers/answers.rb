@@ -10,7 +10,7 @@ module BeakerAnswers
       :q_puppet_enterpriseconsole_smtp_port          => 25,
       :q_puppet_enterpriseconsole_smtp_use_tls       => 'n',
       :q_verify_packages                             => 'y',
-      :q_puppetdb_database_password                  => "'~!@#$%^*-/ aZ'",
+      :q_puppetdb_password                           => '~!@#$%^*-/ aZ',
       :q_puppetmaster_enterpriseconsole_port         => 443,
       :q_puppet_enterpriseconsole_auth_database_name => 'console_auth',
       :q_puppet_enterpriseconsole_auth_database_user => 'mYu7hu3r',

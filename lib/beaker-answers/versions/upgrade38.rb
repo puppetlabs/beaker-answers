@@ -28,7 +28,7 @@ module BeakerAnswers
           if host == dashboard
             the_answers[host.name][:q_puppet_enterpriseconsole_auth_password] = "'#{answer_for(@options, :q_puppet_enterpriseconsole_auth_password)}'"
             the_answers[host.name][:q_puppetdb_hostname] = answer_for(@options, :q_puppetdb_hostname, database.reachable_name)
-            the_answers[host.name][:q_puppetdb_database_password] = answer_for(@options, :q_puppetdb_database_password)
+            the_answers[host.name][:q_puppetdb_database_password] = answer_for(@options, :q_puppetdb_database_password, "'#{answer_for(@options, :q_puppetdb_password)}'")
             the_answers[host.name][:q_puppetdb_database_name] = answer_for(@options, :q_puppetdb_database_name)
             the_answers[host.name][:q_puppetdb_database_user] = answer_for(@options, :q_puppetdb_database_user)
             the_answers[host.name][:q_puppetdb_port] = answer_for(@options, :q_puppetdb_port)

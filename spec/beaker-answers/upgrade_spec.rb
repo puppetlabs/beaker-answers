@@ -65,7 +65,7 @@ describe BeakerAnswers::Upgrade38 do
       expect(answer[:q_classifier_database_password]).to eq("'#{(answers.answer_for(options, :q_classifier_database_password))}'")
       expect(answer[:q_puppetdb_database_name]).to eq(answers.answer_for(options, :q_puppetdb_database_name))
       expect(answer[:q_puppetdb_database_user]).to eq(answers.answer_for(options, :q_puppetdb_database_user))
-      expect(answer[:q_puppetdb_database_password]).to eq(answers.answer_for(options, :q_puppetdb_database_password))
+      expect(answer[:q_puppetdb_database_password]).to eq("'#{answers.answer_for(options, :q_puppetdb_password)}'")
       expect(answer[:q_puppet_enterpriseconsole_auth_password]).to eq("'#{(answers.answer_for(options, :q_puppet_enterpriseconsole_auth_password))}'")
       expect(answer[:q_puppetdb_port]).to eq(answers.answer_for(options, :q_puppetdb_port))
       expect(answer[:q_install]).to eq('y')
