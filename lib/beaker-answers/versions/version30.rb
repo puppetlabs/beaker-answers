@@ -73,7 +73,7 @@ module BeakerAnswers
         console_auth_password = "'#{answer_for(options, :q_puppet_enterpriseconsole_auth_password)}'"
         puppetdb_database_name = answer_for(options, :q_puppetdb_database_name, 'pe-puppetdb')
         puppetdb_database_user = answer_for(options, :q_puppetdb_database_user, 'mYpdBu3r')
-        puppetdb_database_password = answer_for(options, :q_puppetdb_database_password)
+        puppetdb_database_password = "'#{answer_for(options, :q_puppetdb_database_password)}'"
         console_auth_database_name = answer_for(options, :q_puppet_enterpriseconsole_auth_database_name, 'console_auth')
         console_auth_database_user = answer_for(options, :q_puppet_enterpriseconsole_auth_database_user, 'mYu7hu3r')
         console_auth_database_password = answer_for(options, :q_puppet_enterpriseconsole_auth_database_password, console_auth_password)

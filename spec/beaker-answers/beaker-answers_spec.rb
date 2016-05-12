@@ -555,12 +555,12 @@ describe 'Customization' do
                         basic_hosts }
   let( :answers )     { BeakerAnswers::Answers.create(@ver, hosts, options) }
 
-  def test_answer_customization(answer_key, value_to_set)
+  def test_answer_customization(answer_key, value_to_set, expected_value = value_to_set)
     @ver = '3.0'
     options[:answers] ||= StringifyHash.new
     options[:answers][answer_key] = value_to_set
     host_answers = answers.answers['vm1']
-    expect( host_answers[answer_key] ).to be === value_to_set
+    expect( host_answers[answer_key] ).to be === expected_value
   end
 
   it 'sets :q_puppetdb_hostname' do
@@ -572,7 +572,7 @@ describe 'Customization' do
   end
 
   it 'sets :q_puppetdb_database_password' do
-    test_answer_customization(:q_puppetdb_database_password, 'q_puppetdb_database_password_custom03')
+    test_answer_customization(:q_puppetdb_database_password, 'q_puppetdb_database_password_custom03', "'q_puppetdb_database_password_custom03'")
   end
 
   it 'sets :q_puppet_enterpriseconsole_auth_database_password' do
