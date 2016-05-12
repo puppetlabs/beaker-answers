@@ -34,13 +34,13 @@ describe BeakerAnswers::Version20162 do
 
     it 'has values equal to the default answers' do
       expect(answer_hash["console_admin_password"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_puppet_enterpriseconsole_auth_password]
-      expect(answer_hash["puppet_enterprise::certificate_authority_host"]).to be === basic_hosts[0].name
-      expect(answer_hash["puppet_enterprise::puppet_master_host"]).to be === basic_hosts[0].name
-      expect(answer_hash["puppet_enterprise::console_host"]).to be === basic_hosts[1].name
-      expect(answer_hash["puppet_enterprise::puppetdb_host"]).to be === basic_hosts[2].name
-      expect(answer_hash["puppet_enterprise::database_host"]).to be === basic_hosts[2].name
-      expect(answer_hash["puppet_enterprise::pcp_broker_host"]).to be === basic_hosts[0].name
-      expect(answer_hash["puppet_enterprise::mcollective_middleware_hosts"]).to be === [basic_hosts[0].name]
+      expect(answer_hash["puppet_enterprise::certificate_authority_host"]).to be === basic_hosts[0].hostname
+      expect(answer_hash["puppet_enterprise::puppet_master_host"]).to be === basic_hosts[0].hostname
+      expect(answer_hash["puppet_enterprise::console_host"]).to be === basic_hosts[1].hostname
+      expect(answer_hash["puppet_enterprise::puppetdb_host"]).to be === basic_hosts[2].hostname
+      expect(answer_hash["puppet_enterprise::database_host"]).to be === basic_hosts[2].hostname
+      expect(answer_hash["puppet_enterprise::pcp_broker_host"]).to be === basic_hosts[0].hostname
+      expect(answer_hash["puppet_enterprise::mcollective_middleware_hosts"]).to be === [basic_hosts[0].hostname]
       expect(answer_hash["puppet_enterprise::activity_database_name"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_activity_database_name]
       expect(answer_hash["puppet_enterprise::activity_database_password"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_activity_database_password]
       expect(answer_hash["puppet_enterprise::activity_database_user"]).to be === BeakerAnswers::Answers::DEFAULT_ANSWERS[:q_activity_database_user]
@@ -61,7 +61,7 @@ describe BeakerAnswers::Version20162 do
     it 'generates valid json if #answer_hiera is called' do
       expect(answer_hiera).not_to be_empty
       expect { JSON.load(answer_hiera) }.not_to raise_error
-      expect(answer_hiera).to match "puppet_enterprise::puppet_master_host.*:.*#{basic_hosts[0].name}"
+      expect(answer_hiera).to match "puppet_enterprise::puppet_master_host.*:.*#{basic_hosts[0].hostname}"
     end
 
     context 'with legacy answers present' do

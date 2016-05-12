@@ -84,6 +84,7 @@ module HostHelpers
 
     allow(host).to receive( :reachable_name ).and_return( name )
     allow(host).to receive( :name ).and_return( name )
+    allow(host).to receive( :hostname ).and_return( host[:hostname] )
     allow(host).to receive( :to_s ).and_return( name )
     allow(host).to receive( :exec ).and_return( generate_result( name, host_hash ) )
     host
@@ -95,6 +96,7 @@ module HostHelpers
       name = HOST_NAME % num
       opts = { :snapshot => HOST_SNAPSHOT % num,
                :ip => HOST_IP % name,
+               :hostname => "#{name}.test",
                :template => HOST_TEMPLATE % name,
                :box => HOST_BOX % name,
                :box_url => HOST_BOX_URL % name }.merge( preset_opts )
