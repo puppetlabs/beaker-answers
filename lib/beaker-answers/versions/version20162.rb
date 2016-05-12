@@ -54,7 +54,6 @@ module BeakerAnswers
         "puppet_enterprise::use_application_services",
       ]))
 
-      # Set database connection details and credentials
       hiera_hash.merge!(hiera_db_config)
 
       # Override with any values provided in the :answers key hash
@@ -92,19 +91,28 @@ module BeakerAnswers
       ns = "puppet_enterprise"
       defaults_to_set = []
 
-      # Database names/users. Required for password and cert-based auth
-      defaults_to_set += [
-        "#{ns}::puppetdb_database_name",
-        "#{ns}::puppetdb_database_user",
-        "#{ns}::classifier_database_name",
-        "#{ns}::classifier_database_user",
-        "#{ns}::activity_database_name",
-        "#{ns}::activity_database_user",
-        "#{ns}::rbac_database_name",
-        "#{ns}::rbac_database_user",
-        "#{ns}::orchestrator_database_name",
-        "#{ns}::orchestrator_database_user",
-      ]
+      # Set database connection details and credentials
+      # Only if we are upgrading from < 2016.2.0;
+      # necessary because BeakerAnswers sets database user/name
+      # to non-default values.
+      # Upgrading from 2016.2.0 shouldn't require generating a pe.conf.
+      # It should use the existing pe.conf, so we will need to revisit
+      # for 2016.2.1
+      if @options[:type] == :upgrade
+        # Database names/users. Required for password and cert-based auth
+        defaults_to_set += [
+          "#{ns}::puppetdb_database_name",
+          "#{ns}::puppetdb_database_user",
+          "#{ns}::classifier_database_name",
+          "#{ns}::classifier_database_user",
+          "#{ns}::activity_database_name",
+          "#{ns}::activity_database_user",
+          "#{ns}::rbac_database_name",
+          "#{ns}::rbac_database_user",
+          "#{ns}::orchestrator_database_name",
+          "#{ns}::orchestrator_database_user",
+        ]
+      end
 
       # We only need to specify passwords if we are using password auth
       unless @options[:database_cert_auth]
