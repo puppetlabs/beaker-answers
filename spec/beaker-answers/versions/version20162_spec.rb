@@ -171,7 +171,8 @@ describe BeakerAnswers::Version20162 do
           :format  => 'hiera',
           :answers => {
             'puppet_enterprise' =>  { 'certificate_authority_host' => 'enterpriseca.vm' },
-            'puppet_enterprise::console_host' => 'enterpriseconsole.vm'
+            'puppet_enterprise::console_host' => 'enterpriseconsole.vm',
+            'console_admin_password' => 'testing123',
           }
         }
       end
@@ -182,6 +183,45 @@ describe BeakerAnswers::Version20162 do
 
       it 'overrides the defaults when a :: delimited key is given' do
         expect(answer_hash["puppet_enterprise::console_host"]).to be === 'enterpriseconsole.vm'
+      end
+
+      it 'overrides the console_admin_password default' do
+        expect(answer_hash["console_admin_password"]).to be === 'testing123'
+      end
+
+      it 'does not add a duplicate key to the hash' do
+        expect(answer_hash.length).to eq(gold_role_answers.length)
+      end
+    end
+
+    context 'when overriding answers using symbolic keys' do
+      let( :options ) do
+        {
+          :format  => 'hiera',
+          :answers => {
+            :puppet_enterprise =>  {
+              :certificate_authority_host => 'enterpriseca.vm',
+              :console_host => 'enterpriseconsole.vm',
+            },
+            :console_admin_password => 'testing123',
+          }
+        }
+      end
+
+      it 'overrides the defaults when multi-level hash :answers are given' do
+        expect(answer_hash["puppet_enterprise::certificate_authority_host"]).to be === 'enterpriseca.vm'
+      end
+
+      it 'overrides the defaults when a :: delimited key is given' do
+        expect(answer_hash["puppet_enterprise::console_host"]).to be === 'enterpriseconsole.vm'
+      end
+
+      it 'overrides the console_admin_password default' do
+        expect(answer_hash["console_admin_password"]).to be === 'testing123'
+      end
+
+      it 'does not add duplicate keys to the hash' do
+        expect(answer_hash.length).to eq(gold_role_answers.length)
       end
     end
   end
