@@ -49,6 +49,11 @@ describe BeakerAnswers do
     expect( answers ).to be_a_kind_of BeakerAnswers::Upgrade38
   end
 
+  it 'generates 2016.3 answers for 2016.3 hosts' do
+    @ver = '2016.3.0'
+    expect( answers ).to be_a_kind_of BeakerAnswers::Version20163
+  end
+
   it 'generates 2016.2 answers for 2016.2 hosts' do
     @ver = '2016.2.0'
     expect( answers ).to be_a_kind_of BeakerAnswers::Version20162
