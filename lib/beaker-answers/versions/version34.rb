@@ -20,7 +20,7 @@ module BeakerAnswers
       the_answers = super
 
       classifier_database_user     = answer_for(@options, :q_classifier_database_user, 'DFGhjlkj')
-      classifier_database_name     = answer_for(@options, :q_database_name, 'pe-classifier')
+      classifier_database_name     = answer_for(@options, :q_classifier_database_name, 'pe-classifier')
       classifier_database_password = "'#{answer_for(@options, :q_classifier_database_password)}'"
       activity_database_user       = answer_for(@options, :q_activity_database_user, 'adsfglkj')
       activity_database_name       = answer_for(@options, :q_activity_database_name, 'pe-activity')

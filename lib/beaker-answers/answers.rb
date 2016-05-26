@@ -3,6 +3,10 @@ module BeakerAnswers
   # information.
   class Answers
 
+    # This is a temporary default for deciding which configuration file format
+    # to fall back to in 2016.2.0.  Once we have cutover to MEEP, it should be
+    # removed.
+    DEFAULT_FORMAT = :bash
     DEFAULT_ANSWERS =  StringifyHash.new.merge({
       :q_install                                     => 'y',
       :q_puppet_enterpriseconsole_auth_user_email    => 'admin@example.com',
@@ -10,7 +14,7 @@ module BeakerAnswers
       :q_puppet_enterpriseconsole_smtp_port          => 25,
       :q_puppet_enterpriseconsole_smtp_use_tls       => 'n',
       :q_verify_packages                             => 'y',
-      :q_puppetdb_database_password                  => "'~!@#$%^*-/ aZ'",
+      :q_puppetdb_database_password                  => '~!@#$%^*-/ aZ',
       :q_puppetmaster_enterpriseconsole_port         => 443,
       :q_puppet_enterpriseconsole_auth_database_name => 'console_auth',
       :q_puppet_enterpriseconsole_auth_database_user => 'mYu7hu3r',
@@ -26,8 +30,8 @@ module BeakerAnswers
       :q_puppetdb_database_user                      => 'mYpdBu3r',
       :q_database_port                               => 5432,
       :q_puppetdb_port                               => 8081,
+      :q_classifier_database_name                    => 'pe-classifier',
       :q_classifier_database_user                    => 'DFGhjlkj',
-      :q_database_name                               => 'pe-classifier',
       :q_classifier_database_password                => '~!@#$%^*-/ aZ',
       :q_activity_database_user                      => 'adsfglkj',
       :q_activity_database_name                      => 'pe-activity',
@@ -41,6 +45,27 @@ module BeakerAnswers
       :q_pe_check_for_updates                        => 'n',
     })
 
+    DEFAULT_HIERA_ANSWERS = StringifyHash.new.merge(flatten_keys_to_joined_string({
+      'console_admin_password' => DEFAULT_ANSWERS[:q_puppet_enterpriseconsole_auth_password],
+      'puppet_enterprise' => {
+        'puppetdb_database_name'         => DEFAULT_ANSWERS[:q_puppetdb_database_name],
+        'puppetdb_database_user'         => DEFAULT_ANSWERS[:q_puppetdb_database_user],
+        'puppetdb_database_password'     => DEFAULT_ANSWERS[:q_puppetdb_database_password],
+        'classifier_database_name'       => DEFAULT_ANSWERS[:q_classifier_database_name],
+        'classifier_database_user'       => DEFAULT_ANSWERS[:q_classifier_database_user],
+        'classifier_database_password'   => DEFAULT_ANSWERS[:q_classifier_database_password],
+        'activity_database_name'         => DEFAULT_ANSWERS[:q_activity_database_name],
+        'activity_database_user'         => DEFAULT_ANSWERS[:q_activity_database_user],
+        'activity_database_password'     => DEFAULT_ANSWERS[:q_activity_database_password],
+        'rbac_database_name'             => DEFAULT_ANSWERS[:q_rbac_database_name],
+        'rbac_database_user'             => DEFAULT_ANSWERS[:q_rbac_database_user],
+        'rbac_database_password'         => DEFAULT_ANSWERS[:q_rbac_database_password],
+        'orchestrator_database_name'     => DEFAULT_ANSWERS[:q_orchestrator_database_name],
+        'orchestrator_database_user'     => DEFAULT_ANSWERS[:q_orchestrator_database_user],
+        'orchestrator_database_password' => DEFAULT_ANSWERS[:q_orchestrator_database_password],
+        'use_application_services'       => true,
+      }
+    }))
 
     # Determine the list of supported PE versions, return as an array
     # @return [Array<String>] An array of the supported versions
@@ -87,22 +112,46 @@ module BeakerAnswers
       raise NotImplementedError, "Don't know how to generate answers for #{version}"
     end
 
-    # The answer value for a provided question.  Use the user answer when available, otherwise return the default
+    # The answer value for a provided question.  Use the user answer when
+    # available, otherwise return the default.
+    #
     # @param [Hash] options options for answer file
-    # @option options [Symbol] :answer Contains a hash of user provided question name and answer value pairs.
-    # @param [String] default Should there be no user value for the provided question name return this default
+    # @option options [Symbol] :answers Contains a hash of user provided
+    #   question name and answer value pairs.
+    # @param [String] default Should there be no user value for the provided
+    #   question name return this default
     # @return [String] The answer value
     def answer_for(options, q, default = nil)
-      answer = DEFAULT_ANSWERS[q]
+      case @format
+      when :bash
+        answer = DEFAULT_ANSWERS[q]
+        answers = options[:answers]
+      when :hiera
+        answer = DEFAULT_HIERA_ANSWERS[q]
+        answers = flatten_keys_to_joined_string(options[:answers]) if options[:answers]
+      else
+        raise NotImplementedError, "Don't know how to determine answers for #{@format}"
+      end
+
       # check to see if there is a value for this in the provided options
-      if options[:answers] && options[:answers][q]
-        answer = options[:answers][q]
+      if answers && answers[q]
+        answer = answers[q]
       end
       # use the default if we don't have anything
       if not answer
         answer = default
       end
       answer
+    end
+
+    def get_defaults_or_answers(defaults_to_set)
+      config = {}
+
+      defaults_to_set.each do |key|
+          config[key] = answer_for(@options, key)
+      end
+
+      return config
     end
 
     # When given a Puppet Enterprise version, a list of hosts and other
@@ -113,12 +162,17 @@ module BeakerAnswers
     # @param [Array<Beaker::Host>] hosts An array of host objects.
     # @param [Hash] options options for answer files
     # @option options [Symbol] :type Should be one of :upgrade or :install.
+    # @option options [Symbol] :format Should be one of :bash or :hiera. This
+    #   is a temporary setting which only has an impact on version201620 answers.
+    #   Setting :bash will result in the "classic" PE answer file being generated
+    #   Setting :hiera will generate the new PE hiera config file format
     # @return [Hash] A hash (keyed from hosts) containing hashes of answer file
     #   data.
     def initialize(version, hosts, options)
       @version = version
       @hosts = hosts
       @options = options
+      @format = (options[:format] || DEFAULT_FORMAT).to_sym
     end
 
     # Generate the answers hash based upon version, host and option information
@@ -148,6 +202,14 @@ module BeakerAnswers
       answers[host.name].map { |k,v| "#{k}=#{v}" }.join("\n")
     end
 
+    def answer_hiera
+      raise(NotImplementedError, "Hiera configuration is not available in this version of PE (#{self.class})")
+    end
+
+    def installer_configuration_string(host)
+      answer_string(host)
+    end
+
     #Find a single host with the role provided.  Raise an error if more than one host is found to have the
     #provided role.
     #
@@ -163,7 +225,6 @@ module BeakerAnswers
       end
       found_hosts.first
     end
-
   end
 
   # pull in all the available answer versions
