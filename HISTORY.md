@@ -1,6 +1,7 @@
 # default - History
 ## Tags
-* [LATEST - 26 May, 2016 (3045251c)](#LATEST)
+* [LATEST - 26 May, 2016 (31f5b82c)](#LATEST)
+* [0.5.0 - 26 May, 2016 (c802e883)](#0.5.0)
 * [0.4.3 - 10 May, 2016 (5ffdb5f2)](#0.4.3)
 * [0.4.2 - 28 Apr, 2016 (79ccd5de)](#0.4.2)
 * [0.4.1 - 28 Apr, 2016 (d9d14510)](#0.4.1)
@@ -14,7 +15,23 @@
 * [0.1.0 - 26 Aug, 2015 (ef47972d)](#0.1.0)
 
 ## Details
-### <a name = "LATEST">LATEST - 26 May, 2016 (3045251c)
+### <a name = "LATEST">LATEST - 26 May, 2016 (31f5b82c)
+
+* (GEM) update beaker-answers version to 0.5.1 (31f5b82c)
+
+* Merge pull request #18 from tvpartytonight/BKR-825 (61372ae3)
+
+
+```
+Merge pull request #18 from tvpartytonight/BKR-825
+
+(BKR-825) Add BKR answers for 2016.3
+```
+* (BKR-825) Add BKR answers for 2016.3 (ec519b04)
+
+### <a name = "0.5.0">0.5.0 - 26 May, 2016 (c802e883)
+
+* (HISTORY) update beaker-answers history for gem release 0.5.0 (c802e883)
 
 * (GEM) update beaker-answers version to 0.5.0 (3045251c)
 
