@@ -76,13 +76,14 @@ module BeakerAnswers
       puppetdb = only_host_with_role(@hosts, 'database')
       console = only_host_with_role(@hosts, 'dashboard')
 
-      config["#{ns}::certificate_authority_host"] = answer_for(@options, "#{ns}::certificate_authority_host", master.hostname)
       config["#{ns}::puppet_master_host"] = answer_for(@options, "#{ns}::puppet_master_host", master.hostname)
-      config["#{ns}::console_host"] = answer_for(@options, "#{ns}::console_host", console.hostname)
-      config["#{ns}::puppetdb_host"] = answer_for(@options, "#{ns}::puppetdb_host", puppetdb.hostname)
-      config["#{ns}::database_host"] = answer_for(@options, "#{ns}::database_host", puppetdb.hostname)
-      config["#{ns}::pcp_broker_host"] = answer_for(@options, "#{ns}::pcp_broker_host", master.hostname)
-      config["#{ns}::mcollective_middleware_hosts"] = [answer_for(@options, "#{ns}::mcollective_middleware_hosts", master.hostname)]
+
+      # Monolithic installs now only require the puppet_master_host, so only pass in the console
+      # and puppetdb host if it is a split install
+      if [master, puppetdb, console].uniq.length != 1
+        config["#{ns}::console_host"] = answer_for(@options, "#{ns}::console_host", console.hostname)
+        config["#{ns}::puppetdb_host"] = answer_for(@options, "#{ns}::puppetdb_host", puppetdb.hostname)
+      end
 
       return config
     end

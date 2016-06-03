@@ -1,43 +1,10 @@
 require 'spec_helper'
 require 'json'
 
-describe BeakerAnswers::Version20162 do
-  let( :ver )         { '2016.2.0' }
-  let( :options )     { StringifyHash.new }
-  let( :basic_hosts ) { make_hosts( {'pe_ver' => ver } ) }
-  let( :hosts ) { basic_hosts[0]['roles'] = ['master', 'agent']
-                  basic_hosts[1]['roles'] = ['dashboard', 'agent']
-                  basic_hosts[2]['roles'] = ['database', 'agent']
-                  basic_hosts }
-  let( :answers )     { BeakerAnswers::Answers.create(ver, hosts, options) }
-  let( :answer_hash ) { answers.answers }
-
-  it 'adds orchestrator database answers to console' do
-    expect( answer_hash['vm2'][:q_orchestrator_database_name] ).to be === 'pe-orchestrator'
-    expect( answer_hash['vm2'][:q_orchestrator_database_user] ).to be === 'Orc3Str8R'
-  end
-
-  it 'generates valid answers if #answer_string is called' do
-    expect( answers.answer_string(basic_hosts[2]) ).to match(/q_orchestrator_database_name=pe-orchestrator/)
-  end
-
-  context 'when generating a hiera config' do
+RSpec.shared_examples 'pe.conf' do
     let( :options )      { { :format => 'hiera' } }
     let( :answer_hiera ) { answers.answer_hiera }
     let( :default_password ) { '~!@#$%^*-/ aZ' }
-    let( :gold_role_answers ) do
-      {
-        "console_admin_password" => default_password,
-        "puppet_enterprise::use_application_services" => true,
-        "puppet_enterprise::certificate_authority_host" => basic_hosts[0].hostname,
-        "puppet_enterprise::puppet_master_host" => basic_hosts[0].hostname,
-        "puppet_enterprise::console_host" => basic_hosts[1].hostname,
-        "puppet_enterprise::puppetdb_host" => basic_hosts[2].hostname,
-        "puppet_enterprise::database_host" => basic_hosts[2].hostname,
-        "puppet_enterprise::pcp_broker_host" => basic_hosts[0].hostname,
-        "puppet_enterprise::mcollective_middleware_hosts" => [basic_hosts[0].hostname],
-      }
-    end
     let( :gold_db_answers ) do
       {
         "puppet_enterprise::activity_database_user" => 'adsfglkj',
@@ -77,6 +44,14 @@ describe BeakerAnswers::Version20162 do
         "puppet_enterprise::rbac_database_password" => 'custom-rbac-password',
       }
     end
+    let( :overridding_parameters ) do
+      {
+        'puppet_enterprise::certificate_authority_host' => 'enterpriseca.vm',
+        'puppet_enterprise::console_host' => 'enterpriseconsole.vm',
+        'console_admin_password' => 'testing123',
+      }
+    end
+    let( :gold_answers_with_overrides ) { gold_role_answers.merge(overridding_parameters) }
 
     it 'should not have nil keys or values' do
       answer_hash.each_pair { |k, v|
@@ -177,20 +152,8 @@ describe BeakerAnswers::Version20162 do
         }
       end
 
-      it 'overrides the defaults when multi-level hash :answers are given' do
-        expect(answer_hash["puppet_enterprise::certificate_authority_host"]).to be === 'enterpriseca.vm'
-      end
-
-      it 'overrides the defaults when a :: delimited key is given' do
-        expect(answer_hash["puppet_enterprise::console_host"]).to be === 'enterpriseconsole.vm'
-      end
-
-      it 'overrides the console_admin_password default' do
-        expect(answer_hash["console_admin_password"]).to be === 'testing123'
-      end
-
-      it 'does not add a duplicate key to the hash' do
-        expect(answer_hash.length).to eq(gold_role_answers.length)
+      it 'matches expected answers' do
+        expect(answer_hash).to eq(gold_answers_with_overrides)
       end
     end
 
@@ -208,21 +171,60 @@ describe BeakerAnswers::Version20162 do
         }
       end
 
-      it 'overrides the defaults when multi-level hash :answers are given' do
-        expect(answer_hash["puppet_enterprise::certificate_authority_host"]).to be === 'enterpriseca.vm'
+      it 'matches expected answers' do
+        expect(answer_hash).to eq(gold_answers_with_overrides)
+      end
+    end
+end
+
+describe BeakerAnswers::Version20162 do
+  let( :ver )         { '2016.2.0' }
+  let( :options )     { StringifyHash.new }
+  let( :basic_hosts ) { make_hosts( {'pe_ver' => ver } ) }
+  let( :hosts ) { basic_hosts[0]['roles'] = ['master', 'agent']
+                  basic_hosts[1]['roles'] = ['dashboard', 'agent']
+                  basic_hosts[2]['roles'] = ['database', 'agent']
+                  basic_hosts }
+  let( :answers )     { BeakerAnswers::Answers.create(ver, hosts, options) }
+  let( :answer_hash ) { answers.answers }
+
+  it 'adds orchestrator database answers to console' do
+    expect( answer_hash['vm2'][:q_orchestrator_database_name] ).to be === 'pe-orchestrator'
+    expect( answer_hash['vm2'][:q_orchestrator_database_user] ).to be === 'Orc3Str8R'
+  end
+
+  it 'generates valid answers if #answer_string is called' do
+    expect( answers.answer_string(basic_hosts[2]) ).to match(/q_orchestrator_database_name=pe-orchestrator/)
+  end
+
+  context 'when generating a hiera config' do
+    context 'for a monolithic install' do
+      let( :basic_hosts ) { make_hosts( {'pe_ver' => ver }, 1 ) }
+      let( :hosts ) { basic_hosts[0]['roles'] = ['master', 'agent', 'dashboard', 'database']
+                      basic_hosts }
+      let( :gold_role_answers ) do
+        {
+          "console_admin_password" => default_password,
+          "puppet_enterprise::use_application_services" => true,
+          "puppet_enterprise::puppet_master_host" => basic_hosts[0].hostname,
+        }
       end
 
-      it 'overrides the defaults when a :: delimited key is given' do
-        expect(answer_hash["puppet_enterprise::console_host"]).to be === 'enterpriseconsole.vm'
+      include_examples 'pe.conf'
+    end
+
+    context 'for a split install' do
+      let( :gold_role_answers ) do
+        {
+          "console_admin_password" => default_password,
+          "puppet_enterprise::use_application_services" => true,
+          "puppet_enterprise::puppet_master_host" => basic_hosts[0].hostname,
+          "puppet_enterprise::console_host" => basic_hosts[1].hostname,
+          "puppet_enterprise::puppetdb_host" => basic_hosts[2].hostname,
+        }
       end
 
-      it 'overrides the console_admin_password default' do
-        expect(answer_hash["console_admin_password"]).to be === 'testing123'
-      end
-
-      it 'does not add duplicate keys to the hash' do
-        expect(answer_hash.length).to eq(gold_role_answers.length)
-      end
+      include_examples 'pe.conf'
     end
   end
 
@@ -362,5 +364,4 @@ describe BeakerAnswers::Version20162 do
       },
     })
   end
-
 end
