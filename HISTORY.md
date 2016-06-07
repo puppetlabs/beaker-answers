@@ -1,6 +1,7 @@
 # default - History
 ## Tags
-* [LATEST - 26 May, 2016 (31f5b82c)](#LATEST)
+* [LATEST - 6 Jun, 2016 (8f6a39db)](#LATEST)
+* [0.5.1 - 26 May, 2016 (c74a3fec)](#0.5.1)
 * [0.5.0 - 26 May, 2016 (c802e883)](#0.5.0)
 * [0.4.3 - 10 May, 2016 (5ffdb5f2)](#0.4.3)
 * [0.4.2 - 28 Apr, 2016 (79ccd5de)](#0.4.2)
@@ -15,7 +16,36 @@
 * [0.1.0 - 26 Aug, 2015 (ef47972d)](#0.1.0)
 
 ## Details
-### <a name = "LATEST">LATEST - 26 May, 2016 (31f5b82c)
+### <a name = "LATEST">LATEST - 6 Jun, 2016 (8f6a39db)
+
+* (GEM) update beaker-answers version to 0.5.2 (8f6a39db)
+
+* Merge pull request #19 from ericwilliamson/task/master/PE-16028-update-for-mono (97409f9c)
+
+
+```
+Merge pull request #19 from ericwilliamson/task/master/PE-16028-update-for-mono
+
+(PE-16028) Update required answers for 2016.2
+```
+* (PE-16028) Update required answers for 2016.2 (ba130df3)
+
+
+```
+(PE-16028) Update required answers for 2016.2
+
+Previous to this commit, answer generation for 2016.2 would generate a
+list of parameters on the puppet_enterprise for both mono and split. Due
+to changes introduced in Puppet 4.4, the puppet_enterprsie module no
+longer needs all host parameters in a monolithic install case.
+This commit updates the generation to match what the module has changed
+to use. For a monolithic install, the only required answers are now the
+console admin password, and puppet_master_host. for split installs with
+PE postgres, just master, console and puppetdb host.
+```
+### <a name = "0.5.1">0.5.1 - 26 May, 2016 (c74a3fec)
+
+* (HISTORY) update beaker-answers history for gem release 0.5.1 (c74a3fec)
 
 * (GEM) update beaker-answers version to 0.5.1 (31f5b82c)
 
