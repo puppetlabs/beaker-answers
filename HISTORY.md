@@ -1,6 +1,7 @@
 # default - History
 ## Tags
-* [LATEST - 6 Jun, 2016 (8f6a39db)](#LATEST)
+* [LATEST - 15 Jun, 2016 (7ffb00c1)](#LATEST)
+* [0.5.2 - 6 Jun, 2016 (bb16b018)](#0.5.2)
 * [0.5.1 - 26 May, 2016 (c74a3fec)](#0.5.1)
 * [0.5.0 - 26 May, 2016 (c802e883)](#0.5.0)
 * [0.4.3 - 10 May, 2016 (5ffdb5f2)](#0.4.3)
@@ -16,7 +17,33 @@
 * [0.1.0 - 26 Aug, 2015 (ef47972d)](#0.1.0)
 
 ## Details
-### <a name = "LATEST">LATEST - 6 Jun, 2016 (8f6a39db)
+### <a name = "LATEST">LATEST - 15 Jun, 2016 (7ffb00c1)
+
+* (GEM) update beaker-answers version to 0.6.0 (7ffb00c1)
+
+* Merge pull request #21 from demophoon/task/master/pe-14555-meep-cutover (45c36f80)
+
+
+```
+Merge pull request #21 from demophoon/task/master/pe-14555-meep-cutover
+
+(PE-14555) Remove bash answers for 2016.2.0
+```
+* (PE-14555) Remove bash answers for 2016.2.0 (7d0c9b35)
+
+
+```
+(PE-14555) Remove bash answers for 2016.2.0
+
+Prior to this commit we allowed generating either hiera or bash answers
+for 2016.2.0.
+
+This commit removes the bash answers, because future builds of 2016.2.0
+will not accept them.
+```
+### <a name = "0.5.2">0.5.2 - 6 Jun, 2016 (bb16b018)
+
+* (HISTORY) update beaker-answers history for gem release 0.5.2 (bb16b018)
 
 * (GEM) update beaker-answers version to 0.5.2 (8f6a39db)
 
