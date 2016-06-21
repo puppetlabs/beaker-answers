@@ -27,7 +27,7 @@ module BeakerAnswers
           # The dashboard also needs additional answers about puppetdb on the remote host
           if host == dashboard
             the_answers[host.name][:q_puppet_enterpriseconsole_auth_password] = "'#{answer_for(@options, :q_puppet_enterpriseconsole_auth_password)}'"
-            the_answers[host.name][:q_puppetdb_hostname] = answer_for(@options, :q_puppetdb_hostname, database.reachable_name)
+            the_answers[host.name][:q_puppetdb_hostname] = answer_for(@options, :q_puppetdb_hostname)
             the_answers[host.name][:q_puppetdb_database_password] = "'#{answer_for(@options, :q_puppetdb_database_password)}'"
             the_answers[host.name][:q_puppetdb_database_name] = answer_for(@options, :q_puppetdb_database_name)
             the_answers[host.name][:q_puppetdb_database_user] = answer_for(@options, :q_puppetdb_database_user)
