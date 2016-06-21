@@ -1,6 +1,7 @@
 # default - History
 ## Tags
-* [LATEST - 15 Jun, 2016 (7ffb00c1)](#LATEST)
+* [LATEST - 21 Jun, 2016 (006c1921)](#LATEST)
+* [0.6.0 - 15 Jun, 2016 (a0800e46)](#0.6.0)
 * [0.5.2 - 6 Jun, 2016 (bb16b018)](#0.5.2)
 * [0.5.1 - 26 May, 2016 (c74a3fec)](#0.5.1)
 * [0.5.0 - 26 May, 2016 (c802e883)](#0.5.0)
@@ -17,7 +18,30 @@
 * [0.1.0 - 26 Aug, 2015 (ef47972d)](#0.1.0)
 
 ## Details
-### <a name = "LATEST">LATEST - 15 Jun, 2016 (7ffb00c1)
+### <a name = "LATEST">LATEST - 21 Jun, 2016 (006c1921)
+
+* (GEM) update beaker-answers version to 0.7.0 (006c1921)
+
+* Merge pull request #22 from sathlan/bug/ENTERPRISE-910 (b6ab97cd)
+
+
+```
+Merge pull request #22 from sathlan/bug/ENTERPRISE-910
+
+(ENTERPRISE-910) Unpin hocon
+```
+* (ENTERPRISE-910) Unpin hocon (566aab6a)
+
+
+```
+(ENTERPRISE-910) Unpin hocon
+
+hocon < 1 is not compatible with infraspec 2.59.1.  This push it to ~1.0
+to match beaker declaration and have infraspec working again.
+```
+### <a name = "0.6.0">0.6.0 - 15 Jun, 2016 (a0800e46)
+
+* (HISTORY) update beaker-answers history for gem release 0.6.0 (a0800e46)
 
 * (GEM) update beaker-answers version to 0.6.0 (7ffb00c1)
 
