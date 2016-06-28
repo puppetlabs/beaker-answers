@@ -1,6 +1,7 @@
 # default - History
 ## Tags
-* [LATEST - 21 Jun, 2016 (006c1921)](#LATEST)
+* [LATEST - 28 Jun, 2016 (e29fe388)](#LATEST)
+* [0.7.0 - 21 Jun, 2016 (993cf93a)](#0.7.0)
 * [0.6.0 - 15 Jun, 2016 (a0800e46)](#0.6.0)
 * [0.5.2 - 6 Jun, 2016 (bb16b018)](#0.5.2)
 * [0.5.1 - 26 May, 2016 (c74a3fec)](#0.5.1)
@@ -18,7 +19,36 @@
 * [0.1.0 - 26 Aug, 2015 (ef47972d)](#0.1.0)
 
 ## Details
-### <a name = "LATEST">LATEST - 21 Jun, 2016 (006c1921)
+### <a name = "LATEST">LATEST - 28 Jun, 2016 (e29fe388)
+
+* (GEM) update beaker-answers version to 0.8.0 (e29fe388)
+
+* Merge pull request #23 from demophoon/fix/master/pe-16065-38-upgrade-puppetdb-hostname (16271feb)
+
+
+```
+Merge pull request #23 from demophoon/fix/master/pe-16065-38-upgrade-puppetdb-hostname
+
+(PE-16065) Do not fall back to ip address when setting puppetdb hostname
+```
+* (PE-16065) Do not fall back to ip address when setting puppetdb hostname (effd8f21)
+
+
+```
+(PE-16065) Do not fall back to ip address when setting puppetdb hostname
+
+Before this commit the puppetdb hostname answer would fallback to being
+an ip address which would cause the installer to do incorrect things as
+we depend on those answers to be hostnames for certificate generation
+and configuration bootstrap purposes.
+
+This commit changes the q_puppetdb_hostname answer to be the hostname of
+the puppetdb node instead of its ip address which is returned by the
+reachable_name method on the host object.
+```
+### <a name = "0.7.0">0.7.0 - 21 Jun, 2016 (993cf93a)
+
+* (HISTORY) update beaker-answers history for gem release 0.7.0 (993cf93a)
 
 * (GEM) update beaker-answers version to 0.7.0 (006c1921)
 
