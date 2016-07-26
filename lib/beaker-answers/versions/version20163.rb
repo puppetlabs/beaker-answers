@@ -12,6 +12,11 @@ module BeakerAnswers
 
     def generate_answers
       the_answers = super
+
+      # use_application_services is deprecated
+      the_answers.delete('puppet_enterprise::use_application_services')
+
+      the_answers
     end
   end
 end
