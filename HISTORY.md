@@ -1,6 +1,7 @@
 # default - History
 ## Tags
-* [LATEST - 28 Jun, 2016 (e29fe388)](#LATEST)
+* [LATEST - 1 Aug, 2016 (1da88528)](#LATEST)
+* [0.8.0 - 28 Jun, 2016 (d56e6ba8)](#0.8.0)
 * [0.7.0 - 21 Jun, 2016 (993cf93a)](#0.7.0)
 * [0.6.0 - 15 Jun, 2016 (a0800e46)](#0.6.0)
 * [0.5.2 - 6 Jun, 2016 (bb16b018)](#0.5.2)
@@ -19,7 +20,30 @@
 * [0.1.0 - 26 Aug, 2015 (ef47972d)](#0.1.0)
 
 ## Details
-### <a name = "LATEST">LATEST - 28 Jun, 2016 (e29fe388)
+### <a name = "LATEST">LATEST - 1 Aug, 2016 (1da88528)
+
+* (GEM) update beaker-answers version to 0.9.0 (1da88528)
+
+* Merge pull request #24 from highb/fix/master/PE-16772_remove_app_orch_from_20163x (fbadab45)
+
+
+```
+Merge pull request #24 from highb/fix/master/PE-16772_remove_app_orch_from_20163x
+
+(PE-16772) Remove app_orch from 20163x answers
+```
+* (PE-16772) Remove app_orch from 20163x answers (3a7c2164)
+
+
+```
+(PE-16772) Remove app_orch from 20163x answers
+
+`puppet_enterprise::use_application_services` is deprecated in 2016.3.x,
+so we should no longer specify it.
+```
+### <a name = "0.8.0">0.8.0 - 28 Jun, 2016 (d56e6ba8)
+
+* (HISTORY) update beaker-answers history for gem release 0.8.0 (d56e6ba8)
 
 * (GEM) update beaker-answers version to 0.8.0 (e29fe388)
 
