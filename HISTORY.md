@@ -1,6 +1,7 @@
 # default - History
 ## Tags
-* [LATEST - 1 Aug, 2016 (1da88528)](#LATEST)
+* [LATEST - 15 Aug, 2016 (82c266b0)](#LATEST)
+* [0.9.0 - 1 Aug, 2016 (551ce473)](#0.9.0)
 * [0.8.0 - 28 Jun, 2016 (d56e6ba8)](#0.8.0)
 * [0.7.0 - 21 Jun, 2016 (993cf93a)](#0.7.0)
 * [0.6.0 - 15 Jun, 2016 (a0800e46)](#0.6.0)
@@ -20,7 +21,23 @@
 * [0.1.0 - 26 Aug, 2015 (ef47972d)](#0.1.0)
 
 ## Details
-### <a name = "LATEST">LATEST - 1 Aug, 2016 (1da88528)
+### <a name = "LATEST">LATEST - 15 Aug, 2016 (82c266b0)
+
+* (GEM) update beaker-answers version to 0.10.0 (82c266b0)
+
+* Merge pull request #25 from demophoon/task/master/pe-17078-create-everett-pipeline (b74b6343)
+
+
+```
+Merge pull request #25 from demophoon/task/master/pe-17078-create-everett-pipeline
+
+(PE-17078) Add answers file for Everett
+```
+* (PE-17078) Add answers file for Everett (9bff1e9e)
+
+### <a name = "0.9.0">0.9.0 - 1 Aug, 2016 (551ce473)
+
+* (HISTORY) update beaker-answers history for gem release 0.9.0 (551ce473)
 
 * (GEM) update beaker-answers version to 0.9.0 (1da88528)
 
