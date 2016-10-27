@@ -181,6 +181,6 @@ RSpec.shared_examples "valid MEEP 1.0 pe.conf" do
   it 'generates valid MEEP 1.0 json if #answer_hiera is called' do
     expect(answer_hiera).not_to be_empty
     expect { JSON.load(answer_hiera) }.not_to raise_error
-    expect(answer_hiera).to match(%r{"puppet_enterprise::master_host"\s*:\s*"#{basic_hosts[0].hostname}"}m)
+    expect(answer_hiera).to match(%r{"puppet_enterprise::puppet_master_host"\s*:\s*"#{basic_hosts[0].hostname}"}m)
   end
 end

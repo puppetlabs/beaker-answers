@@ -26,6 +26,7 @@ describe BeakerAnswers::Version20162 do
       end
 
       include_examples 'pe.conf'
+      include_examples 'valid MEEP 1.0 pe.conf'
     end
 
     context 'for a split install' do
@@ -40,6 +41,7 @@ describe BeakerAnswers::Version20162 do
       end
 
       include_examples 'pe.conf'
+      include_examples 'valid MEEP 1.0 pe.conf'
     end
   end
 end

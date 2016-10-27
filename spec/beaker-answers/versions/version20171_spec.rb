@@ -29,6 +29,7 @@ describe BeakerAnswers::Version20171 do
       it "accepts overrides to node_roles from beaker conf answers"
 
       include_examples 'pe.conf'
+      include_examples 'valid MEEP 2.0 pe.conf'
     end
 
     context 'for a split install' do
@@ -44,6 +45,7 @@ describe BeakerAnswers::Version20171 do
       end
 
       include_examples 'pe.conf'
+      include_examples 'valid MEEP 2.0 pe.conf'
     end
   end
 end
