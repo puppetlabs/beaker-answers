@@ -1,6 +1,7 @@
 require 'simplecov'
 require 'beaker-answers'
 require 'helpers'
+require 'shared/context.rb'
 
 require 'rspec/its'
 
