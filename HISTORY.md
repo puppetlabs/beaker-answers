@@ -1,6 +1,7 @@
 # default - History
 ## Tags
-* [LATEST - 22 Aug, 2016 (5ba11820)](#LATEST)
+* [LATEST - 28 Oct, 2016 (4e1716ad)](#LATEST)
+* [0.11.0 - 22 Aug, 2016 (39591691)](#0.11.0)
 * [0.10.0 - 15 Aug, 2016 (30507062)](#0.10.0)
 * [0.9.0 - 1 Aug, 2016 (551ce473)](#0.9.0)
 * [0.8.0 - 28 Jun, 2016 (d56e6ba8)](#0.8.0)
@@ -22,7 +23,23 @@
 * [0.1.0 - 26 Aug, 2015 (ef47972d)](#0.1.0)
 
 ## Details
-### <a name = "LATEST">LATEST - 22 Aug, 2016 (5ba11820)
+### <a name = "LATEST">LATEST - 28 Oct, 2016 (4e1716ad)
+
+* (GEM) update beaker-answers version to 0.12.0 (4e1716ad)
+
+* Merge pull request #27 from demophoon/task/master/pe-18147-flanders-answers (ae6f6d69)
+
+
+```
+Merge pull request #27 from demophoon/task/master/pe-18147-flanders-answers
+
+(PE-18147) Add Flanders answers to beaker-answers.
+```
+* (PE-18147) Add Flanders answers to beaker-answers. (6831dc9c)
+
+### <a name = "0.11.0">0.11.0 - 22 Aug, 2016 (39591691)
+
+* (HISTORY) update beaker-answers history for gem release 0.11.0 (39591691)
 
 * (GEM) update beaker-answers version to 0.11.0 (5ba11820)
 
