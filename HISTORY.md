@@ -1,6 +1,7 @@
 # default - History
 ## Tags
-* [LATEST - 28 Oct, 2016 (4e1716ad)](#LATEST)
+* [LATEST - 9 Nov, 2016 (f415b5e1)](#LATEST)
+* [0.12.0 - 28 Oct, 2016 (b18d96b7)](#0.12.0)
 * [0.11.0 - 22 Aug, 2016 (39591691)](#0.11.0)
 * [0.10.0 - 15 Aug, 2016 (30507062)](#0.10.0)
 * [0.9.0 - 1 Aug, 2016 (551ce473)](#0.9.0)
@@ -23,7 +24,69 @@
 * [0.1.0 - 26 Aug, 2015 (ef47972d)](#0.1.0)
 
 ## Details
-### <a name = "LATEST">LATEST - 28 Oct, 2016 (4e1716ad)
+### <a name = "LATEST">LATEST - 9 Nov, 2016 (f415b5e1)
+
+* (GEM) update beaker-answers version to 0.13.0 (f415b5e1)
+
+* Merge pull request #28 from jpartlow/issue/2017.1.x/pe-17621-beaker-answers-generates-meep-node-roles (9becfcb3)
+
+
+```
+Merge pull request #28 from jpartlow/issue/2017.1.x/pe-17621-beaker-answers-generates-meep-node-roles
+
+(PE-17621) Beaker answers generates meep node roles
+```
+* (PE-17621) Validate both old and new formats (138e7780)
+
+
+```
+(PE-17621) Validate both old and new formats
+
+in the corresponding PE version tests.
+```
+* (PE-17621) Generate node_roles in 2017.1+ pe_conf (ea795b85)
+
+
+```
+(PE-17621) Generate node_roles in 2017.1+ pe_conf
+
+MEEP 2.0 introduces a node_roles hash in pe.conf for classification.
+This supercedes using the puppet_enterprise host parameters as a de
+facto classification.  The Version20171 class maps existing beaker role
+aliases to the new role strings used for classification in pe.conf.
+
+So, from a MEEP 1.0 version pe.conf such as:
+
+  {
+    "puppet_enterprise::puppet_master_host": "master.net"
+    "puppet_enterprise::puppetdb_host": "puppetdb.net"
+    "puppet_enterprise::console_host": "console.net"
+  }
+
+You now have a 2.0 version that looks like:
+
+  {
+    "node_roles": {
+      "pe_role::split::primary_master": ["master.net"]
+      "pe_role::split::puppetdb": ["puppetdb.net"]
+      "pe_role::split::console": ["console.net"]
+    }
+  }
+
+See the pe_manager and pe_infrastructure modules for more details.
+```
+* (PE-17621) Move shared examples into a separate file (30e27482)
+
+
+```
+(PE-17621) Move shared examples into a separate file
+
+...included by default in spec_helper.rb. Without this, running the
+version20163_spec.rb by itself fails.
+```
+### <a name = "0.12.0">0.12.0 - 28 Oct, 2016 (b18d96b7)
+
+* (HISTORY) update beaker-answers history for gem release 0.12.0 (b18d96b7)
 
 * (GEM) update beaker-answers version to 0.12.0 (4e1716ad)
 
