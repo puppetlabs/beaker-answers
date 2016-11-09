@@ -1,8 +1,8 @@
 require 'spec_helper'
 require 'json'
 
-describe BeakerAnswers::Version20162 do
-  let( :ver )         { '2016.2.0' }
+describe BeakerAnswers::Version20171 do
+  let( :ver )         { '2017.1.0' }
   let( :options )     { StringifyHash.new }
   let( :basic_hosts ) { make_hosts( {'pe_ver' => ver } ) }
   let( :hosts ) { basic_hosts[0]['roles'] = ['master', 'agent']
@@ -20,28 +20,32 @@ describe BeakerAnswers::Version20162 do
       let( :gold_role_answers ) do
         {
           "console_admin_password" => default_password,
-          "puppet_enterprise::use_application_services" => true,
-          "puppet_enterprise::puppet_master_host" => basic_hosts[0].hostname,
+          "node_roles" => {
+            "pe_role::monolithic::primary_master" => [basic_hosts[0].hostname],
+          }
         }
       end
 
+      it "accepts overrides to node_roles from beaker conf answers"
+
       include_examples 'pe.conf'
-      include_examples 'valid MEEP 1.0 pe.conf'
+      include_examples 'valid MEEP 2.0 pe.conf'
     end
 
     context 'for a split install' do
       let( :gold_role_answers ) do
         {
           "console_admin_password" => default_password,
-          "puppet_enterprise::use_application_services" => true,
-          "puppet_enterprise::puppet_master_host" => basic_hosts[0].hostname,
-          "puppet_enterprise::console_host" => basic_hosts[1].hostname,
-          "puppet_enterprise::puppetdb_host" => basic_hosts[2].hostname,
+          "node_roles" => {
+            "pe_role::split::primary_master" => [basic_hosts[0].hostname],
+            "pe_role::split::console" => [basic_hosts[1].hostname],
+            "pe_role::split::puppetdb" => [basic_hosts[2].hostname],
+          }
         }
       end
 
       include_examples 'pe.conf'
-      include_examples 'valid MEEP 1.0 pe.conf'
+      include_examples 'valid MEEP 2.0 pe.conf'
     end
   end
 end
