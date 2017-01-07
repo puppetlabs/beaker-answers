@@ -69,10 +69,16 @@ module BeakerAnswers
         "monolithic" :
         "split"
 
+      # Collect a uniq array of all host platforms modified to pe_repo class format
+      platforms = @hosts.map do |h|
+        h['platform'].gsub(/-/, '_').gsub(/\./,'')
+      end.uniq
+
       hosts_by_component.reduce(pe_conf) do |conf,entry|
         component, hosts = entry
         if !hosts.empty?
           conf["node_roles"]["pe_role::#{architecture}::#{component}"] = hosts
+          conf["agent_platforms"] = platforms
         end
         conf
       end

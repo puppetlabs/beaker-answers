@@ -57,7 +57,7 @@ RSpec.shared_examples 'pe.conf' do
   end
 
   it 'has just the role and values for default install' do
-    expect(answer_hash).to eq(
+    expect(answer_hash).to match(
       gold_role_answers
     )
   end
@@ -72,12 +72,12 @@ RSpec.shared_examples 'pe.conf' do
       end
 
       it 'has only the role values' do
-        expect(answer_hash).to eq(gold_role_answers)
+        expect(answer_hash).to match(gold_role_answers)
       end
 
       it 'also includes any explicitly added database parameters' do
         options.merge!(:answers => overridden_database_parameters)
-        expect(answer_hash).to eq(
+        expect(answer_hash).to match(
           gold_role_answers
             .merge(overridden_database_parameters)
         )
@@ -93,7 +93,7 @@ RSpec.shared_examples 'pe.conf' do
       end
 
       it 'has the role values and database defaults' do
-        expect(answer_hash).to eq(
+        expect(answer_hash).to match(
           gold_role_answers
             .merge(gold_db_answers)
         )
@@ -101,7 +101,7 @@ RSpec.shared_examples 'pe.conf' do
 
       it 'overrides defaults with explicitly added database parameters' do
         options.merge!(:answers => overridden_database_parameters)
-        expect(answer_hash).to eq(
+        expect(answer_hash).to match(
           gold_role_answers
             .merge(overridden_database_parameters)
         )
@@ -144,7 +144,7 @@ RSpec.shared_examples 'pe.conf' do
     end
 
     it 'matches expected answers' do
-      expect(answer_hash).to eq(gold_answers_with_overrides)
+      expect(answer_hash).to match(gold_answers_with_overrides)
     end
   end
 
@@ -163,7 +163,7 @@ RSpec.shared_examples 'pe.conf' do
     end
 
     it 'matches expected answers' do
-      expect(answer_hash).to eq(gold_answers_with_overrides)
+      expect(answer_hash).to match(gold_answers_with_overrides)
     end
   end
 end
