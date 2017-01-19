@@ -1,6 +1,7 @@
 # default - History
 ## Tags
-* [LATEST - 9 Nov, 2016 (f415b5e1)](#LATEST)
+* [LATEST - 19 Jan, 2017 (2aaa08e1)](#LATEST)
+* [0.13.0 - 9 Nov, 2016 (729ddd0b)](#0.13.0)
 * [0.12.0 - 28 Oct, 2016 (b18d96b7)](#0.12.0)
 * [0.11.0 - 22 Aug, 2016 (39591691)](#0.11.0)
 * [0.10.0 - 15 Aug, 2016 (30507062)](#0.10.0)
@@ -24,7 +25,70 @@
 * [0.1.0 - 26 Aug, 2015 (ef47972d)](#0.1.0)
 
 ## Details
-### <a name = "LATEST">LATEST - 9 Nov, 2016 (f415b5e1)
+### <a name = "LATEST">LATEST - 19 Jan, 2017 (2aaa08e1)
+
+* (GEM) update beaker-answers version to 0.14.0 (2aaa08e1)
+
+* Merge pull request #31 from jpartlow/issue/master/pe-19203-revert-meep-classification (f4d3c6ee)
+
+
+```
+Merge pull request #31 from jpartlow/issue/master/pe-19203-revert-meep-classification
+
+(PE-19203,PE-16706) Revert meep classification from Flanders
+```
+* (PE-19203) Only generate 1.0 pe.conf in 20171 (49a7230b)
+
+
+```
+(PE-19203) Only generate 1.0 pe.conf in 20171
+
+...and move pe.conf generation based on meep_schema_version flag into
+2017.2 which is the first version where we'll be testing with variable
+pe-modules packages.
+```
+* (PE-16706) Add a 2017.2 version (8eed8fb7)
+
+* (PE-19203,PE-17621) Generate a meep 2.0 format based on version flag (29e2dff3)
+
+
+```
+(PE-19203,PE-17621) Generate a meep 2.0 format based on version flag
+
+Previously there was a hard version break set on PE 2017.1 which would
+produce a 2.0 format pe.conf, but since we've had to back out meep
+classification in Flanders, this needs to change.
+
+Added a PeConf object to generate 1.0 and 2.0 format files based on a
+meep_schema_version flag. It defaults to the original 1.0 format. It
+will be up to beaker-pe to submit this flag in the beaker options based
+on its use_meep_for_classification?() test.
+
+There is one change to the 1.0 hiera_host_config implementation in that
+it no longer uses answer_for to set the master, db, console settings. I
+don't think this matters because there are no defaults for these
+settings, and beaker answer overrides are merged afterwards in
+generate_hiera_config() regardless.
+```
+* Merge pull request #29 from kevpl/docs_README_fill (760e80c9)
+
+
+```
+Merge pull request #29 from kevpl/docs_README_fill
+
+(MAINT) fill README with Rubydocs & release info
+```
+* (MAINT) fill README with Rubydocs & release info (45a853ec)
+
+
+```
+(MAINT) fill README with Rubydocs & release info
+
+[skip ci]
+```
+### <a name = "0.13.0">0.13.0 - 9 Nov, 2016 (729ddd0b)
+
+* (HISTORY) update beaker-answers history for gem release 0.13.0 (729ddd0b)
 
 * (GEM) update beaker-answers version to 0.13.0 (f415b5e1)
 
