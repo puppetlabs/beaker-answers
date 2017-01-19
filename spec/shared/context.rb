@@ -57,7 +57,7 @@ RSpec.shared_examples 'pe.conf' do
   end
 
   it 'has just the role and values for default install' do
-    expect(answer_hash).to eq(
+    expect(answer_hash).to match(
       gold_role_answers
     )
   end
@@ -72,12 +72,12 @@ RSpec.shared_examples 'pe.conf' do
       end
 
       it 'has only the role values' do
-        expect(answer_hash).to eq(gold_role_answers)
+        expect(answer_hash).to match(gold_role_answers)
       end
 
       it 'also includes any explicitly added database parameters' do
         options.merge!(:answers => overridden_database_parameters)
-        expect(answer_hash).to eq(
+        expect(answer_hash).to match(
           gold_role_answers
             .merge(overridden_database_parameters)
         )
@@ -93,7 +93,7 @@ RSpec.shared_examples 'pe.conf' do
       end
 
       it 'has the role values and database defaults' do
-        expect(answer_hash).to eq(
+        expect(answer_hash).to match(
           gold_role_answers
             .merge(gold_db_answers)
         )
@@ -101,7 +101,7 @@ RSpec.shared_examples 'pe.conf' do
 
       it 'overrides defaults with explicitly added database parameters' do
         options.merge!(:answers => overridden_database_parameters)
-        expect(answer_hash).to eq(
+        expect(answer_hash).to match(
           gold_role_answers
             .merge(overridden_database_parameters)
         )
@@ -144,7 +144,7 @@ RSpec.shared_examples 'pe.conf' do
     end
 
     it 'matches expected answers' do
-      expect(answer_hash).to eq(gold_answers_with_overrides)
+      expect(answer_hash).to match(gold_answers_with_overrides)
     end
   end
 
@@ -163,7 +163,7 @@ RSpec.shared_examples 'pe.conf' do
     end
 
     it 'matches expected answers' do
-      expect(answer_hash).to eq(gold_answers_with_overrides)
+      expect(answer_hash).to match(gold_answers_with_overrides)
     end
   end
 end
@@ -173,7 +173,25 @@ RSpec.shared_examples "valid MEEP 2.0 pe.conf" do
     expect(answer_hiera).not_to be_empty
     expect { JSON.load(answer_hiera) }.not_to raise_error
     expect(answer_hiera).to match(%r{"node_roles"\s*:\s*\{})
-    expect(answer_hiera).to match(%r{"pe_role::\w+::primary_master"\s*:\s*\[\s*"#{basic_hosts[0].hostname}"\s*\]}m)
+    expect(answer_hiera).to match(%r{"pe_role::\w+::primary_master"\s*:\s*\[\s*"#{hosts[0].hostname}"\s*\]}m)
+  end
+
+  it 'sets the schema version' do
+    expect(answer_hash['meep_schema_version']).to eq('2.0')
+  end
+
+  context 'with beaker overrides' do
+    before(:each) do
+      options[:answers] = {
+        'pe_infrastructure::use_meep_for_classification' => true
+      }
+    end
+
+    it 'accepts overrides from beaker config' do
+      expect(answer_hiera).to match(
+        %r{"pe_infrastructure::use_meep_for_classification"\s*:\s*true}
+      )
+    end
   end
 end
 
@@ -181,6 +199,6 @@ RSpec.shared_examples "valid MEEP 1.0 pe.conf" do
   it 'generates valid MEEP 1.0 json if #answer_hiera is called' do
     expect(answer_hiera).not_to be_empty
     expect { JSON.load(answer_hiera) }.not_to raise_error
-    expect(answer_hiera).to match(%r{"puppet_enterprise::puppet_master_host"\s*:\s*"#{basic_hosts[0].hostname}"}m)
+    expect(answer_hiera).to match(%r{"puppet_enterprise::puppet_master_host"\s*:\s*"#{hosts[0].hostname}"}m)
   end
 end

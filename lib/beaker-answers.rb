@@ -4,6 +4,7 @@ module BeakerAnswers
   require 'beaker-answers/helpers'
   require 'beaker-answers/answers'
   require 'beaker-answers/version'
+  require 'beaker-answers/pe_conf'
   require 'json'
   require 'hocon'
   require 'hocon/config_value_factory'

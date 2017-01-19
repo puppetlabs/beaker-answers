@@ -62,23 +62,8 @@ module BeakerAnswers
     end
 
     def hiera_host_config
-      config = {}
-      ns = "puppet_enterprise"
-
-      master = only_host_with_role(@hosts, 'master')
-      puppetdb = only_host_with_role(@hosts, 'database')
-      console = only_host_with_role(@hosts, 'dashboard')
-
-      config["#{ns}::puppet_master_host"] = answer_for(@options, "#{ns}::puppet_master_host", master.hostname)
-
-      # Monolithic installs now only require the puppet_master_host, so only pass in the console
-      # and puppetdb host if it is a split install
-      if [master, puppetdb, console].uniq.length != 1
-        config["#{ns}::console_host"] = answer_for(@options, "#{ns}::console_host", console.hostname)
-        config["#{ns}::puppetdb_host"] = answer_for(@options, "#{ns}::puppetdb_host", puppetdb.hostname)
-      end
-
-      return config
+      pe_conf = BeakerAnswers::PeConf.new(@hosts, '1.0')
+      pe_conf.configuration_hash
     end
 
     def hiera_db_config
