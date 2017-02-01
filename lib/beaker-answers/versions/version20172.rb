@@ -10,6 +10,29 @@ module BeakerAnswers
       /\A2017\.2/
     end
 
+    def generate_hiera_config
+      hiera_hash = super
+
+      if hiera_hash.include?('meep_schema_version') && @options[:answers]
+        # The meep 2.0 schema format includes structured data, which you could
+        # conceivably overwrite in your :answers and not want flattened.
+        # We're removing the flattened keys added in the Version20162 and
+        # reading them here rather than breaking compatibilty with existing
+        # Version20162 behavior. We're sorry.
+        hiera_hash.reject! do |k,v|
+          flatten_keys_to_joined_string(@options[:answers]).include?(k)
+        end
+        stringified_answers = @options[:answers].inject({}) do |hash,entry|
+          key = entry[0]
+          value = entry[1]
+          hash[key.to_s] = value
+          hash
+        end
+        hiera_hash.merge!(stringified_answers)
+      end
+      hiera_hash
+    end
+
     # This is used to generate the profile host parameters, but now passes the
     # options[:meep_schema_version] to determine which form of pe.conf is to be
     # generated.

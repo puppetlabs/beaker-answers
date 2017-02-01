@@ -131,15 +131,14 @@ RSpec.shared_examples 'pe.conf' do
     end
   end
 
+end
+
+RSpec.shared_examples "overriding answers" do
   context 'when overriding answers' do
     let( :options ) do
       {
         :format  => 'hiera',
-        :answers => {
-          'puppet_enterprise' =>  { 'certificate_authority_host' => 'enterpriseca.vm' },
-          'puppet_enterprise::console_host' => 'enterpriseconsole.vm',
-          'console_admin_password' => 'testing123',
-        }
+        :answers => answers_with_strings,
       }
     end
 
@@ -152,13 +151,7 @@ RSpec.shared_examples 'pe.conf' do
     let( :options ) do
       {
         :format  => 'hiera',
-        :answers => {
-          :puppet_enterprise =>  {
-            :certificate_authority_host => 'enterpriseca.vm',
-            :console_host => 'enterpriseconsole.vm',
-          },
-          :console_admin_password => 'testing123',
-        }
+        :answers => answers_with_symbols,
       }
     end
 
@@ -169,6 +162,39 @@ RSpec.shared_examples 'pe.conf' do
 end
 
 RSpec.shared_examples "valid MEEP 2.0 pe.conf" do
+  let(:answers_with_symbols) do
+    {
+      :"puppet_enterprise::certificate_authority_host" => 'enterpriseca.vm',
+      :"puppet_enterprise::console_host" => 'enterpriseconsole.vm',
+      :console_admin_password => 'testing123',
+      :feature_flags => {
+        'pe_modules_next' => true,
+      },
+    }
+  end
+  let(:answers_with_strings) do
+    {
+      'puppet_enterprise::certificate_authority_host' => 'enterpriseca.vm',
+      'puppet_enterprise::console_host' => 'enterpriseconsole.vm',
+      'console_admin_password' => 'testing123',
+      'feature_flags' => {
+        'pe_modules_next' => true,
+      },
+    }
+  end
+  let( :overridding_parameters ) do
+    {
+      'puppet_enterprise::certificate_authority_host' => 'enterpriseca.vm',
+      'puppet_enterprise::console_host' => 'enterpriseconsole.vm',
+      'console_admin_password' => 'testing123',
+      'feature_flags' => {
+        'pe_modules_next' => true,
+      }
+    }
+  end
+
+  include_examples "overriding answers"
+
   it 'generates valid MEEP 2.0 json if #answer_hiera is called' do
     expect(answer_hiera).not_to be_empty
     expect { JSON.load(answer_hiera) }.not_to raise_error
@@ -196,6 +222,25 @@ RSpec.shared_examples "valid MEEP 2.0 pe.conf" do
 end
 
 RSpec.shared_examples "valid MEEP 1.0 pe.conf" do
+  let(:answers_with_symbols) do
+    {
+      :puppet_enterprise =>  {
+        :certificate_authority_host => 'enterpriseca.vm',
+        :console_host => 'enterpriseconsole.vm',
+      },
+      :console_admin_password => 'testing123',
+    }
+  end
+  let(:answers_with_strings) do
+    {
+      'puppet_enterprise' =>  { 'certificate_authority_host' => 'enterpriseca.vm' },
+      'puppet_enterprise::console_host' => 'enterpriseconsole.vm',
+      'console_admin_password' => 'testing123',
+    }
+  end
+
+  include_examples "overriding answers"
+
   it 'generates valid MEEP 1.0 json if #answer_hiera is called' do
     expect(answer_hiera).not_to be_empty
     expect { JSON.load(answer_hiera) }.not_to raise_error
