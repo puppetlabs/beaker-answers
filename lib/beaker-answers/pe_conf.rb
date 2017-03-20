@@ -121,7 +121,11 @@ module BeakerAnswers
 
       # Collect a uniq array of all host platforms modified to pe_repo class format
       platforms = hosts.map do |h|
-        h['platform'].gsub(/-/, '_').gsub(/\./,'')
+        platform = h['platform']
+        if platform =~ /^windows.*/
+          platform = platform =~ /64/ ? 'windows_x86_64' : 'windows_i386'
+        end
+        platform.gsub(/-/, '_').gsub(/\./,'')
       end.uniq
       pe_conf["agent_platforms"] = platforms
 
