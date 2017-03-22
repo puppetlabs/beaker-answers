@@ -22,7 +22,7 @@ describe 'BeakerAnswers::PeConf' do
     end
 
     context 'split' do
-      let(:host_count) { 5 }
+      let(:host_count) { 6 }
       let(:hosts) do
         basic_hosts[0]['roles'] = ['master', 'agent']
         basic_hosts[0]['platform'] = 'el-6-x86_64'
@@ -34,6 +34,8 @@ describe 'BeakerAnswers::PeConf' do
         basic_hosts[3]['platform'] = 'el-7-x86_64'
         basic_hosts[4]['roles'] = ['agent']
         basic_hosts[4]['platform'] = 'ubuntu-14.04-amd64'
+        basic_hosts[5]['roles'] = ['agent']
+        basic_hosts[5]['platform'] = 'windows-2016-64'
         basic_hosts
       end
 
@@ -86,7 +88,8 @@ describe 'BeakerAnswers::PeConf' do
         "agent_platforms" => match_array([
           'el_6_x86_64',
           'el_7_x86_64',
-          'ubuntu_1404_amd64'
+          'ubuntu_1404_amd64',
+          'windows_x86_64',
         ]),
         "meep_schema_version" => "2.0",
       }
