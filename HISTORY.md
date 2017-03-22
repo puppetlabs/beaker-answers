@@ -1,6 +1,7 @@
-# default - History
+# worker - History
 ## Tags
-* [LATEST - 19 Jan, 2017 (2aaa08e1)](#LATEST)
+* [LATEST - 22 Mar, 2017 (9b17618d)](#LATEST)
+* [0.14.0 - 19 Jan, 2017 (290c75b2)](#0.14.0)
 * [0.13.0 - 9 Nov, 2016 (729ddd0b)](#0.13.0)
 * [0.12.0 - 28 Oct, 2016 (b18d96b7)](#0.12.0)
 * [0.11.0 - 22 Aug, 2016 (39591691)](#0.11.0)
@@ -25,7 +26,44 @@
 * [0.1.0 - 26 Aug, 2015 (ef47972d)](#0.1.0)
 
 ## Details
-### <a name = "LATEST">LATEST - 19 Jan, 2017 (2aaa08e1)
+### <a name = "LATEST">LATEST - 22 Mar, 2017 (9b17618d)
+
+* (GEM) update beaker-answers version to 0.15.0 (9b17618d)
+
+* Merge pull request #32 from demophoon/fix/master/pe-19948-windows-platform-fix (16a8f697)
+
+
+```
+Merge pull request #32 from demophoon/fix/master/pe-19948-windows-platform-fix
+
+(PE-19948) Fix pe_repo platform class for windows
+```
+* (PE-19948) Update spec tests to catch windows platform regressions (221464d0)
+
+
+```
+(PE-19948) Update spec tests to catch windows platform regressions
+
+This commit modifies the split configuration for generating pe.conf so
+that it includes a windows agent.
+```
+* (PE-19948) Fix pe_repo platform class for windows (a878195d)
+
+
+```
+(PE-19948) Fix pe_repo platform class for windows
+
+Before this commit the pe_repo platform class that would be generated
+for all windows platforms would be incorrect as there is only a single
+windows puppet agent. When this method would generate the list of
+platform classes windows would be incorrect.
+
+This commit ensures that when windows is a platform on a host we return
+one of the two possible windows pe_repo platform classes.
+```
+### <a name = "0.14.0">0.14.0 - 19 Jan, 2017 (290c75b2)
+
+* (HISTORY) update beaker-answers history for gem release 0.14.0 (290c75b2)
 
 * (GEM) update beaker-answers version to 0.14.0 (2aaa08e1)
 
