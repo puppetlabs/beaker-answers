@@ -1,6 +1,7 @@
 # worker - History
 ## Tags
-* [LATEST - 22 Mar, 2017 (9b17618d)](#LATEST)
+* [LATEST - 7 Apr, 2017 (297e2195)](#LATEST)
+* [0.15.0 - 22 Mar, 2017 (9df229c3)](#0.15.0)
 * [0.14.0 - 19 Jan, 2017 (290c75b2)](#0.14.0)
 * [0.13.0 - 9 Nov, 2016 (729ddd0b)](#0.13.0)
 * [0.12.0 - 28 Oct, 2016 (b18d96b7)](#0.12.0)
@@ -26,7 +27,25 @@
 * [0.1.0 - 26 Aug, 2015 (ef47972d)](#0.1.0)
 
 ## Details
-### <a name = "LATEST">LATEST - 22 Mar, 2017 (9b17618d)
+### <a name = "LATEST">LATEST - 7 Apr, 2017 (297e2195)
+
+* (GEM) update beaker-answers version to 0.16.0 (297e2195)
+
+* Merge pull request #34 from demophoon/task/master/pe-20023-hoyt-pipeline (964be80f)
+
+
+```
+Merge pull request #34 from demophoon/task/master/pe-20023-hoyt-pipeline
+
+(PE-20023) Update beaker answers for Hoyt
+```
+* (PE-20023) Add specs to hoyt answer generation (97050662)
+
+* (PE-20023) Update beaker answers for Hoyt (25cc1a80)
+
+### <a name = "0.15.0">0.15.0 - 22 Mar, 2017 (9df229c3)
+
+* (HISTORY) update beaker-answers history for gem release 0.15.0 (9df229c3)
 
 * (GEM) update beaker-answers version to 0.15.0 (9b17618d)
 
