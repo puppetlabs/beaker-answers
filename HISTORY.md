@@ -1,6 +1,7 @@
 # worker - History
 ## Tags
-* [LATEST - 7 Apr, 2017 (297e2195)](#LATEST)
+* [LATEST - 24 Apr, 2017 (41959c8b)](#LATEST)
+* [0.16.0 - 7 Apr, 2017 (98d08e5c)](#0.16.0)
 * [0.15.0 - 22 Mar, 2017 (9df229c3)](#0.15.0)
 * [0.14.0 - 19 Jan, 2017 (290c75b2)](#0.14.0)
 * [0.13.0 - 9 Nov, 2016 (729ddd0b)](#0.13.0)
@@ -27,7 +28,46 @@
 * [0.1.0 - 26 Aug, 2015 (ef47972d)](#0.1.0)
 
 ## Details
-### <a name = "LATEST">LATEST - 7 Apr, 2017 (297e2195)
+### <a name = "LATEST">LATEST - 24 Apr, 2017 (41959c8b)
+
+* (GEM) update beaker-answers version to 0.17.0 (41959c8b)
+
+* (maint) Do not flatten answers (598f8ce5)
+
+
+```
+(maint) Do not flatten answers
+
+When generating meep 2.0 answers.
+
+Changes in version20162.rb took an answers structure like:
+
+:answers
+  puppet_enterprise:
+    profile:
+      "master::foo": bar
+
+and produce a pe.conf with
+
+"puppet_enterprise::profile::master::foo": "bar"
+
+This might be a convenience for some kinds of parameter listing, but
+breaks your ability to submit actually structured data such as:
+
+:answers
+  feature_flags:
+    pe_modules_next: true
+
+Where feature_flags is supposed to be a hash, and not a parameter.
+
+This pr takes the approach of just fixing new behavior in Glisan, when
+using Meep 2.0 format (pe-modules-next), but it might be better to
+change the behavior altogether, although this is a breaking change for
+anyone relying on the previous 'helpful' collapsing of answer elements.
+```
+### <a name = "0.16.0">0.16.0 - 7 Apr, 2017 (98d08e5c)
+
+* (HISTORY) update beaker-answers history for gem release 0.16.0 (98d08e5c)
 
 * (GEM) update beaker-answers version to 0.16.0 (297e2195)
 
