@@ -18,13 +18,14 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   # Testing dependencies
+  s.add_development_dependency 'fakefs', '~> 0.6'
+  s.add_development_dependency 'pry', '~> 0.10'
+  s.add_development_dependency 'rake', '~> 10.1'
   s.add_development_dependency 'rspec', '~> 3.0'
   s.add_development_dependency 'rspec-its'
-  s.add_development_dependency 'fakefs', '~> 0.6'
-  s.add_development_dependency 'rake', '~> 10.1'
-  s.add_development_dependency 'simplecov', '~> 0.15.0'
-  s.add_development_dependency 'pry', '~> 0.10'
   s.add_development_dependency 'rubocop', '~> 0.50'
+  s.add_development_dependency 'rubocop-rspec', '~> 1.20'
+  s.add_development_dependency 'simplecov', '~> 0.15.0'
 
   # Documentation dependencies
   s.add_development_dependency 'yard'
