@@ -33,13 +33,13 @@ describe '#flatten_keys_to_joined_string' do
   end
 
   it 'converts key symbols to strings' do
-    deep = { a: 'b' }
+    deep = { :a => 'b' }
     shallow = flatten_keys_to_joined_string(deep)
     expect(shallow).to include('a' => 'b')
   end
 
   it 'converts nested key symbols to strings' do
-    deep = { a: { b: 'c' } }
+    deep = { :a => { :b => 'c' } }
     shallow = flatten_keys_to_joined_string(deep)
     expect(shallow).to include('a::b' => 'c')
   end

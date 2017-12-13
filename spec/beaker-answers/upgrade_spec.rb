@@ -7,7 +7,7 @@ describe BeakerAnswers::Upgrade do
     basic_hosts[2]['roles'] = %w[database agent]
     basic_hosts
   end
-  let(:answers) { described_class.new(@ver, hosts, options.merge(type: :upgrade)) }
+  let(:answers) { described_class.new(@ver, hosts, options.merge(:type => :upgrade)) }
 
   before do
     @ver = '3.8'
@@ -18,7 +18,7 @@ describe BeakerAnswers::Upgrade do
     it 'only adds the default yes for each host' do
       host_answers = answers.generate_answers
       host_answers.each do |_host, host_answer|
-        expect(host_answer).to eq(q_install: 'y')
+        expect(host_answer).to eq(:q_install => 'y')
         expect(host_answer.length).to eq(1)
       end
     end
@@ -34,7 +34,7 @@ describe BeakerAnswers::Upgrade38 do
     basic_hosts[2]['roles'] = %w[database agent]
     basic_hosts
   end
-  let(:answers) { BeakerAnswers::Answers.create(@ver, hosts, options.merge(type: :upgrade)) }
+  let(:answers) { BeakerAnswers::Answers.create(@ver, hosts, options.merge(:type => :upgrade)) }
 
   before do
     @ver = '3.8'
@@ -99,7 +99,7 @@ describe BeakerAnswers::Upgrade38 do
   context 'when we set :q_enable_future_parser in global options' do
     let(:options) do
       options = StringifyHash.new
-      options[:answers] = { q_enable_future_parser: 'thefutureparser!!!' }
+      options[:answers] = { :q_enable_future_parser => 'thefutureparser!!!' }
       options
     end
 
@@ -112,10 +112,10 @@ describe BeakerAnswers::Upgrade38 do
     context 'when per host custom answers are provided for the master and dashboard' do
       let(:hosts) do
         basic_hosts[0]['roles'] = %w[master agent]
-        basic_hosts[0][:custom_answers] = { q_custom0: '0LOOK' }
+        basic_hosts[0][:custom_answers] = { :q_custom0 => '0LOOK' }
         basic_hosts[1]['roles'] = %w[dashboard agent]
-        basic_hosts[1][:custom_answers] = { q_custom1: 'LOOKLOOK',
-                                            q_custom2: 'LOOK3' }
+        basic_hosts[1][:custom_answers] = { :q_custom1 => 'LOOKLOOK',
+                                            :q_custom2 => 'LOOK3', }
         basic_hosts[2]['roles'] = %w[database agent]
         basic_hosts
       end

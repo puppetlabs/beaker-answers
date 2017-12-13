@@ -25,7 +25,7 @@ describe BeakerAnswers::Version20162 do
         {
           'console_admin_password' => default_password,
           'puppet_enterprise::use_application_services' => true,
-          'puppet_enterprise::puppet_master_host' => basic_hosts[0].hostname
+          'puppet_enterprise::puppet_master_host' => basic_hosts[0].hostname,
         }
       end
 
@@ -40,7 +40,7 @@ describe BeakerAnswers::Version20162 do
           'puppet_enterprise::use_application_services' => true,
           'puppet_enterprise::puppet_master_host' => basic_hosts[0].hostname,
           'puppet_enterprise::console_host' => basic_hosts[1].hostname,
-          'puppet_enterprise::puppetdb_host' => basic_hosts[2].hostname
+          'puppet_enterprise::puppetdb_host' => basic_hosts[2].hostname,
         }
       end
 

@@ -29,15 +29,15 @@ module BeakerAnswers
       rbac_database_password       = "'#{answer_for(@options, :q_rbac_database_password)}'"
 
       console_services_hash = {
-        q_classifier_database_user: classifier_database_user,
-        q_classifier_database_name: classifier_database_name,
-        q_classifier_database_password: classifier_database_password,
-        q_activity_database_user: activity_database_user,
-        q_activity_database_name: activity_database_name,
-        q_activity_database_password: activity_database_password,
-        q_rbac_database_user: rbac_database_user,
-        q_rbac_database_name: rbac_database_name,
-        q_rbac_database_password: rbac_database_password
+        :q_classifier_database_user => classifier_database_user,
+        :q_classifier_database_name => classifier_database_name,
+        :q_classifier_database_password => classifier_database_password,
+        :q_activity_database_user => activity_database_user,
+        :q_activity_database_name => activity_database_name,
+        :q_activity_database_password => activity_database_password,
+        :q_rbac_database_user => rbac_database_user,
+        :q_rbac_database_name => rbac_database_name,
+        :q_rbac_database_password => rbac_database_password,
       }
 
       # If we're installing or upgrading from a non-RBAC version, set the 'admin' password

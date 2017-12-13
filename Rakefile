@@ -12,7 +12,7 @@ RuboCop::RakeTask.new do |t|
 end
 
 desc 'Run linters'
-task lint: [:rubocop]
+task :lint => [:rubocop]
 
 desc 'Run default tasks'
-task default: %i[lint test]
+task :default => %i[lint test]

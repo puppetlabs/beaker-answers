@@ -26,7 +26,7 @@ module BeakerAnswers
       %w[console classifier dashboard],
       ['compile_master'],
       %w[mco_hub hub],
-      %w[mco_broker spoke]
+      %w[mco_broker spoke],
     ].freeze
 
     attr_accessor :hosts, :meep_schema_version, :options
@@ -81,8 +81,8 @@ module BeakerAnswers
         pe_conf["#{ns}::puppetdb_host"] = puppetdb.hostname
       end
 
-      if the_host_with_role('pe_postgres', raise_error = false)
-        pe_conf["#{ns}::database_host"] = the_host_with_role('pe_postgres', raise_error = false).hostname
+      if the_host_with_role('pe_postgres', :raise_error => false)
+        pe_conf["#{ns}::database_host"] = the_host_with_role('pe_postgres', :raise_error => false).hostname
         if options[:pe_postgresql_options]
           if options[:pe_postgresql_options][:security] == 'cert'
             postgres_cert_answers(pe_conf, '1.0')
@@ -99,7 +99,7 @@ module BeakerAnswers
 
     def _generate_2_0_data
       pe_conf = {
-        'node_roles' => {}
+        'node_roles' => {},
       }
       hosts_by_component = {}
 
@@ -131,8 +131,8 @@ module BeakerAnswers
       end
 
       # Set the PE managed postgres roles/answers
-      if the_host_with_role('pe_postgres', raise_error = false)
-        pe_conf['puppet_enterprise::profile::database'] = the_host_with_role('pe_postgres', raise_error = false).hostname
+      if the_host_with_role('pe_postgres', :raise_error => false)
+        pe_conf['puppet_enterprise::profile::database'] = the_host_with_role('pe_postgres', :raise_error => false).hostname
         if options[:pe_postgresql_options][:security]
           if options[:pe_postgresql_options][:security] == 'cert'
             postgres_cert_answers(pe_conf, '2.0')
@@ -177,7 +177,7 @@ module BeakerAnswers
     # @return [Host] The single host with the desired role in its roles list
     # @raise [ArgumentError] Raised if more than one host has the given role
     #   defined, or if no host has the role defined.
-    def the_host_with_role(role, raise_error = true)
+    def the_host_with_role(role, raise_error: true)
       found_hosts = hosts.select do |h|
         Array(h['roles']).include?(role.to_s)
       end

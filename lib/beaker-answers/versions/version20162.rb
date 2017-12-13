@@ -25,8 +25,8 @@ module BeakerAnswers
       # bash script, the console node now needs to know about the orchestrator database user
       # and name if they are specified to be non default
       orchestrator_db = {
-        q_orchestrator_database_name: answer_for(@options, :q_orchestrator_database_name),
-        q_orchestrator_database_user: answer_for(@options, :q_orchestrator_database_user)
+        :q_orchestrator_database_name => answer_for(@options, :q_orchestrator_database_name),
+        :q_orchestrator_database_user => answer_for(@options, :q_orchestrator_database_user),
       }
 
       answers[console.name].merge!(orchestrator_db)
@@ -44,7 +44,7 @@ module BeakerAnswers
 
       hiera_hash.merge!(get_defaults_or_answers([
                                                   'console_admin_password',
-                                                  'puppet_enterprise::use_application_services'
+                                                  'puppet_enterprise::use_application_services',
                                                 ]))
 
       hiera_hash.merge!(hiera_db_config)
@@ -80,7 +80,7 @@ module BeakerAnswers
           "#{ns}::classifier_database_user",
           "#{ns}::activity_database_user",
           "#{ns}::rbac_database_user",
-          "#{ns}::orchestrator_database_user"
+          "#{ns}::orchestrator_database_user",
         ]
       end
 

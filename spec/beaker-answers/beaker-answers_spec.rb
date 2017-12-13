@@ -34,7 +34,7 @@ describe BeakerAnswers do
   context 'when we are upgrading to a version > 3.8' do
     supported_general_upgrade_versions = ['2015.1.0',
                                           '2016.1.0',
-                                          '2016.2.1']
+                                          '2016.2.1',]
     supported_general_upgrade_versions.each do |version|
       it 'still creates the full install answers' do
         @ver = version
@@ -175,7 +175,7 @@ describe BeakerAnswers::Version34 do
   let(:basic_hosts) { make_hosts('pe_ver' => @ver) }
   let(:hosts) do
     basic_hosts[0]['roles'] = %w[master agent]
-    basic_hosts[0][:custom_answers] = { q_custom: 'LOOKYHERE' }
+    basic_hosts[0][:custom_answers] = { :q_custom => 'LOOKYHERE' }
     basic_hosts[1]['roles'] = %w[dashboard agent]
     basic_hosts[2]['roles'] = %w[database agent]
     basic_hosts
@@ -190,29 +190,29 @@ describe BeakerAnswers::Version34 do
   it 'adds console services answers to dashboard answers' do
     @ver = '3.4'
     answers = @answers
-    expect(@answers['vm2']).to include q_classifier_database_user: 'DFGhjlkj'
-    expect(@answers['vm2']).to include q_classifier_database_name: 'pe-classifier'
-    expect(@answers['vm2']).to include q_classifier_database_password: "'~!@\#$%^*-/ aZ'"
-    expect(@answers['vm2']).to include q_activity_database_user: 'adsfglkj'
-    expect(@answers['vm2']).to include q_activity_database_name: 'pe-activity'
-    expect(@answers['vm2']).to include q_activity_database_password: "'~!@\#$%^*-/ aZ'"
-    expect(@answers['vm2']).to include q_rbac_database_user: 'RbhNBklm'
-    expect(@answers['vm2']).to include q_rbac_database_name: 'pe-rbac'
-    expect(@answers['vm2']).to include q_rbac_database_password: "'~!@\#$%^*-/ aZ'"
+    expect(@answers['vm2']).to include :q_classifier_database_user => 'DFGhjlkj'
+    expect(@answers['vm2']).to include :q_classifier_database_name => 'pe-classifier'
+    expect(@answers['vm2']).to include :q_classifier_database_password => "'~!@\#$%^*-/ aZ'"
+    expect(@answers['vm2']).to include :q_activity_database_user => 'adsfglkj'
+    expect(@answers['vm2']).to include :q_activity_database_name => 'pe-activity'
+    expect(@answers['vm2']).to include :q_activity_database_password => "'~!@\#$%^*-/ aZ'"
+    expect(@answers['vm2']).to include :q_rbac_database_user => 'RbhNBklm'
+    expect(@answers['vm2']).to include :q_rbac_database_name => 'pe-rbac'
+    expect(@answers['vm2']).to include :q_rbac_database_password => "'~!@\#$%^*-/ aZ'"
   end
 
   it 'adds console services answers to database answers' do
     @ver = '3.4'
     answers = @answers
-    expect(@answers['vm3']).to include q_classifier_database_user: 'DFGhjlkj'
-    expect(@answers['vm3']).to include q_classifier_database_name: 'pe-classifier'
-    expect(@answers['vm3']).to include q_classifier_database_password: "'~!@\#$%^*-/ aZ'"
-    expect(@answers['vm3']).to include q_activity_database_user: 'adsfglkj'
-    expect(@answers['vm3']).to include q_activity_database_name: 'pe-activity'
-    expect(@answers['vm3']).to include q_activity_database_password: "'~!@\#$%^*-/ aZ'"
-    expect(@answers['vm3']).to include q_rbac_database_user: 'RbhNBklm'
-    expect(@answers['vm3']).to include q_rbac_database_name: 'pe-rbac'
-    expect(@answers['vm3']).to include q_rbac_database_password: "'~!@\#$%^*-/ aZ'"
+    expect(@answers['vm3']).to include :q_classifier_database_user => 'DFGhjlkj'
+    expect(@answers['vm3']).to include :q_classifier_database_name => 'pe-classifier'
+    expect(@answers['vm3']).to include :q_classifier_database_password => "'~!@\#$%^*-/ aZ'"
+    expect(@answers['vm3']).to include :q_activity_database_user => 'adsfglkj'
+    expect(@answers['vm3']).to include :q_activity_database_name => 'pe-activity'
+    expect(@answers['vm3']).to include :q_activity_database_password => "'~!@\#$%^*-/ aZ'"
+    expect(@answers['vm3']).to include :q_rbac_database_user => 'RbhNBklm'
+    expect(@answers['vm3']).to include :q_rbac_database_name => 'pe-rbac'
+    expect(@answers['vm3']).to include :q_rbac_database_password => "'~!@\#$%^*-/ aZ'"
   end
 
   it 'adds answers to the host objects' do
@@ -231,7 +231,7 @@ describe BeakerAnswers::Version34 do
   end
 
   it 'appends custom answers to generated answers' do
-    expect(hosts[0][:custom_answers]).to be == { q_custom: 'LOOKYHERE' }
+    expect(hosts[0][:custom_answers]).to be == { :q_custom => 'LOOKYHERE' }
     expect(@answers['vm1']).to include :q_custom
     expect(hosts[0][:answers]).to include :q_custom
   end
@@ -248,7 +248,7 @@ describe BeakerAnswers::Version38 do
     basic_hosts
   end
   let(:answers) { BeakerAnswers::Answers.create(@ver, hosts, options) }
-  let(:upgrade_answers) { BeakerAnswers::Answers.create(@ver, hosts, options.merge(type: :upgrade)) }
+  let(:upgrade_answers) { BeakerAnswers::Answers.create(@ver, hosts, options.merge(:type => :upgrade)) }
 
   before do
     @ver = '3.8'
@@ -293,7 +293,7 @@ describe BeakerAnswers::Version40 do
     basic_hosts
   end
   let(:answers) { BeakerAnswers::Answers.create(@ver, hosts, options) }
-  let(:upgrade_answers) { BeakerAnswers::Answers.create(@ver, hosts, options.merge(type: :upgrade)) }
+  let(:upgrade_answers) { BeakerAnswers::Answers.create(@ver, hosts, options.merge(:type => :upgrade)) }
 
   before do
     @ver = '3.99'
@@ -371,7 +371,7 @@ describe BeakerAnswers::Version20153 do
     basic_hosts
   end
   let(:answers) { BeakerAnswers::Answers.create(@ver, hosts, options) }
-  let(:upgrade_answers) { BeakerAnswers::Answers.create(@ver, hosts, options.merge(type: :upgrade)) }
+  let(:upgrade_answers) { BeakerAnswers::Answers.create(@ver, hosts, options.merge(:type => :upgrade)) }
 
   before do
     @ver = '2015.3'
@@ -411,7 +411,7 @@ describe BeakerAnswers::Version32 do
     basic_hosts
   end
   let(:answers) { BeakerAnswers::Answers.create(@ver, hosts, options) }
-  let(:upgrade_answers) { BeakerAnswers::Answers.create(@ver, hosts, options.merge(type: :upgrade)) }
+  let(:upgrade_answers) { BeakerAnswers::Answers.create(@ver, hosts, options.merge(:type => :upgrade)) }
 
   before do
     @ver = '3.2'
@@ -454,11 +454,11 @@ describe BeakerAnswers::Version30 do
   let(:hosts)       do
     basic_hosts[0]['roles'] = %w[master database dashboard]
     basic_hosts[1]['platform'] = 'windows'
-    basic_hosts[2][:custom_answers] = { q_custom: 'LOOKLOOKLOOK' }
+    basic_hosts[2][:custom_answers] = { :q_custom => 'LOOKLOOKLOOK' }
     basic_hosts
   end
   let(:answers) { BeakerAnswers::Answers.create(@ver, hosts, options) }
-  let(:upgrade_answers) { BeakerAnswers::Answers.create(@ver, hosts, options.merge(type: :upgrade)) }
+  let(:upgrade_answers) { BeakerAnswers::Answers.create(@ver, hosts, options.merge(:type => :upgrade)) }
 
   before do
     @ver = '3.0'
@@ -467,17 +467,17 @@ describe BeakerAnswers::Version30 do
 
   it 'uses simple answers for upgrade from 3.0.x to 3.0.x' do
     @upgrade_answers = upgrade_answers.answers
-    expect(@upgrade_answers).to be === { 'vm2' => { q_install: 'y', q_install_vendor_packages: 'y' }, 'vm1' => { q_install: 'y', q_install_vendor_packages: 'y' }, 'vm3' => { q_install: 'y', q_install_vendor_packages: 'y', q_custom: 'LOOKLOOKLOOK' } }
+    expect(@upgrade_answers).to be === { 'vm2' => { :q_install => 'y', :q_install_vendor_packages => 'y' }, 'vm1' => { :q_install => 'y', :q_install_vendor_packages => 'y' }, 'vm3' => { :q_install => 'y', :q_install_vendor_packages => 'y', :q_custom => 'LOOKLOOKLOOK' } }
   end
 
   it 'sets correct answers for an agent' do
     @ver = '3.0'
-    expect(@answers['vm3']).to be === { q_install: 'y', q_vendor_packages_install: 'y', q_puppetagent_install: 'y', q_puppet_cloud_install: 'n', q_verify_packages: 'y', q_puppet_symlinks_install: 'y', q_puppetagent_certname: hosts[2].to_s, q_puppetagent_server: hosts[0].to_s, q_puppetmaster_install: 'n', q_all_in_one_install: 'n', q_puppet_enterpriseconsole_install: 'n', q_puppetdb_install: 'n', q_database_install: 'n', q_custom: 'LOOKLOOKLOOK' }
+    expect(@answers['vm3']).to be === { :q_install => 'y', :q_vendor_packages_install => 'y', :q_puppetagent_install => 'y', :q_puppet_cloud_install => 'n', :q_verify_packages => 'y', :q_puppet_symlinks_install => 'y', :q_puppetagent_certname => hosts[2].to_s, :q_puppetagent_server => hosts[0].to_s, :q_puppetmaster_install => 'n', :q_all_in_one_install => 'n', :q_puppet_enterpriseconsole_install => 'n', :q_puppetdb_install => 'n', :q_database_install => 'n', :q_custom => 'LOOKLOOKLOOK' }
   end
 
   it 'sets correct answers for a master' do
     @ver = '3.0'
-    expect(@answers['vm1']).to be === { q_install: 'y', q_vendor_packages_install: 'y', q_puppetagent_install: 'y', q_puppet_cloud_install: 'n', q_verify_packages: 'y', q_puppet_symlinks_install: 'y', q_puppetagent_certname: hosts[0].to_s, q_puppetagent_server: hosts[0].to_s, q_puppetmaster_install: 'y', q_all_in_one_install: 'y', q_puppet_enterpriseconsole_install: 'y', q_puppetdb_install: 'y', q_database_install: 'y', q_puppetdb_hostname: hosts[0].to_s, q_puppetdb_port: 8081, q_puppetmaster_dnsaltnames: "#{hosts[0]},#{hosts[0][:ip]},puppet", q_puppetmaster_enterpriseconsole_hostname: hosts[0].to_s, q_puppetmaster_enterpriseconsole_port: 443, q_puppetmaster_certname: hosts[0].to_s, q_puppetdb_database_name: 'pe-puppetdb', q_puppetdb_database_user: 'mYpdBu3r', q_puppetdb_database_password: "'~!@\#$%^*-/ aZ'", q_puppet_enterpriseconsole_auth_database_name: 'console_auth', q_puppet_enterpriseconsole_auth_database_user: 'mYu7hu3r', q_puppet_enterpriseconsole_auth_database_password: "'~!@\#$%^*-/ aZ'", q_puppet_enterpriseconsole_database_name: 'console', q_puppet_enterpriseconsole_database_user: 'mYc0nS03u3r', q_puppet_enterpriseconsole_database_password: "'~!@\#$%^*-/ aZ'", q_database_host: hosts[0].to_s, q_database_port: 5432, q_pe_database: 'y', q_puppet_enterpriseconsole_inventory_hostname: hosts[0].to_s, q_puppet_enterpriseconsole_inventory_certname: hosts[0].to_s, q_puppet_enterpriseconsole_inventory_dnsaltnames: hosts[0].to_s, q_puppet_enterpriseconsole_inventory_port: 8140, q_puppet_enterpriseconsole_master_hostname: hosts[0].to_s, q_puppet_enterpriseconsole_auth_user_email: "'admin@example.com'", q_puppet_enterpriseconsole_auth_password: "'~!@\#$%^*-/ aZ'", q_puppet_enterpriseconsole_httpd_port: 443, q_puppet_enterpriseconsole_smtp_host: "'vm1'", q_puppet_enterpriseconsole_smtp_use_tls: "'n'", q_puppet_enterpriseconsole_smtp_port: "'25'", q_database_root_password: "'=ZYdjiP3jCwV5eo9s1MBd'", q_database_root_user: 'pe-postgres' }
+    expect(@answers['vm1']).to be === { :q_install => 'y', :q_vendor_packages_install => 'y', :q_puppetagent_install => 'y', :q_puppet_cloud_install => 'n', :q_verify_packages => 'y', :q_puppet_symlinks_install => 'y', :q_puppetagent_certname => hosts[0].to_s, :q_puppetagent_server => hosts[0].to_s, :q_puppetmaster_install => 'y', :q_all_in_one_install => 'y', :q_puppet_enterpriseconsole_install => 'y', :q_puppetdb_install => 'y', :q_database_install => 'y', :q_puppetdb_hostname => hosts[0].to_s, :q_puppetdb_port => 8081, :q_puppetmaster_dnsaltnames => "#{hosts[0]},#{hosts[0][:ip]},puppet", :q_puppetmaster_enterpriseconsole_hostname => hosts[0].to_s, :q_puppetmaster_enterpriseconsole_port => 443, :q_puppetmaster_certname => hosts[0].to_s, :q_puppetdb_database_name => 'pe-puppetdb', :q_puppetdb_database_user => 'mYpdBu3r', :q_puppetdb_database_password => "'~!@\#$%^*-/ aZ'", :q_puppet_enterpriseconsole_auth_database_name => 'console_auth', :q_puppet_enterpriseconsole_auth_database_user => 'mYu7hu3r', :q_puppet_enterpriseconsole_auth_database_password => "'~!@\#$%^*-/ aZ'", :q_puppet_enterpriseconsole_database_name => 'console', :q_puppet_enterpriseconsole_database_user => 'mYc0nS03u3r', :q_puppet_enterpriseconsole_database_password => "'~!@\#$%^*-/ aZ'", :q_database_host => hosts[0].to_s, :q_database_port => 5432, :q_pe_database => 'y', :q_puppet_enterpriseconsole_inventory_hostname => hosts[0].to_s, :q_puppet_enterpriseconsole_inventory_certname => hosts[0].to_s, :q_puppet_enterpriseconsole_inventory_dnsaltnames => hosts[0].to_s, :q_puppet_enterpriseconsole_inventory_port => 8140, :q_puppet_enterpriseconsole_master_hostname => hosts[0].to_s, :q_puppet_enterpriseconsole_auth_user_email => "'admin@example.com'", :q_puppet_enterpriseconsole_auth_password => "'~!@\#$%^*-/ aZ'", :q_puppet_enterpriseconsole_httpd_port => 443, :q_puppet_enterpriseconsole_smtp_host => "'vm1'", :q_puppet_enterpriseconsole_smtp_use_tls => "'n'", :q_puppet_enterpriseconsole_smtp_port => "'25'", :q_database_root_password => "'=ZYdjiP3jCwV5eo9s1MBd'", :q_database_root_user => 'pe-postgres' }
   end
 
   it 'generates nil answers for a windows host' do
@@ -494,7 +494,7 @@ describe BeakerAnswers::Version30 do
   end
 
   it 'appends custom answers to generated answers' do
-    expect(hosts[2][:custom_answers]).to be == { q_custom: 'LOOKLOOKLOOK' }
+    expect(hosts[2][:custom_answers]).to be == { :q_custom => 'LOOKLOOKLOOK' }
     expect(@answers['vm3']).to include :q_custom
     expect(hosts[2][:answers]).to include :q_custom
   end
@@ -516,11 +516,11 @@ describe BeakerAnswers::Version28 do
   end
 
   it 'sets correct answers for an agent' do
-    expect(@answers['vm3']).to be === { q_install: 'y', q_puppetagent_install: 'y', q_puppet_cloud_install: 'y', q_puppet_symlinks_install: 'y', q_vendor_packages_install: 'y', q_puppetagent_certname: hosts[2].to_s, q_puppetagent_server: hosts[0].to_s, q_puppetmaster_install: 'n', q_puppet_enterpriseconsole_install: 'n' }
+    expect(@answers['vm3']).to be === { :q_install => 'y', :q_puppetagent_install => 'y', :q_puppet_cloud_install => 'y', :q_puppet_symlinks_install => 'y', :q_vendor_packages_install => 'y', :q_puppetagent_certname => hosts[2].to_s, :q_puppetagent_server => hosts[0].to_s, :q_puppetmaster_install => 'n', :q_puppet_enterpriseconsole_install => 'n' }
   end
 
   it 'sets correct answers for a master' do
-    expect(@answers['vm1']).to be === { q_install: 'y', q_puppetagent_install: 'y', q_puppet_cloud_install: 'y', q_puppet_symlinks_install: 'y', q_vendor_packages_install: 'y', q_puppetagent_certname: hosts[0].to_s, q_puppetagent_server: hosts[0].to_s, q_puppetmaster_install: 'y', q_puppet_enterpriseconsole_install: 'y', q_puppetmaster_certname: hosts[0].to_s, q_puppetmaster_dnsaltnames: "#{hosts[0]},#{hosts[0][:ip]},puppet", q_puppetmaster_enterpriseconsole_hostname: hosts[0].to_s, q_puppetmaster_enterpriseconsole_port: 443, q_puppetmaster_forward_facts: 'y', q_puppet_enterpriseconsole_database_install: 'y', q_puppet_enterpriseconsole_auth_database_name: 'console_auth', q_puppet_enterpriseconsole_auth_database_user: 'mYu7hu3r', q_puppet_enterpriseconsole_auth_database_password: "'~!@\#$%^*-/ aZ'", q_puppet_enterpriseconsole_database_name: 'console', q_puppet_enterpriseconsole_database_user: 'mYc0nS03u3r', q_puppet_enterpriseconsole_database_password: "'~!@\#$%^*-/ aZ'", q_puppet_enterpriseconsole_inventory_hostname: hosts[0].to_s, q_puppet_enterpriseconsole_inventory_certname: hosts[0].to_s, q_puppet_enterpriseconsole_inventory_dnsaltnames: hosts[0].to_s, q_puppet_enterpriseconsole_inventory_port: 8140, q_puppet_enterpriseconsole_master_hostname: hosts[0].to_s, q_puppet_enterpriseconsole_auth_user_email: "'admin@example.com'", q_puppet_enterpriseconsole_auth_password: "'~!@\#$%^*-/ aZ'", q_puppet_enterpriseconsole_httpd_port: 443, q_puppet_enterpriseconsole_smtp_host: "'vm1'", q_puppet_enterpriseconsole_smtp_use_tls: "'n'", q_puppet_enterpriseconsole_smtp_port: "'25'", q_puppet_enterpriseconsole_auth_user: "'admin@example.com'" }
+    expect(@answers['vm1']).to be === { :q_install => 'y', :q_puppetagent_install => 'y', :q_puppet_cloud_install => 'y', :q_puppet_symlinks_install => 'y', :q_vendor_packages_install => 'y', :q_puppetagent_certname => hosts[0].to_s, :q_puppetagent_server => hosts[0].to_s, :q_puppetmaster_install => 'y', :q_puppet_enterpriseconsole_install => 'y', :q_puppetmaster_certname => hosts[0].to_s, :q_puppetmaster_dnsaltnames => "#{hosts[0]},#{hosts[0][:ip]},puppet", :q_puppetmaster_enterpriseconsole_hostname => hosts[0].to_s, :q_puppetmaster_enterpriseconsole_port => 443, :q_puppetmaster_forward_facts => 'y', :q_puppet_enterpriseconsole_database_install => 'y', :q_puppet_enterpriseconsole_auth_database_name => 'console_auth', :q_puppet_enterpriseconsole_auth_database_user => 'mYu7hu3r', :q_puppet_enterpriseconsole_auth_database_password => "'~!@\#$%^*-/ aZ'", :q_puppet_enterpriseconsole_database_name => 'console', :q_puppet_enterpriseconsole_database_user => 'mYc0nS03u3r', :q_puppet_enterpriseconsole_database_password => "'~!@\#$%^*-/ aZ'", :q_puppet_enterpriseconsole_inventory_hostname => hosts[0].to_s, :q_puppet_enterpriseconsole_inventory_certname => hosts[0].to_s, :q_puppet_enterpriseconsole_inventory_dnsaltnames => hosts[0].to_s, :q_puppet_enterpriseconsole_inventory_port => 8140, :q_puppet_enterpriseconsole_master_hostname => hosts[0].to_s, :q_puppet_enterpriseconsole_auth_user_email => "'admin@example.com'", :q_puppet_enterpriseconsole_auth_password => "'~!@\#$%^*-/ aZ'", :q_puppet_enterpriseconsole_httpd_port => 443, :q_puppet_enterpriseconsole_smtp_host => "'vm1'", :q_puppet_enterpriseconsole_smtp_use_tls => "'n'", :q_puppet_enterpriseconsole_smtp_port => "'25'", :q_puppet_enterpriseconsole_auth_user => "'admin@example.com'" }
   end
 
   it 'generates nil answers for a windows host' do
@@ -550,11 +550,11 @@ describe BeakerAnswers::Version20 do
   end
 
   it 'sets correct answers for an agent' do
-    expect(@answers['vm3']).to be === { q_install: 'y', q_puppetagent_install: 'y', q_puppet_cloud_install: 'y', q_puppet_symlinks_install: 'y', q_vendor_packages_install: 'y', q_puppetagent_certname: hosts[2].to_s, q_puppetagent_server: hosts[0].to_s, q_puppetmaster_install: 'n', q_puppet_enterpriseconsole_install: 'n' }
+    expect(@answers['vm3']).to be === { :q_install => 'y', :q_puppetagent_install => 'y', :q_puppet_cloud_install => 'y', :q_puppet_symlinks_install => 'y', :q_vendor_packages_install => 'y', :q_puppetagent_certname => hosts[2].to_s, :q_puppetagent_server => hosts[0].to_s, :q_puppetmaster_install => 'n', :q_puppet_enterpriseconsole_install => 'n' }
   end
 
   it 'sets correct answers for a master' do
-    expect(@answers['vm1']).to be === { q_install: 'y', q_puppetagent_install: 'y', q_puppet_cloud_install: 'y', q_puppet_symlinks_install: 'y', q_vendor_packages_install: 'y', q_puppetagent_certname: hosts[0].to_s, q_puppetagent_server: hosts[0].to_s, q_puppetmaster_install: 'y', q_puppet_enterpriseconsole_install: 'y', q_puppetmaster_certname: hosts[0].to_s, q_puppetmaster_dnsaltnames: "#{hosts[0]},#{hosts[0][:ip]},puppet", q_puppetmaster_enterpriseconsole_hostname: hosts[0].to_s, q_puppetmaster_enterpriseconsole_port: 443, q_puppetmaster_forward_facts: 'y', q_puppet_enterpriseconsole_database_install: 'y', q_puppet_enterpriseconsole_auth_database_name: 'console_auth', q_puppet_enterpriseconsole_auth_database_user: 'mYu7hu3r', q_puppet_enterpriseconsole_auth_database_password: "'~!@\#$%^*-/ aZ'", q_puppet_enterpriseconsole_database_name: 'console', q_puppet_enterpriseconsole_database_user: 'mYc0nS03u3r', q_puppet_enterpriseconsole_database_root_password: "'~!@\#$%^*-/ aZ'", q_puppet_enterpriseconsole_database_password: "'~!@\#$%^*-/ aZ'", q_puppet_enterpriseconsole_inventory_hostname: hosts[0].to_s, q_puppet_enterpriseconsole_inventory_certname: hosts[0].to_s, q_puppet_enterpriseconsole_inventory_dnsaltnames: hosts[0].to_s, q_puppet_enterpriseconsole_inventory_port: 8140, q_puppet_enterpriseconsole_master_hostname: hosts[0].to_s, q_puppet_enterpriseconsole_auth_user_email: "'admin@example.com'", q_puppet_enterpriseconsole_auth_password: "'~!@\#$%^*-/ aZ'", q_puppet_enterpriseconsole_httpd_port: 443, q_puppet_enterpriseconsole_smtp_host: "'vm1'", q_puppet_enterpriseconsole_smtp_use_tls: "'n'", q_puppet_enterpriseconsole_smtp_port: "'25'", q_puppet_enterpriseconsole_auth_user: "'admin@example.com'" }
+    expect(@answers['vm1']).to be === { :q_install => 'y', :q_puppetagent_install => 'y', :q_puppet_cloud_install => 'y', :q_puppet_symlinks_install => 'y', :q_vendor_packages_install => 'y', :q_puppetagent_certname => hosts[0].to_s, :q_puppetagent_server => hosts[0].to_s, :q_puppetmaster_install => 'y', :q_puppet_enterpriseconsole_install => 'y', :q_puppetmaster_certname => hosts[0].to_s, :q_puppetmaster_dnsaltnames => "#{hosts[0]},#{hosts[0][:ip]},puppet", :q_puppetmaster_enterpriseconsole_hostname => hosts[0].to_s, :q_puppetmaster_enterpriseconsole_port => 443, :q_puppetmaster_forward_facts => 'y', :q_puppet_enterpriseconsole_database_install => 'y', :q_puppet_enterpriseconsole_auth_database_name => 'console_auth', :q_puppet_enterpriseconsole_auth_database_user => 'mYu7hu3r', :q_puppet_enterpriseconsole_auth_database_password => "'~!@\#$%^*-/ aZ'", :q_puppet_enterpriseconsole_database_name => 'console', :q_puppet_enterpriseconsole_database_user => 'mYc0nS03u3r', :q_puppet_enterpriseconsole_database_root_password => "'~!@\#$%^*-/ aZ'", :q_puppet_enterpriseconsole_database_password => "'~!@\#$%^*-/ aZ'", :q_puppet_enterpriseconsole_inventory_hostname => hosts[0].to_s, :q_puppet_enterpriseconsole_inventory_certname => hosts[0].to_s, :q_puppet_enterpriseconsole_inventory_dnsaltnames => hosts[0].to_s, :q_puppet_enterpriseconsole_inventory_port => 8140, :q_puppet_enterpriseconsole_master_hostname => hosts[0].to_s, :q_puppet_enterpriseconsole_auth_user_email => "'admin@example.com'", :q_puppet_enterpriseconsole_auth_password => "'~!@\#$%^*-/ aZ'", :q_puppet_enterpriseconsole_httpd_port => 443, :q_puppet_enterpriseconsole_smtp_host => "'vm1'", :q_puppet_enterpriseconsole_smtp_use_tls => "'n'", :q_puppet_enterpriseconsole_smtp_port => "'25'", :q_puppet_enterpriseconsole_auth_user => "'admin@example.com'" }
   end
 
   it 'generates nil answers for a windows host' do

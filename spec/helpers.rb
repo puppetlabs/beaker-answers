@@ -7,31 +7,29 @@ module TestFileHelpers
   end
 
   def fog_file_contents
-    { default: { aws_access_key_id: 'IMANACCESSKEY',
-                 aws_secret_access_key: 'supersekritkey',
-                 aix_hypervisor_server: 'aix_hypervisor.labs.net',
-                 aix_hypervisor_username: 'aixer',
-                 aix_hypervisor_keyfile: '/Users/user/.ssh/id_rsa-acceptance',
-                 solaris_hypervisor_server: 'solaris_hypervisor.labs.net',
-                 solaris_hypervisor_username: 'harness',
-                 solaris_hypervisor_keyfile: '/Users/user/.ssh/id_rsa-old.private',
-                 solaris_hypervisor_vmpath: 'rpoooool/zs',
-                 solaris_hypervisor_snappaths: ['rpoooool/USER/z0'],
-                 vsphere_server: 'vsphere.labs.net',
-                 vsphere_username: 'vsphere@labs.com',
-                 vsphere_password: 'supersekritpassword' } }
+    { :default => { :aws_access_key_id => 'IMANACCESSKEY',
+                    :aws_secret_access_key => 'supersekritkey',
+                    :aix_hypervisor_server => 'aix_hypervisor.labs.net',
+                    :aix_hypervisor_username => 'aixer',
+                    :aix_hypervisor_keyfile => '/Users/user/.ssh/id_rsa-acceptance',
+                    :solaris_hypervisor_server => 'solaris_hypervisor.labs.net',
+                    :solaris_hypervisor_username => 'harness',
+                    :solaris_hypervisor_keyfile => '/Users/user/.ssh/id_rsa-old.private',
+                    :solaris_hypervisor_vmpath => 'rpoooool/zs',
+                    :solaris_hypervisor_snappaths => ['rpoooool/USER/z0'],
+                    :vsphere_server => 'vsphere.labs.net',
+                    :vsphere_username => 'vsphere@labs.com',
+                    :vsphere_password => 'supersekritpassword', }, }
   end
 end
 
 module HostHelpers
-  HOST_DEFAULTS = { platform: 'unix',
-                    snapshot: 'pe',
-                    box: 'box_name',
-                    roles: ['agent'],
-                    snapshot: 'snap',
-                    ip: 'default.ip.address',
-                    box: 'default_box_name',
-                    box_url: 'http://default.box.url' }.freeze
+  HOST_DEFAULTS = { :platform => 'unix',
+                    :roles => ['agent'],
+                    :snapshot => 'snap',
+                    :ip => 'default.ip.address',
+                    :box => 'default_box_name',
+                    :box_url => 'http://default.box.url', }.freeze
 
   HOST_NAME     = 'vm%d'.freeze
   HOST_SNAPSHOT = 'snapshot%d'.freeze
@@ -46,17 +44,17 @@ module HostHelpers
 
   def make_opts
     opts = StringifyHash.new
-    opts.merge(logger: logger,
-               host_config: 'sample.config',
-               type: nil,
-               pooling_api: 'http://vcloud.delivery.puppetlabs.net/',
-               datastore: 'instance0',
-               folder: 'Delivery/Quality Assurance/Staging/Dynamic',
-               resourcepool: 'delivery/Quality Assurance/Staging/Dynamic',
-               gce_project: 'beaker-compute',
-               gce_keyfile: '/path/to/keyfile.p12',
-               gce_password: 'notasecret',
-               gce_email: '12345678910@developer.gserviceaccount.com')
+    opts.merge(:logger => logger,
+               :host_config => 'sample.config',
+               :type => nil,
+               :pooling_api => 'http://vcloud.delivery.puppetlabs.net/',
+               :datastore => 'instance0',
+               :folder => 'Delivery/Quality Assurance/Staging/Dynamic',
+               :resourcepool => 'delivery/Quality Assurance/Staging/Dynamic',
+               :gce_project => 'beaker-compute',
+               :gce_keyfile => '/path/to/keyfile.p12',
+               :gce_password => 'notasecret',
+               :gce_email => '12345678910@developer.gserviceaccount.com')
   end
 
   def generate_result(name, opts)
@@ -92,12 +90,12 @@ module HostHelpers
     hosts = []
     (1..amt).each do |num|
       name = HOST_NAME % num
-      opts = { snapshot: HOST_SNAPSHOT % num,
-               ip: HOST_IP % name,
-               hostname: "#{name}.test",
-               template: HOST_TEMPLATE % name,
-               box: HOST_BOX % name,
-               box_url: HOST_BOX_URL % name }.merge(preset_opts)
+      opts = { :snapshot => HOST_SNAPSHOT % num,
+               :ip => HOST_IP % name,
+               :hostname => "#{name}.test",
+               :template => HOST_TEMPLATE % name,
+               :box => HOST_BOX % name,
+               :box_url => HOST_BOX_URL % name, }.merge(preset_opts)
       hosts << make_host(name, opts)
     end
     hosts
