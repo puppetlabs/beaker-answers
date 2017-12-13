@@ -9,6 +9,5 @@ module BeakerAnswers
     def self.pe_version_matcher
       /\A2017\.1/
     end
-
   end
 end

@@ -1,13 +1,15 @@
 describe BeakerAnswers::Upgrade do
-  let( :options )     { StringifyHash.new }
-  let( :basic_hosts ) { make_hosts( {'pe_ver' => @ver } ) }
-  let( :hosts ) { basic_hosts[0]['roles'] = ['master', 'agent']
-                  basic_hosts[1]['roles'] = ['dashboard', 'agent']
-                  basic_hosts[2]['roles'] = ['database', 'agent']
-                  basic_hosts }
-  let( :answers )     { BeakerAnswers::Upgrade.new(@ver, hosts, options.merge({:type => :upgrade}) ) }
+  let(:options)     { StringifyHash.new }
+  let(:basic_hosts) { make_hosts('pe_ver' => @ver) }
+  let(:hosts) do
+    basic_hosts[0]['roles'] = %w[master agent]
+    basic_hosts[1]['roles'] = %w[dashboard agent]
+    basic_hosts[2]['roles'] = %w[database agent]
+    basic_hosts
+  end
+  let(:answers) { described_class.new(@ver, hosts, options.merge(:type => :upgrade)) }
 
-  before :each do
+  before do
     @ver = '3.8'
     @answers = answers.answers
   end
@@ -15,32 +17,32 @@ describe BeakerAnswers::Upgrade do
   context '#generate_answers' do
     it 'only adds the default yes for each host' do
       host_answers = answers.generate_answers
-      host_answers.each do |host, host_answer|
-        expect(host_answer).to eq({:q_install => 'y'})
+      host_answers.each do |_host, host_answer|
+        expect(host_answer).to eq(:q_install => 'y')
         expect(host_answer.length).to eq(1)
       end
     end
   end
-
 end
 
 describe BeakerAnswers::Upgrade38 do
+  let(:options)     { StringifyHash.new }
+  let(:basic_hosts) { make_hosts('pe_ver' => @ver) }
+  let(:hosts) do
+    basic_hosts[0]['roles'] = %w[master agent]
+    basic_hosts[1]['roles'] = %w[dashboard agent]
+    basic_hosts[2]['roles'] = %w[database agent]
+    basic_hosts
+  end
+  let(:answers) { BeakerAnswers::Answers.create(@ver, hosts, options.merge(:type => :upgrade)) }
 
-  let( :options )     { StringifyHash.new }
-  let( :basic_hosts ) { make_hosts( {'pe_ver' => @ver } ) }
-  let( :hosts ) { basic_hosts[0]['roles'] = ['master', 'agent']
-                  basic_hosts[1]['roles'] = ['dashboard', 'agent']
-                  basic_hosts[2]['roles'] = ['database', 'agent']
-                  basic_hosts }
-  let( :answers )     { BeakerAnswers::Answers.create(@ver, hosts, options.merge({:type => :upgrade}) ) }
-
-  before :each do
+  before do
     @ver = '3.8'
     @answers = answers.answers
   end
 
   context 'when no special answers are provided' do
-    it "the master should have only three keys" do
+    it 'the master should have only three keys' do
       answer = @answers['vm1']
       expect(answer[:q_install]).to eq('y')
       expect(answer[:q_enable_future_parser]).to eq('y')
@@ -95,41 +97,43 @@ describe BeakerAnswers::Upgrade38 do
   end
 
   context 'when we set :q_enable_future_parser in global options' do
-    let( :options ) {
+    let(:options) do
       options = StringifyHash.new
-      options[:answers] = { :q_enable_future_parser => 'thefutureparser!!!'}
+      options[:answers] = { :q_enable_future_parser => 'thefutureparser!!!' }
       options
-    }
+    end
+
     it 'sets that parser option from the global options' do
-      @answers.each do |vmname, answer|
+      @answers.each do |_vmname, answer|
         expect(answer[:q_enable_future_parser]).to eq('thefutureparser!!!')
       end
     end
 
-  context 'when per host custom answers are provided for the master and dashboard' do
-    let( :hosts ) { basic_hosts[0]['roles'] = ['master', 'agent']
-                    basic_hosts[0][:custom_answers] = { :q_custom0 => '0LOOK' }
-                    basic_hosts[1]['roles'] = ['dashboard', 'agent']
-                    basic_hosts[1][:custom_answers] = { :q_custom1 => 'LOOKLOOK',
-                                                        :q_custom2 => "LOOK3"}
-                    basic_hosts[2]['roles'] = ['database', 'agent']
-                    basic_hosts }
+    context 'when per host custom answers are provided for the master and dashboard' do
+      let(:hosts) do
+        basic_hosts[0]['roles'] = %w[master agent]
+        basic_hosts[0][:custom_answers] = { :q_custom0 => '0LOOK' }
+        basic_hosts[1]['roles'] = %w[dashboard agent]
+        basic_hosts[1][:custom_answers] = { :q_custom1 => 'LOOKLOOK',
+                                            :q_custom2 => 'LOOK3', }
+        basic_hosts[2]['roles'] = %w[database agent]
+        basic_hosts
+      end
 
-    it 'adds those custom answers to the master' do
-      expect( @answers['vm1'][:q_custom0] ).to be === '0LOOK'
-      expect(@answers['vm1'].length).to eq(4)
+      it 'adds those custom answers to the master' do
+        expect(@answers['vm1'][:q_custom0]).to be === '0LOOK'
+        expect(@answers['vm1'].length).to eq(4)
+      end
+
+      it 'adds custom answers to the dashboard' do
+        expect(@answers['vm2'][:q_custom1]).to be === 'LOOKLOOK'
+        expect(@answers['vm2'][:q_custom2]).to be === 'LOOK3'
+        expect(@answers['vm2'].length).to eq(21)
+      end
+
+      it 'does not add custom answers for the database' do
+        expect(@answers['vm3'].length).to eq(13)
+      end
     end
-
-    it 'adds custom answers to the dashboard' do
-      expect( @answers['vm2'][:q_custom1] ).to be === 'LOOKLOOK'
-      expect( @answers['vm2'][:q_custom2] ).to be === 'LOOK3'
-      expect( @answers['vm2'].length).to eq(21)
-    end
-
-    it 'does not add custom answers for the database' do
-      expect(@answers['vm3'].length).to eq(13)
-    end
-  end
-
   end
 end

@@ -1,59 +1,59 @@
 RSpec.shared_examples 'pe.conf' do
-  let( :options )      { { :format => 'hiera' } }
-  let( :answer_hiera ) { answers.answer_hiera }
-  let( :default_password ) { '~!@#$%^*-/ aZ' }
-  let( :gold_db_answers ) do
+  let(:options)      { { :format => 'hiera' } }
+  let(:answer_hiera) { answers.answer_hiera }
+  let(:default_password) { '~!@#$%^*-/ aZ' }
+  let(:gold_db_answers) do
     {
-      "puppet_enterprise::activity_database_user" => 'adsfglkj',
-      "puppet_enterprise::classifier_database_user" => 'DFGhjlkj',
-      "puppet_enterprise::orchestrator_database_user" => 'Orc3Str8R',
-      "puppet_enterprise::puppetdb_database_user" => 'mYpdBu3r',
-      "puppet_enterprise::rbac_database_user" => 'RbhNBklm',
+      'puppet_enterprise::activity_database_user' => 'adsfglkj',
+      'puppet_enterprise::classifier_database_user' => 'DFGhjlkj',
+      'puppet_enterprise::orchestrator_database_user' => 'Orc3Str8R',
+      'puppet_enterprise::puppetdb_database_user' => 'mYpdBu3r',
+      'puppet_enterprise::rbac_database_user' => 'RbhNBklm',
     }
   end
-  let( :gold_db_password_answers ) do
+  let(:gold_db_password_answers) do
     {
-      "puppet_enterprise::activity_database_password" => default_password,
-      "puppet_enterprise::classifier_database_password" => default_password,
-      "puppet_enterprise::orchestrator_database_password" => default_password,
-      "puppet_enterprise::puppetdb_database_password" => default_password,
-      "puppet_enterprise::rbac_database_password" => default_password,
+      'puppet_enterprise::activity_database_password' => default_password,
+      'puppet_enterprise::classifier_database_password' => default_password,
+      'puppet_enterprise::orchestrator_database_password' => default_password,
+      'puppet_enterprise::puppetdb_database_password' => default_password,
+      'puppet_enterprise::rbac_database_password' => default_password,
     }
   end
   # This is a set of database parameters specified in host.cfg :answers
   # (for an external postgres, for instance)
-  let( :overridden_database_parameters ) do
+  let(:overridden_database_parameters) do
     {
-      "puppet_enterprise::activity_database_name" => 'custom-activity',
-      "puppet_enterprise::activity_database_user" => 'custom-activity-user',
-      "puppet_enterprise::classifier_database_name" => 'custom-classifier',
-      "puppet_enterprise::classifier_database_user" => 'custom-classifier-user',
-      "puppet_enterprise::orchestrator_database_name" => 'custom-orchestrator',
-      "puppet_enterprise::orchestrator_database_user" => 'custom-orchestrator-user',
-      "puppet_enterprise::puppetdb_database_name" => 'custom-puppetdb',
-      "puppet_enterprise::puppetdb_database_user" => 'custom-puppetdb-user',
-      "puppet_enterprise::rbac_database_name" => 'custom-rbac',
-      "puppet_enterprise::rbac_database_user" => 'custom-rbac-user',
-      "puppet_enterprise::activity_database_password" => 'custom-activity-password',
-      "puppet_enterprise::classifier_database_password" => 'custom-classifier-password',
-      "puppet_enterprise::orchestrator_database_password" => 'custom-orchestrator-password',
-      "puppet_enterprise::puppetdb_database_password" => 'custom-puppetdb-password',
-      "puppet_enterprise::rbac_database_password" => 'custom-rbac-password',
+      'puppet_enterprise::activity_database_name' => 'custom-activity',
+      'puppet_enterprise::activity_database_user' => 'custom-activity-user',
+      'puppet_enterprise::classifier_database_name' => 'custom-classifier',
+      'puppet_enterprise::classifier_database_user' => 'custom-classifier-user',
+      'puppet_enterprise::orchestrator_database_name' => 'custom-orchestrator',
+      'puppet_enterprise::orchestrator_database_user' => 'custom-orchestrator-user',
+      'puppet_enterprise::puppetdb_database_name' => 'custom-puppetdb',
+      'puppet_enterprise::puppetdb_database_user' => 'custom-puppetdb-user',
+      'puppet_enterprise::rbac_database_name' => 'custom-rbac',
+      'puppet_enterprise::rbac_database_user' => 'custom-rbac-user',
+      'puppet_enterprise::activity_database_password' => 'custom-activity-password',
+      'puppet_enterprise::classifier_database_password' => 'custom-classifier-password',
+      'puppet_enterprise::orchestrator_database_password' => 'custom-orchestrator-password',
+      'puppet_enterprise::puppetdb_database_password' => 'custom-puppetdb-password',
+      'puppet_enterprise::rbac_database_password' => 'custom-rbac-password',
     }
   end
-  let( :overridding_parameters ) do
+  let(:overridding_parameters) do
     {
       'puppet_enterprise::certificate_authority_host' => 'enterpriseca.vm',
       'puppet_enterprise::console_host' => 'enterpriseconsole.vm',
       'console_admin_password' => 'testing123',
     }
   end
-  let( :gold_answers_with_overrides ) { gold_role_answers.merge(overridding_parameters) }
+  let(:gold_answers_with_overrides) { gold_role_answers.merge(overridding_parameters) }
 
-  it 'should not have nil keys or values' do
-    answer_hash.each_pair { |k, v|
+  it 'does not have nil keys or values' do
+    answer_hash.each_pair do |k, v|
       expect([k, v]).not_to include(nil)
-    }
+    end
   end
 
   it 'has just the role and values for default install' do
@@ -76,7 +76,7 @@ RSpec.shared_examples 'pe.conf' do
       end
 
       it 'also includes any explicitly added database parameters' do
-        options.merge!(:answers => overridden_database_parameters)
+        options[:answers] = overridden_database_parameters
         expect(answer_hash).to match(
           gold_role_answers
             .merge(overridden_database_parameters)
@@ -100,7 +100,7 @@ RSpec.shared_examples 'pe.conf' do
       end
 
       it 'overrides defaults with explicitly added database parameters' do
-        options.merge!(:answers => overridden_database_parameters)
+        options[:answers] = overridden_database_parameters
         expect(answer_hash).to match(
           gold_role_answers
             .merge(overridden_database_parameters)
@@ -130,14 +130,13 @@ RSpec.shared_examples 'pe.conf' do
       end
     end
   end
-
 end
 
-RSpec.shared_examples "overriding answers" do
+RSpec.shared_examples 'overriding answers' do
   context 'when overriding answers' do
-    let( :options ) do
+    let(:options) do
       {
-        :format  => 'hiera',
+        :format => 'hiera',
         :answers => answers_with_strings,
       }
     end
@@ -148,9 +147,9 @@ RSpec.shared_examples "overriding answers" do
   end
 
   context 'when overriding answers using symbolic keys' do
-    let( :options ) do
+    let(:options) do
       {
-        :format  => 'hiera',
+        :format => 'hiera',
         :answers => answers_with_symbols,
       }
     end
@@ -161,7 +160,7 @@ RSpec.shared_examples "overriding answers" do
   end
 end
 
-RSpec.shared_examples "valid MEEP 2.0 pe.conf" do
+RSpec.shared_examples 'valid MEEP 2.0 pe.conf' do
   let(:answers_with_symbols) do
     {
       :"puppet_enterprise::certificate_authority_host" => 'enterpriseca.vm',
@@ -182,18 +181,18 @@ RSpec.shared_examples "valid MEEP 2.0 pe.conf" do
       },
     }
   end
-  let( :overridding_parameters ) do
+  let(:overridding_parameters) do
     {
       'puppet_enterprise::certificate_authority_host' => 'enterpriseca.vm',
       'puppet_enterprise::console_host' => 'enterpriseconsole.vm',
       'console_admin_password' => 'testing123',
       'feature_flags' => {
         'pe_modules_next' => true,
-      }
+      },
     }
   end
 
-  include_examples "overriding answers"
+  include_examples 'overriding answers'
 
   it 'generates valid MEEP 2.0 json if #answer_hiera is called' do
     expect(answer_hiera).not_to be_empty
@@ -207,9 +206,9 @@ RSpec.shared_examples "valid MEEP 2.0 pe.conf" do
   end
 
   context 'with beaker overrides' do
-    before(:each) do
+    before do
       options[:answers] = {
-        'pe_infrastructure::use_meep_for_classification' => true
+        'pe_infrastructure::use_meep_for_classification' => true,
       }
     end
 
@@ -221,10 +220,10 @@ RSpec.shared_examples "valid MEEP 2.0 pe.conf" do
   end
 end
 
-RSpec.shared_examples "valid MEEP 1.0 pe.conf" do
+RSpec.shared_examples 'valid MEEP 1.0 pe.conf' do
   let(:answers_with_symbols) do
     {
-      :puppet_enterprise =>  {
+      :puppet_enterprise => {
         :certificate_authority_host => 'enterpriseca.vm',
         :console_host => 'enterpriseconsole.vm',
       },
@@ -239,7 +238,7 @@ RSpec.shared_examples "valid MEEP 1.0 pe.conf" do
     }
   end
 
-  include_examples "overriding answers"
+  include_examples 'overriding answers'
 
   it 'generates valid MEEP 1.0 json if #answer_hiera is called' do
     expect(answer_hiera).not_to be_empty

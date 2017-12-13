@@ -5,8 +5,8 @@ describe BeakerAnswers::Version20171 do
   let(:ver)         { '2017.1.0' }
   let(:options)     { StringifyHash.new }
   let(:mono_hosts) do
-    basic_hosts = make_hosts({'pe_ver' => ver }, 1)
-    basic_hosts[0]['roles'] = ['master', 'agent', 'dashboard', 'database']
+    basic_hosts = make_hosts({ 'pe_ver' => ver }, 1)
+    basic_hosts[0]['roles'] = %w[master agent dashboard database]
     basic_hosts[0]['platform'] = 'el-7-x86_64'
     basic_hosts
   end
@@ -18,8 +18,8 @@ describe BeakerAnswers::Version20171 do
       let(:hosts) { mono_hosts }
       let(:gold_role_answers) do
         {
-          "console_admin_password" => default_password,
-          "puppet_enterprise::puppet_master_host" => hosts[0].hostname,
+          'console_admin_password' => default_password,
+          'puppet_enterprise::puppet_master_host' => hosts[0].hostname,
         }
       end
 

@@ -3,7 +3,6 @@ module BeakerAnswers
   # the initial MEEP pe.conf for a given set of hosts and a particular
   # MEEP pe.conf schema version.
   class PeConf
-
     # The default pe.conf schema version.
     DEFAULT_VERSION = '1.0'.freeze
 
@@ -18,17 +17,17 @@ module BeakerAnswers
     # with beaker in CI to establish that a host has that component
     # installed on it.
     COMPONENTS = [
-      ["primary_master", "master"],
-      ["primary_master_replica"],
+      %w[primary_master master],
+      ['primary_master_replica'],
       # the 'database' alias will be troublesome if/when we begin
       # breaking out a managed database (as opposed to external)
       # in future PE layouts.
-      ["puppetdb", "database"],
-      ["console", "classifier", "dashboard"],
-      ["compile_master"],
-      ["mco_hub", "hub"],
-      ["mco_broker", "spoke"],
-    ]
+      %w[puppetdb database],
+      %w[console classifier dashboard],
+      ['compile_master'],
+      %w[mco_hub hub],
+      %w[mco_broker spoke],
+    ].freeze
 
     attr_accessor :hosts, :meep_schema_version, :options
 
@@ -57,7 +56,7 @@ module BeakerAnswers
         _generate_1_0_data
       when '2.0'
         _generate_2_0_data
-      else raise(RuntimeError, "Unknown how to produce pe.conf data for meep_schema_version: '#{meep_schema_version}'")
+      else raise "Unknown how to produce pe.conf data for meep_schema_version: '#{meep_schema_version}'"
       end
     end
 
@@ -67,7 +66,7 @@ module BeakerAnswers
     # in the options.
     def _generate_1_0_data
       pe_conf = {}
-      ns = "puppet_enterprise"
+      ns = 'puppet_enterprise'
 
       master = the_host_with_role('master')
       puppetdb = the_host_with_role('database')
@@ -82,8 +81,8 @@ module BeakerAnswers
         pe_conf["#{ns}::puppetdb_host"] = puppetdb.hostname
       end
 
-      if the_host_with_role('pe_postgres', raise_error=false)
-        pe_conf["#{ns}::database_host"] = the_host_with_role('pe_postgres', raise_error=false).hostname
+      if the_host_with_role('pe_postgres', :raise_error => false)
+        pe_conf["#{ns}::database_host"] = the_host_with_role('pe_postgres', :raise_error => false).hostname
         if options[:pe_postgresql_options]
           if options[:pe_postgresql_options][:security] == 'cert'
             postgres_cert_answers(pe_conf, '1.0')
@@ -100,7 +99,7 @@ module BeakerAnswers
 
     def _generate_2_0_data
       pe_conf = {
-        "node_roles" => {}
+        'node_roles' => {},
       }
       hosts_by_component = {}
 
@@ -108,38 +107,37 @@ module BeakerAnswers
         meep_component_name = aliases.first
         # Only generate node_role settings for installing primary nodes
         # Secondary infrastructure will be added dynamically later
-        next unless ['primary_master', 'puppetdb', 'console'].include?(meep_component_name)
+        next unless %w[primary_master puppetdb console].include?(meep_component_name)
         hosts_by_component[meep_component_name] = all_hostnames_with_component(aliases)
       end
 
       # Reject console and puppetdb lists if they are the same as master
-      hosts_by_component.reject! do |component,hosts|
-        ["puppetdb", "console"].include?(component) &&
-          hosts_by_component["primary_master"].sort == hosts.sort
+      hosts_by_component.reject! do |component, hosts|
+        %w[puppetdb console].include?(component) &&
+          hosts_by_component['primary_master'].sort == hosts.sort
       end
 
       # Which is also sufficient to determine our architecture at the moment
-      architecture = (hosts_by_component.keys & ["puppetdb", "console"]).empty? ?
-        "monolithic" :
-        "split"
+      architecture = (hosts_by_component.keys & %w[puppetdb console]).empty? ?
+        'monolithic' :
+        'split'
 
       # Set the node_roles
-      hosts_by_component.reduce(pe_conf) do |conf,entry|
+      hosts_by_component.each_with_object(pe_conf) do |entry, conf|
         component, hosts = entry
-        if !hosts.empty?
-          conf["node_roles"]["pe_role::#{architecture}::#{component}"] = hosts
+        unless hosts.empty?
+          conf['node_roles']["pe_role::#{architecture}::#{component}"] = hosts
         end
-        conf
       end
 
-      #Set the PE managed postgres roles/answers
-      if the_host_with_role('pe_postgres', raise_error=false)
-        pe_conf["puppet_enterprise::profile::database"] = the_host_with_role('pe_postgres', raise_error=false).hostname
+      # Set the PE managed postgres roles/answers
+      if the_host_with_role('pe_postgres', :raise_error => false)
+        pe_conf['puppet_enterprise::profile::database'] = the_host_with_role('pe_postgres', :raise_error => false).hostname
         if options[:pe_postgresql_options][:security]
           if options[:pe_postgresql_options][:security] == 'cert'
-            postgres_cert_answers(pe_conf, "2.0")
+            postgres_cert_answers(pe_conf, '2.0')
           elsif options[:pe_postgresql_options][:security] == 'password'
-            postgres_password_answers(pe_conf, "2.0")
+            postgres_password_answers(pe_conf, '2.0')
           end
         end
       end
@@ -150,11 +148,11 @@ module BeakerAnswers
         if platform =~ /^windows.*/
           platform = platform =~ /64/ ? 'windows_x86_64' : 'windows_i386'
         end
-        platform.gsub(/-/, '_').gsub(/\./,'')
+        platform.tr('-', '_').delete('.')
       end.uniq
-      pe_conf["agent_platforms"] = platforms
+      pe_conf['agent_platforms'] = platforms
 
-      pe_conf["meep_schema_version"] = "2.0"
+      pe_conf['meep_schema_version'] = '2.0'
 
       pe_conf
     end
@@ -164,10 +162,10 @@ module BeakerAnswers
     # @return [Array<String>] of hostnames from @hosts that include at least
     #   one of the passed aliases
     def all_hostnames_with_component(host_role_aliases)
-      found_hosts = hosts.select do |h|
-        !(Array(h['roles']) & host_role_aliases).empty?
+      found_hosts = hosts.reject do |h|
+        (Array(h['roles']) & host_role_aliases).empty?
       end
-      found_hosts.map { |h| h.hostname }
+      found_hosts.map(&:hostname)
     end
 
     # Find a single host with the role provided.  Raise an error if more than
@@ -179,12 +177,12 @@ module BeakerAnswers
     # @return [Host] The single host with the desired role in its roles list
     # @raise [ArgumentError] Raised if more than one host has the given role
     #   defined, or if no host has the role defined.
-    def the_host_with_role(role, raise_error=true)
+    def the_host_with_role(role, raise_error: true)
       found_hosts = hosts.select do |h|
         Array(h['roles']).include?(role.to_s)
       end
 
-      if (found_hosts.length == 0 or found_hosts.length > 1) && (raise_error)
+      if (found_hosts.empty? || (found_hosts.length > 1)) && raise_error
         raise ArgumentError, "There should be one host with #{role} defined, found #{found_hosts.length} matching hosts (#{found_hosts})"
       end
       found_hosts.first
@@ -192,21 +190,21 @@ module BeakerAnswers
 
     def postgres_cert_answers(pe_conf, meep_schema_version)
       case meep_schema_version
-      when '1.0','2.0'
-        pe_conf["puppet_enterprise::database_ssl"] = true
-        pe_conf["puppet_enterprise::database_cert_auth"] = true
+      when '1.0', '2.0'
+        pe_conf['puppet_enterprise::database_ssl'] = true
+        pe_conf['puppet_enterprise::database_cert_auth'] = true
       end
       pe_conf
     end
 
     def postgres_password_answers(pe_conf, meep_schema_version)
       case meep_schema_version
-      when '1.0','2.0'
-        pe_conf["puppet_enterprise::activity_database_password"] = "PASSWORD"
-        pe_conf["puppet_enterprise::classifier_database_password"] = "PASSWORD"
-        pe_conf["puppet_enterprise::orchestrator_database_password"] = "PASSWORD"
-        pe_conf["puppet_enterprise::puppetdb_database_password"] = "PASSWORD"
-        pe_conf["puppet_enterprise::rbac_database_password"] = "PASSWORD"
+      when '1.0', '2.0'
+        pe_conf['puppet_enterprise::activity_database_password'] = 'PASSWORD'
+        pe_conf['puppet_enterprise::classifier_database_password'] = 'PASSWORD'
+        pe_conf['puppet_enterprise::orchestrator_database_password'] = 'PASSWORD'
+        pe_conf['puppet_enterprise::puppetdb_database_password'] = 'PASSWORD'
+        pe_conf['puppet_enterprise::rbac_database_password'] = 'PASSWORD'
       end
       pe_conf
     end

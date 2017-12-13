@@ -1,0 +1,24 @@
+require:
+  - rubocop-rspec
+
+inherit_from: .rubocop_todo.yml
+
+# Enforce %r{} style for regexes
+Style/RegexpLiteral:
+  EnforcedStyle: percent_r
+
+# We should be consistent about what sort of hash syntax we use.
+# https://github.com/puppetlabs/beaker-answers/pull/37#issuecomment-351508385
+Style/HashSyntax:
+  EnforcedStyle: hash_rockets
+
+# Ensure a trailing comma at the end of a multiline array/hash
+# https://github.com/puppetlabs/beaker-answers/pull/37#issuecomment-351508579
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false

@@ -3,7 +3,6 @@ module BeakerAnswers
   #
   # @api private
   class Version28 < Answers
-
     # The version of PE that this set of answers is appropriate for
     def self.pe_version_matcher
       /\A2\.8/
@@ -84,24 +83,18 @@ module BeakerAnswers
 
       console_a[:q_puppet_enterpriseconsole_auth_user] = console_a[:q_puppet_enterpriseconsole_auth_user_email]
 
-      if smtp_password and smtp_username
-        console_a.merge!({
-                           :q_puppet_enterpriseconsole_smtp_password => "'#{smtp_password}'",
-                           :q_puppet_enterpriseconsole_smtp_username => "'#{smtp_username}'",
-                           :q_puppet_enterpriseconsole_smtp_user_auth => 'y'
-                         })
+      if smtp_password && smtp_username
+        console_a.merge!(:q_puppet_enterpriseconsole_smtp_password => "'#{smtp_password}'",
+                         :q_puppet_enterpriseconsole_smtp_username => "'#{smtp_username}'",
+                         :q_puppet_enterpriseconsole_smtp_user_auth => 'y')
       end
 
       answers = agent_a.dup
-      if host == master
-        answers.merge! master_a
-      end
+      answers.merge! master_a if host == master
 
-      if host == dashboard
-        answers.merge! console_a
-      end
+      answers.merge! console_a if host == dashboard
 
-      return answers
+      answers
     end
 
     # Return answer data for all hosts.
@@ -119,8 +112,7 @@ module BeakerAnswers
         end
         h[:answers] = the_answers[h.name]
       end
-      return the_answers
+      the_answers
     end
-
   end
 end

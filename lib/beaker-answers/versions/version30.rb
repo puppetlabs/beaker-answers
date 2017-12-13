@@ -3,7 +3,6 @@ module BeakerAnswers
   #
   # @api private
   class Version30 < Answers
-
     # The version of PE that this set of answers is appropriate for
     def self.pe_version_matcher
       /\A3\.(0|1)/
@@ -51,13 +50,13 @@ module BeakerAnswers
       unless masterless
         # master/database answers
         master_database_a = {
-          :q_puppetmaster_certname => answer_for(options, :q_puppetmaster_certname, master.to_s)
+          :q_puppetmaster_certname => answer_for(options, :q_puppetmaster_certname, master.to_s),
         }
 
         # Master/dashboard answers
         master_console_a = {
-          :q_puppetdb_hostname  => answer_for(options, :q_puppetdb_hostname, database.to_s),
-          :q_puppetdb_port      => answer_for(options, :q_puppetdb_port, 8081)
+          :q_puppetdb_hostname => answer_for(options, :q_puppetdb_hostname, database.to_s),
+          :q_puppetdb_port => answer_for(options, :q_puppetdb_port, 8081),
         }
 
         # Master only answers
@@ -100,7 +99,6 @@ module BeakerAnswers
         # Console only answers
         dashboard_user = "'#{answer_for(options, :q_puppet_enterpriseconsole_auth_user_email)}'"
 
-
         console_install = answer_for(options, :q_puppet_enterpriseconsole_install, 'y')
         console_inventory_hostname = answer_for(options, :q_puppet_enterpriseconsole_inventory_hostname, host.to_s)
         console_inventory_certname = answer_for(options, :q_puppet_enterpriseconsole_inventory_certname, host.to_s)
@@ -129,13 +127,11 @@ module BeakerAnswers
           :q_puppet_enterpriseconsole_smtp_port => smtp_port,
         }
 
-        if smtp_password and smtp_username
+        if smtp_password && smtp_username
           console_smtp_user_auth = answer_for(options, :q_puppet_enterpriseconsole_smtp_user_auth, 'y')
-          console_a.merge!({
-                             :q_puppet_enterpriseconsole_smtp_password => "'#{smtp_password}'",
-                             :q_puppet_enterpriseconsole_smtp_username => "'#{smtp_username}'",
-                             :q_puppet_enterpriseconsole_smtp_user_auth => console_smtp_user_auth
-                           })
+          console_a.merge!(:q_puppet_enterpriseconsole_smtp_password => "'#{smtp_password}'",
+                           :q_puppet_enterpriseconsole_smtp_username => "'#{smtp_username}'",
+                           :q_puppet_enterpriseconsole_smtp_user_auth => console_smtp_user_auth)
         end
 
         # Database only answers
@@ -154,9 +150,7 @@ module BeakerAnswers
 
       answers = common_a.dup
 
-      unless options[:type] == :upgrade
-        answers.merge! agent_a
-      end
+      answers.merge! agent_a unless options[:type] == :upgrade
 
       if host == master
         answers.merge! master_console_a
@@ -170,10 +164,10 @@ module BeakerAnswers
         answers.merge! master_console_a
         answers.merge! console_database_a
         answers[:q_pe_database] = answer_for(options, :q_pe_database, 'y')
-        unless options[:type] == :upgrade
-          answers.merge! console_a
-        else
+        if options[:type] == :upgrade
           answers[:q_database_export_dir] = answer_for(options, :q_database_export_dir, '/tmp')
+        else
+          answers.merge! console_a
         end
       end
 
@@ -191,15 +185,13 @@ module BeakerAnswers
         answers.merge! console_database_a
       end
 
-      if host == master and host == database and host == dashboard
+      if (host == master) && (host == database) && (host == dashboard)
         answers[:q_all_in_one_install] = 'y'
       end
 
-      if host['platform'].include? 'aix'
-        answers.merge! aix_a
-      end
+      answers.merge! aix_a if host['platform'].include? 'aix'
 
-      return answers
+      answers
     end
 
     # Return answer data for all hosts.
@@ -213,21 +205,19 @@ module BeakerAnswers
       dashboard   = masterless ? nil : only_host_with_role(@hosts, 'dashboard')
       master      = masterless ? nil : only_host_with_role(@hosts, 'master')
       @hosts.each do |h|
-        if @options[:type] == :upgrade and h[:pe_ver] =~ /\A3.0/
-          # 3.0.x to 3.0.x should require no answers
-          the_answers[h.name] = {
-            :q_install => answer_for(@options, :q_install, 'y'),
-            :q_install_vendor_packages => answer_for(@options, :q_install_vendor_packages, 'y'),
-          }
-        else
-          the_answers[h.name] = host_answers(h, master, database, dashboard, @options)
-        end
-        if the_answers[h.name] && h[:custom_answers]
-          the_answers[h.name] = the_answers[h.name].merge(h[:custom_answers])
-        end
+        the_answers[h.name] =
+          if (@options[:type] == :upgrade) && h[:pe_ver] =~ /\A3.0/
+            {
+              :q_install => answer_for(@options, :q_install, 'y'),
+              :q_install_vendor_packages => answer_for(@options, :q_install_vendor_packages, 'y'),
+            }
+          else
+            host_answers(h, master, database, dashboard, @options)
+          end
+        the_answers[h.name] = the_answers[h.name].merge(h[:custom_answers]) if the_answers[h.name] && h[:custom_answers]
         h[:answers] = the_answers[h.name]
       end
-      return the_answers
+      the_answers
     end
   end
 end
