@@ -195,7 +195,8 @@ describe 'BeakerAnswers::PeConf' do
       mono_basic_hosts[1]['platform'] = 'el-6-x86_64'
       mono_basic_hosts
     end
-    let(:host_count) { 4 }
+    # This is overwriting the host count; should it be 2 or 4?
+    let(:host_count) { 4 } # rubocop:disable RSpec/OverwritingSetup
     let(:split_basic_hosts) do
       make_hosts({ pe_ver: '3.0',
                    platform: 'linux',
