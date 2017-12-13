@@ -56,7 +56,7 @@ describe BeakerAnswers::Version20172 do
   end
 
   context 'when generating a meep 2.0 config' do
-    before(:each) do
+    before do
       options[:meep_schema_version] = '2.0'
     end
 

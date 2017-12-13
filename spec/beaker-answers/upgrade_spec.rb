@@ -7,9 +7,9 @@ describe BeakerAnswers::Upgrade do
     basic_hosts[2]['roles'] = %w[database agent]
     basic_hosts
   end
-  let(:answers) { BeakerAnswers::Upgrade.new(@ver, hosts, options.merge(type: :upgrade)) }
+  let(:answers) { described_class.new(@ver, hosts, options.merge(type: :upgrade)) }
 
-  before :each do
+  before do
     @ver = '3.8'
     @answers = answers.answers
   end
@@ -36,7 +36,7 @@ describe BeakerAnswers::Upgrade38 do
   end
   let(:answers) { BeakerAnswers::Answers.create(@ver, hosts, options.merge(type: :upgrade)) }
 
-  before :each do
+  before do
     @ver = '3.8'
     @answers = answers.answers
   end
@@ -102,6 +102,7 @@ describe BeakerAnswers::Upgrade38 do
       options[:answers] = { q_enable_future_parser: 'thefutureparser!!!' }
       options
     end
+
     it 'sets that parser option from the global options' do
       @answers.each do |_vmname, answer|
         expect(answer[:q_enable_future_parser]).to eq('thefutureparser!!!')

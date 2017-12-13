@@ -10,7 +10,7 @@ describe BeakerAnswers do
   end
   let(:answers) { BeakerAnswers::Answers.create(@ver, hosts, options) }
 
-  after :each do
+  after do
     ENV.delete('q_puppet_cloud_install')
   end
 
@@ -40,7 +40,7 @@ describe BeakerAnswers do
         @ver = version
         options[:type] = :upgrade
         expect(answers).to be_a_kind_of BeakerAnswers::Answers
-        expect(answers).to_not be_a_kind_of BeakerAnswers::Upgrade
+        expect(answers).not_to be_a_kind_of BeakerAnswers::Upgrade
       end
     end
   end
@@ -156,17 +156,17 @@ describe 'Masterless Setup' do
   end
 
   it '3.0: never calls #only_host_with_role in #generate_answers' do
-    expect(answers.generate_answers).to_not receive(:only_host_with_role)
+    expect(answers.generate_answers).not_to receive(:only_host_with_role)
   end
 
   it '3.2: never calls #only_host_with_role in #generate_answers' do
     @ver = '3.2'
-    expect(answers.generate_answers).to_not receive(:only_host_with_role)
+    expect(answers.generate_answers).not_to receive(:only_host_with_role)
   end
 
   it '3.4: never calls #only_host_with_role in #generate_answers' do
     @ver = '3.4'
-    expect(answers.generate_answers).to_not receive(:only_host_with_role)
+    expect(answers.generate_answers).not_to receive(:only_host_with_role)
   end
 end
 
@@ -182,12 +182,12 @@ describe BeakerAnswers::Version34 do
   end
   let(:answers) { BeakerAnswers::Answers.create(@ver, hosts, options) }
 
-  before :each do
+  before do
     @ver = '3.4'
     @answers = answers.answers
   end
 
-  it 'should add console services answers to dashboard answers' do
+  it 'adds console services answers to dashboard answers' do
     @ver = '3.4'
     answers = @answers
     expect(@answers['vm2']).to include q_classifier_database_user: 'DFGhjlkj'
@@ -201,7 +201,7 @@ describe BeakerAnswers::Version34 do
     expect(@answers['vm2']).to include q_rbac_database_password: "'~!@\#$%^*-/ aZ'"
   end
 
-  it 'should add console services answers to database answers' do
+  it 'adds console services answers to database answers' do
     @ver = '3.4'
     answers = @answers
     expect(@answers['vm3']).to include q_classifier_database_user: 'DFGhjlkj'
@@ -215,7 +215,7 @@ describe BeakerAnswers::Version34 do
     expect(@answers['vm3']).to include q_rbac_database_password: "'~!@\#$%^*-/ aZ'"
   end
 
-  it 'should add answers to the host objects' do
+  it 'adds answers to the host objects' do
     @ver = '3.4'
     answers = @answers
     hosts.each do |host|
@@ -224,7 +224,7 @@ describe BeakerAnswers::Version34 do
     end
   end
 
-  it 'should add answers to the host objects' do
+  it 'adds answers to the host objects' do
     hosts.each do |host|
       expect(host[:answers]).to be === @answers[host.name]
     end
@@ -250,16 +250,16 @@ describe BeakerAnswers::Version38 do
   let(:answers) { BeakerAnswers::Answers.create(@ver, hosts, options) }
   let(:upgrade_answers) { BeakerAnswers::Answers.create(@ver, hosts, options.merge(type: :upgrade)) }
 
-  before :each do
+  before do
     @ver = '3.8'
     @answers = answers.answers
   end
 
-  it 'should add q_pe_check_for_updates to master' do
+  it 'adds q_pe_check_for_updates to master' do
     expect(@answers['vm1'][:q_pe_check_for_updates]).to be === 'n'
   end
 
-  it 'should add q_pe_check_for_updates to dashboard' do
+  it 'adds q_pe_check_for_updates to dashboard' do
     expect(@answers['vm2'][:q_pe_check_for_updates]).to be === 'n'
   end
 
@@ -275,7 +275,7 @@ describe BeakerAnswers::Version38 do
     expect(basic_hosts[1][:answers][:q_exit_for_nc_migrate]).to be == 'n'
   end
 
-  it 'should add answers to the host objects' do
+  it 'adds answers to the host objects' do
     answers = @answers
     hosts.each do |host|
       expect(host[:answers]).to be === @answers[host.name]
@@ -295,27 +295,27 @@ describe BeakerAnswers::Version40 do
   let(:answers) { BeakerAnswers::Answers.create(@ver, hosts, options) }
   let(:upgrade_answers) { BeakerAnswers::Answers.create(@ver, hosts, options.merge(type: :upgrade)) }
 
-  before :each do
+  before do
     @ver = '3.99'
     @answers = answers.answers
   end
 
-  it 'should not have q_puppet_cloud_install key' do
+  it 'does not have q_puppet_cloud_install key' do
     hosts.each do |host|
-      expect(host[:answers]).to_not include :q_puppet_cloud_install
+      expect(host[:answers]).not_to include :q_puppet_cloud_install
     end
   end
 
-  it 'should add q_pe_check_for_updates to master' do
+  it 'adds q_pe_check_for_updates to master' do
     expect(@answers['vm1'][:q_pe_check_for_updates]).to be === 'n'
   end
 
-  it 'should add q_pe_check_for_updates to dashboard' do
+  it 'adds q_pe_check_for_updates to dashboard' do
     expect(@answers['vm2'][:q_pe_check_for_updates]).to be === 'n'
   end
 
-  it 'should not add q_pe_check_for_updates to agent/database' do
-    expect(@answers['vm3']).to_not include :q_pe_check_for_updates
+  it 'does not add q_pe_check_for_updates to agent/database' do
+    expect(@answers['vm3']).not_to include :q_pe_check_for_updates
   end
 
   # re-enable these tests once these keys are eliminated
@@ -349,12 +349,12 @@ describe BeakerAnswers::Version40 do
       if host[:roles].include? 'master'
         expect(host[:answers][:q_install_update_server]).to be == 'y'
       else
-        expect(host[:answers]).to_not include :q_install_update_server
+        expect(host[:answers]).not_to include :q_install_update_server
       end
     end
   end
 
-  it 'should add answers to the host objects' do
+  it 'adds answers to the host objects' do
     hosts.each do |host|
       expect(host[:answers]).to be === @answers[host.name]
     end
@@ -373,29 +373,29 @@ describe BeakerAnswers::Version20153 do
   let(:answers) { BeakerAnswers::Answers.create(@ver, hosts, options) }
   let(:upgrade_answers) { BeakerAnswers::Answers.create(@ver, hosts, options.merge(type: :upgrade)) }
 
-  before :each do
+  before do
     @ver = '2015.3'
     @answers = answers.answers
   end
 
-  it 'should add database server answers to master' do
+  it 'adds database server answers to master' do
     expect(@answers['vm1'][:q_database_host]).to be === 'vm3'
     expect(@answers['vm1'][:q_database_port]).to be === 5432
   end
 
-  it 'should add orchestrator database answers to master' do
+  it 'adds orchestrator database answers to master' do
     expect(@answers['vm1'][:q_orchestrator_database_name]).to be === 'pe-orchestrator'
     expect(@answers['vm1'][:q_orchestrator_database_user]).to be === 'Orc3Str8R'
     expect(@answers['vm1'][:q_orchestrator_database_password]).to be === "'~!@#$%^*-/ aZ'"
   end
 
-  it 'should add orchestrator database answers to database' do
+  it 'adds orchestrator database answers to database' do
     expect(@answers['vm3'][:q_orchestrator_database_name]).to be === 'pe-orchestrator'
     expect(@answers['vm3'][:q_orchestrator_database_user]).to be === 'Orc3Str8R'
     expect(@answers['vm3'][:q_orchestrator_database_password]).to be === "'~!@#$%^*-/ aZ'"
   end
 
-  it 'should add q_use_application_services answers to master and console' do
+  it 'adds q_use_application_services answers to master and console' do
     expect(@answers['vm1'][:q_use_application_services]).to be === 'y'
     expect(@answers['vm2'][:q_use_application_services]).to be === 'y'
   end
@@ -413,35 +413,35 @@ describe BeakerAnswers::Version32 do
   let(:answers) { BeakerAnswers::Answers.create(@ver, hosts, options) }
   let(:upgrade_answers) { BeakerAnswers::Answers.create(@ver, hosts, options.merge(type: :upgrade)) }
 
-  before :each do
+  before do
     @ver = '3.2'
     @answers = answers.answers
   end
 
-  it 'should add q_pe_check_for_updates to master' do
+  it 'adds q_pe_check_for_updates to master' do
     expect(@answers['vm1'][:q_pe_check_for_updates]).to be === 'n'
   end
 
-  it 'should add q_pe_check_for_updates to dashboard' do
+  it 'adds q_pe_check_for_updates to dashboard' do
     expect(@answers['vm2'][:q_pe_check_for_updates]).to be === 'n'
   end
 
-  it 'should not add q_pe_check_for_updates to agent/database' do
-    expect(@answers['vm3']).to_not include :q_pe_check_for_updates
+  it 'does not add q_pe_check_for_updates to agent/database' do
+    expect(@answers['vm3']).not_to include :q_pe_check_for_updates
   end
 
   # The only difference between 3.2 and 3.0 is the addition of the
   # master certname to the dashboard answers
-  it 'should add q_puppetmaster_certname to the dashboard answers' do
+  it 'adds q_puppetmaster_certname to the dashboard answers' do
     expect(@answers['vm2']).to include :q_puppetmaster_certname
   end
 
-  it 'should add q_upgrade_with_unknown_disk_space to the dashboard on upgrade' do
+  it 'adds q_upgrade_with_unknown_disk_space to the dashboard on upgrade' do
     @upgrade_answers = upgrade_answers.answers
     expect(@upgrade_answers['vm2']).to include :q_upgrade_with_unknown_disk_space
   end
 
-  it 'should add answers to the host objects' do
+  it 'adds answers to the host objects' do
     hosts.each do |host|
       expect(host[:answers]).to be === @answers[host.name]
     end
@@ -460,7 +460,7 @@ describe BeakerAnswers::Version30 do
   let(:answers) { BeakerAnswers::Answers.create(@ver, hosts, options) }
   let(:upgrade_answers) { BeakerAnswers::Answers.create(@ver, hosts, options.merge(type: :upgrade)) }
 
-  before :each do
+  before do
     @ver = '3.0'
     @answers = answers.answers
   end
@@ -485,7 +485,7 @@ describe BeakerAnswers::Version30 do
     expect(@answers['vm2']).to be.nil?
   end
 
-  it 'should add answers to the host objects' do
+  it 'adds answers to the host objects' do
     @ver = '3.0'
     a = answers.answers
     hosts.each do |host|
@@ -510,7 +510,7 @@ describe BeakerAnswers::Version28 do
   end
   let(:answers) { BeakerAnswers::Answers.create(@ver, hosts, options) }
 
-  before :each do
+  before do
     @ver = '2.8'
     @answers = answers.answers
   end
@@ -527,7 +527,7 @@ describe BeakerAnswers::Version28 do
     expect(@answers['vm2']).to be.nil?
   end
 
-  it 'should add answers to the host objects' do
+  it 'adds answers to the host objects' do
     hosts.each do |host|
       expect(host[:answers]).to be === @answers[host.name]
     end
@@ -544,7 +544,7 @@ describe BeakerAnswers::Version20 do
 
   let(:answers) { BeakerAnswers::Answers.create(@ver, hosts, options) }
 
-  before :each do
+  before do
     @ver = '2.0'
     @answers = answers.answers
   end
@@ -561,7 +561,7 @@ describe BeakerAnswers::Version20 do
     expect(@answers['vm2']).to be.nil?
   end
 
-  it 'should add answers to the host objects' do
+  it 'adds answers to the host objects' do
     hosts.each do |host|
       expect(host[:answers]).to be === @answers[host.name]
     end

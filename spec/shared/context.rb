@@ -50,7 +50,7 @@ RSpec.shared_examples 'pe.conf' do
   end
   let(:gold_answers_with_overrides) { gold_role_answers.merge(overridding_parameters) }
 
-  it 'should not have nil keys or values' do
+  it 'does not have nil keys or values' do
     answer_hash.each_pair do |k, v|
       expect([k, v]).not_to include(nil)
     end
@@ -206,7 +206,7 @@ RSpec.shared_examples 'valid MEEP 2.0 pe.conf' do
   end
 
   context 'with beaker overrides' do
-    before(:each) do
+    before do
       options[:answers] = {
         'pe_infrastructure::use_meep_for_classification' => true
       }
