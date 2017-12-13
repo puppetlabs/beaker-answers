@@ -10,3 +10,9 @@ end
 RuboCop::RakeTask.new do |t|
   t.options = ['--display-cop-names']
 end
+
+desc "Run linters"
+task :lint => [:rubocop]
+
+desc "Run default tasks"
+task :default => [:lint, :test]
