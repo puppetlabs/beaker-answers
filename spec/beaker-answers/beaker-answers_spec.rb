@@ -482,7 +482,7 @@ describe BeakerAnswers::Version30 do
 
   it 'generates nil answers for a windows host' do
     @ver = '3.0'
-    expect(@answers['vm2']).to be.nil?
+    expect(@answers['vm2']).to eq nil
   end
 
   it 'adds answers to the host objects' do
@@ -524,7 +524,7 @@ describe BeakerAnswers::Version28 do
   end
 
   it 'generates nil answers for a windows host' do
-    expect(@answers['vm2']).to be.nil?
+    expect(@answers['vm2']).to eq nil
   end
 
   it 'adds answers to the host objects' do
@@ -558,7 +558,7 @@ describe BeakerAnswers::Version20 do
   end
 
   it 'generates nil answers for a windows host' do
-    expect(@answers['vm2']).to be.nil?
+    expect(@answers['vm2']).to eq nil
   end
 
   it 'adds answers to the host objects' do
