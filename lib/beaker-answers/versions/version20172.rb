@@ -19,14 +19,13 @@ module BeakerAnswers
         # We're removing the flattened keys added in the Version20162 and
         # reading them here rather than breaking compatibilty with existing
         # Version20162 behavior. We're sorry.
-        hiera_hash.reject! do |k,v|
+        hiera_hash.reject! do |k, _v|
           flatten_keys_to_joined_string(@options[:answers]).include?(k)
         end
-        stringified_answers = @options[:answers].inject({}) do |hash,entry|
+        stringified_answers = @options[:answers].each_with_object({}) do |entry, hash|
           key = entry[0]
           value = entry[1]
           hash[key.to_s] = value
-          hash
         end
         hiera_hash.merge!(stringified_answers)
       end

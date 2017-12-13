@@ -15,7 +15,7 @@ module BeakerAnswers
 
       return the_answers if @options[:masterless]
 
-      return generate_hiera_config
+      generate_hiera_config
     end
 
     def generate_bash_answers(answers)
@@ -25,13 +25,13 @@ module BeakerAnswers
       # bash script, the console node now needs to know about the orchestrator database user
       # and name if they are specified to be non default
       orchestrator_db = {
-        :q_orchestrator_database_name     => answer_for(@options, :q_orchestrator_database_name),
-        :q_orchestrator_database_user     => answer_for(@options, :q_orchestrator_database_user),
+        q_orchestrator_database_name: answer_for(@options, :q_orchestrator_database_name),
+        q_orchestrator_database_user: answer_for(@options, :q_orchestrator_database_user)
       }
 
       answers[console.name].merge!(orchestrator_db)
 
-      return answers
+      answers
     end
 
     def generate_hiera_config
@@ -43,22 +43,22 @@ module BeakerAnswers
       hiera_hash.merge!(hiera_host_config)
 
       hiera_hash.merge!(get_defaults_or_answers([
-        "console_admin_password",
-        "puppet_enterprise::use_application_services",
-      ]))
+                                                  'console_admin_password',
+                                                  'puppet_enterprise::use_application_services'
+                                                ]))
 
       hiera_hash.merge!(hiera_db_config)
 
       # Override with any values provided in the :answers key hash
       if @options[:answers]
         if @options[:answers].keys.any? { |k| k.to_s.start_with?('q_') }
-          raise(TypeError, "q_ answers are not supported when using the hiera answers format")
+          raise(TypeError, 'q_ answers are not supported when using the hiera answers format')
         else
           hiera_hash.merge!(flatten_keys_to_joined_string(@options[:answers]))
         end
       end
 
-      return hiera_hash
+      hiera_hash
     end
 
     def hiera_host_config
@@ -67,7 +67,7 @@ module BeakerAnswers
     end
 
     def hiera_db_config
-      ns = "puppet_enterprise"
+      ns = 'puppet_enterprise'
       defaults_to_set = []
 
       # Set database users only if we are upgrading from < 2016.2.0; necessary
@@ -80,7 +80,7 @@ module BeakerAnswers
           "#{ns}::classifier_database_user",
           "#{ns}::activity_database_user",
           "#{ns}::rbac_database_user",
-          "#{ns}::orchestrator_database_user",
+          "#{ns}::orchestrator_database_user"
         ]
       end
 
@@ -103,7 +103,7 @@ module BeakerAnswers
       hocon.render
     end
 
-    def installer_configuration_string(host)
+    def installer_configuration_string(_host)
       answer_hiera
     end
   end

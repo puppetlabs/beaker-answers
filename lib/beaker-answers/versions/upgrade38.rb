@@ -1,7 +1,6 @@
 module BeakerAnswers
   # In the case of upgrades, we lay down only necessary answers
   class Upgrade38 < Upgrade
-
     def self.upgrade_version_matcher
       /\A3\.8/
     end
@@ -38,7 +37,7 @@ module BeakerAnswers
         the_answers[host.name] = the_answers[host.name].merge(host[:custom_answers]) if host[:custom_answers]
       end
 
-      the_answers.map do |hostname, answers|
+      the_answers.map do |hostname, _answers|
         # First check to see if there is a host option for this setting
         # and skip to the next object if it is already defined.
         if the_answers[hostname][:q_enable_future_parser]
@@ -56,7 +55,7 @@ module BeakerAnswers
         end
       end
 
-      the_answers.map do |hostname, answers|
+      the_answers.map do |hostname, _answers|
         # First check to see if there is a host option for this setting
         # and skip to the next object if it is already defined.
         if the_answers[hostname][:q_exit_for_nc_migrate]

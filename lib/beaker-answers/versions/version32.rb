@@ -4,7 +4,6 @@ module BeakerAnswers
   #
   # @api private
   class Version32 < Version30
-
     # The version of PE that this set of answers is appropriate for
     def self.pe_version_matcher
       /\A3\.(2|3)/
@@ -43,7 +42,7 @@ module BeakerAnswers
       @hosts.each do |h|
         h[:answers] = the_answers[h.name]
       end
-      return the_answers
+      the_answers
     end
   end
 end
