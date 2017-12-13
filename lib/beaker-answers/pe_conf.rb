@@ -82,6 +82,19 @@ module BeakerAnswers
         pe_conf["#{ns}::puppetdb_host"] = puppetdb.hostname
       end
 
+      if the_host_with_role('pe_postgres', raise_error=false)
+        pe_conf["#{ns}::database_host"] = the_host_with_role('pe_postgres', raise_error=false).hostname
+        if options[:pe_postgresql_options]
+          if options[:pe_postgresql_options][:security] == 'cert'
+            postgres_cert_answers(pe_conf, '1.0')
+          elsif options[:pe_postgresql_options][:security] == 'password'
+            postgres_password_answers(pe_conf, '1.0')
+          end
+        else
+          postgres_password_answers(pe_conf, '1.0')
+        end
+      end
+
       pe_conf
     end
 
@@ -119,6 +132,18 @@ module BeakerAnswers
         conf
       end
 
+      #Set the PE managed postgres roles/answers
+      if the_host_with_role('pe_postgres', raise_error=false)
+        pe_conf["puppet_enterprise::profile::database"] = the_host_with_role('pe_postgres', raise_error=false).hostname
+        if options[:pe_postgresql_options][:security]
+          if options[:pe_postgresql_options][:security] == 'cert'
+            postgres_cert_answers(pe_conf, "2.0")
+          elsif options[:pe_postgresql_options][:security] == 'password'
+            postgres_password_answers(pe_conf, "2.0")
+          end
+        end
+      end
+
       # Collect a uniq array of all host platforms modified to pe_repo class format
       platforms = hosts.map do |h|
         platform = h['platform']
@@ -149,18 +174,41 @@ module BeakerAnswers
     # one host is found to have the provided role.
     #
     # @param [String] role The host returned will have this role in its role list
+    # @param [String] raise_error defaults to true if you want this method to return
+    #   an error if there are no hosts, or if there are too many hosts
     # @return [Host] The single host with the desired role in its roles list
     # @raise [ArgumentError] Raised if more than one host has the given role
     #   defined, or if no host has the role defined.
-    def the_host_with_role(role)
+    def the_host_with_role(role, raise_error=true)
       found_hosts = hosts.select do |h|
         Array(h['roles']).include?(role.to_s)
       end
 
-      if found_hosts.length == 0 or found_hosts.length > 1
+      if (found_hosts.length == 0 or found_hosts.length > 1) && (raise_error)
         raise ArgumentError, "There should be one host with #{role} defined, found #{found_hosts.length} matching hosts (#{found_hosts})"
       end
       found_hosts.first
+    end
+
+    def postgres_cert_answers(pe_conf, meep_schema_version)
+      case meep_schema_version
+      when '1.0','2.0'
+        pe_conf["puppet_enterprise::database_ssl"] = true
+        pe_conf["puppet_enterprise::database_cert_auth"] = true
+      end
+      pe_conf
+    end
+
+    def postgres_password_answers(pe_conf, meep_schema_version)
+      case meep_schema_version
+      when '1.0','2.0'
+        pe_conf["puppet_enterprise::activity_database_password"] = "PASSWORD"
+        pe_conf["puppet_enterprise::classifier_database_password"] = "PASSWORD"
+        pe_conf["puppet_enterprise::orchestrator_database_password"] = "PASSWORD"
+        pe_conf["puppet_enterprise::puppetdb_database_password"] = "PASSWORD"
+        pe_conf["puppet_enterprise::rbac_database_password"] = "PASSWORD"
+      end
+      pe_conf
     end
   end
 end
