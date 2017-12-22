@@ -103,7 +103,8 @@ describe 'BeakerAnswers::PeConf' do
         "puppet_enterprise::database_cert_auth" => true,
         "puppet_enterprise::database_ssl" => true,
         "puppet_enterprise::puppet_master_host" => basic_hosts[0].hostname,
-        "puppet_enterprise::database_host" => basic_hosts[1].hostname
+        "puppet_enterprise::database_host" => basic_hosts[1].hostname,
+        "puppet_enterprise::puppetdb::start_timeout" => 300
       }
     end
     let(:gold_pe_postgres_password_configuration_hash) do
@@ -114,7 +115,8 @@ describe 'BeakerAnswers::PeConf' do
         "puppet_enterprise::puppetdb_database_password" => "PASSWORD",
         "puppet_enterprise::rbac_database_password" => "PASSWORD",
         "puppet_enterprise::puppet_master_host" => basic_hosts[0].hostname,
-        "puppet_enterprise::database_host" => basic_hosts[1].hostname
+        "puppet_enterprise::database_host" => basic_hosts[1].hostname,
+        "puppet_enterprise::puppetdb::start_timeout" => 300,
       }
     end
     include_examples 'pe.conf configuration'
@@ -142,6 +144,7 @@ describe 'BeakerAnswers::PeConf' do
         "meep_schema_version" => "2.0",
         "puppet_enterprise::database_cert_auth" => true,
         "puppet_enterprise::database_ssl" => true,
+        "puppet_enterprise::puppetdb::start_timeout" => 300
       }
     end
     let(:gold_pe_postgres_password_configuration_hash) do
@@ -157,6 +160,7 @@ describe 'BeakerAnswers::PeConf' do
         "puppet_enterprise::orchestrator_database_password" => "PASSWORD",
         "puppet_enterprise::puppetdb_database_password" => "PASSWORD",
         "puppet_enterprise::rbac_database_password" => "PASSWORD",
+        "puppet_enterprise::puppetdb::start_timeout" => 300
       }
     end
     let(:gold_split_configuration_hash) do

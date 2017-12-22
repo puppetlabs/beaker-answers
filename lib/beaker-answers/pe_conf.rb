@@ -195,6 +195,7 @@ module BeakerAnswers
       when '1.0','2.0'
         pe_conf["puppet_enterprise::database_ssl"] = true
         pe_conf["puppet_enterprise::database_cert_auth"] = true
+        pe_conf["puppet_enterprise::puppetdb::start_timeout"] = 300
       end
       pe_conf
     end
@@ -202,6 +203,7 @@ module BeakerAnswers
     def postgres_password_answers(pe_conf, meep_schema_version)
       case meep_schema_version
       when '1.0','2.0'
+        pe_conf["puppet_enterprise::puppetdb::start_timeout"] = 300
         pe_conf["puppet_enterprise::activity_database_password"] = "PASSWORD"
         pe_conf["puppet_enterprise::classifier_database_password"] = "PASSWORD"
         pe_conf["puppet_enterprise::orchestrator_database_password"] = "PASSWORD"
