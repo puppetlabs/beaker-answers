@@ -6,7 +6,6 @@ fast_finish: true
 rvm:
   - 2.1.9
 env:
-  - "CHECK=lint"
   - "CHECK=test"
 
 notifications:
