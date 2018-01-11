@@ -1,0 +1,12 @@
+---
+language: ruby
+script:
+  - "bundle exec rake $CHECK"
+fast_finish: true
+rvm:
+  - 2.1.9
+env:
+  - "CHECK=test"
+
+notifications:
+  email: false

@@ -1,0 +1,89 @@
+require:
+  - rubocop-rspec
+
+inherit_from: .rubocop_todo.yml
+
+# Docs: https://rubocop.readthedocs.io/en/latest/cops_layout/#layoutalignhash
+Layout/AlignHash:
+  Enabled: false
+
+# Docs: https://rubocop.readthedocs.io/en/latest/cops_layout/#layoutindenthash
+Layout/IndentHash:
+  EnforcedStyle: consistent
+
+# Docs: https://rubocop.readthedocs.io/en/latest/cops_layout/#layoutindentarray
+Layout/IndentArray:
+  EnforcedStyle: consistent
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/LineLength:
+  Enabled: false
+
+# Docs: http://www.rubydoc.info/gems/rubocop-rspec/1.15.0/RuboCop/Cop/RSpec/HookArgument
+RSpec/HookArgument:
+  EnforcedStyle: each
+
+# Docs: http://www.rubydoc.info/gems/rubocop-rspec/1.15.0/RuboCop/Cop/RSpec/NotToNot
+RSpec/NotToNot:
+  Enabled: false
+
+# Docs: https://rubocop.readthedocs.io/en/latest/cops_style/#stylebracesaroundhashparameters
+Style/BracesAroundHashParameters:
+  Enabled: false
+
+# Docs: https://rubocop.readthedocs.io/en/latest/cops_style/#styleeachwithobject
+Style/EachWithObject:
+  Enabled: false
+
+# Docs: https://rubocop.readthedocs.io/en/latest/cops_style/#styleformatstring
+Style/FormatString:
+  Enabled: false
+
+# Docs: https://rubocop.readthedocs.io/en/latest/cops_style/#styleformatstringtoken
+Style/FormatStringToken:
+  Enabled: false
+
+# We should be consistent about what sort of hash syntax we use.
+# https://github.com/puppetlabs/beaker-answers/pull/37#issuecomment-351508385
+# Docs: https://rubocop.readthedocs.io/en/latest/cops_style/#stylehashsyntax
+Style/HashSyntax:
+  EnforcedStyle: hash_rockets
+
+# Docs: https://rubocop.readthedocs.io/en/latest/cops_style/#styleifunlessmodifier
+Style/IfUnlessModifier:
+  Enabled: false
+
+# Docs: https://rubocop.readthedocs.io/en/latest/cops_style/#styleredundantexception
+Style/RedundantException:
+  Enabled: false
+
+# Docs: https://rubocop.readthedocs.io/en/latest/cops_style/#styleredundantreturn
+Style/RedundantReturn:
+  Enabled: false
+
+# Enforce %r{} style for regexes
+# Docs: https://rubocop.readthedocs.io/en/latest/cops_style/#styleregexpliteral
+Style/RegexpLiteral:
+  EnforcedStyle: percent_r
+
+# Docs: https://rubocop.readthedocs.io/en/latest/cops_style/#stylesymbolarray
+Style/SymbolArray:
+  Enabled: false
+
+# Ensure a trailing comma at the end of a multiline array/hash
+# https://github.com/puppetlabs/beaker-answers/pull/37#issuecomment-351508579
+# Docs: https://rubocop.readthedocs.io/en/latest/cops_style/#styletrailingcommainliteral
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+# Docs: https://rubocop.readthedocs.io/en/latest/cops_style/#stylewordarray
+Style/WordArray:
+  Enabled: false
