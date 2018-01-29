@@ -109,6 +109,8 @@ describe 'BeakerAnswers::PeConf' do
     end
     let(:gold_pe_postgres_password_configuration_hash) do
       {
+        "puppet_enterprise::database_cert_auth" => false,
+        "puppet_enterprise::database_ssl" => false,
         "puppet_enterprise::activity_database_password" => "PASSWORD",
         "puppet_enterprise::classifier_database_password" => "PASSWORD",
         "puppet_enterprise::orchestrator_database_password" => "PASSWORD",
@@ -155,6 +157,8 @@ describe 'BeakerAnswers::PeConf' do
         "puppet_enterprise::profile::database" => basic_hosts[1].hostname,
         "agent_platforms" => ['el_6_x86_64'],
         "meep_schema_version" => "2.0",
+        "puppet_enterprise::database_cert_auth" => false,
+        "puppet_enterprise::database_ssl" => false,
         "puppet_enterprise::activity_database_password" => "PASSWORD",
         "puppet_enterprise::classifier_database_password" => "PASSWORD",
         "puppet_enterprise::orchestrator_database_password" => "PASSWORD",
