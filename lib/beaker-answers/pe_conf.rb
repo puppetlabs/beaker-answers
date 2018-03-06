@@ -74,6 +74,7 @@ module BeakerAnswers
       console = the_host_with_role('dashboard')
 
       pe_conf["#{ns}::puppet_master_host"] = master.hostname
+      pe_conf["#{ns}::trapperkeeper::database_settings::rbac::pool_timeout"] = 60
 
       # Monolithic installs now only require the puppet_master_host, so only
       # pass in the console and puppetdb host if it is a split install
