@@ -10,5 +10,18 @@ module BeakerAnswers
       /\A2018\.1/
     end
 
+    def generate_answers
+      the_answers = super
+
+      # New flag added in 2018.1.1
+      # Disable management of Puppet agent so that when Beaker stops the agent,
+      # it stays stopped. This will prevent flip-flops of configuration between 
+      # PE configure runs and agent runs.
+      # Needed for test: acceptance/tests/faces/enterprise/configure/idempotent.rb
+      the_answers['pe_infrastructure::agent::puppet_service_managed'] = false
+
+      the_answers
+    end
+
   end
 end
