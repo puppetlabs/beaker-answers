@@ -13,7 +13,7 @@ key concepts.
 # Release
 
 To release a new version, we use a
-[Jenkins job](https://jenkins-qe.delivery.puppetlabs.net/job/qe_beaker-answers_btc-rls/)
+[Jenkins job](https://cinext-jenkinsmaster-sre-prod-1.delivery.puppetlabs.net/view/beaker%20Release%20Jobs/job/qe_beaker-answers_init-multijob_master/)
 (access to internal infrastructure will be required to view job).
 
 To release a new version (from the master branch), you'll need to just provide
