@@ -91,7 +91,7 @@ module BeakerAnswers
             postgres_password_answers(pe_conf, '1.0')
           end
         else
-          postgres_password_answers(pe_conf, '1.0')
+          postgres_cert_answers(pe_conf, '1.0')
         end
       end
 
