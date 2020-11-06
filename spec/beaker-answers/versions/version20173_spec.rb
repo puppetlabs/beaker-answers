@@ -18,8 +18,6 @@ describe BeakerAnswers::Version20173to9999 do
     '2029.0.0',
     '2099.0.0',
     '2099.99.99',
-    '9999.0.0',
-    '9999.99.99',
   ]
 
   versions.each do | version |
