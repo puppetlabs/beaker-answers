@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake', '~> 10.1'
   s.add_development_dependency 'rspec', '~> 3.0'
   s.add_development_dependency 'rspec-its'
-  s.add_development_dependency 'rubocop', '~> 0.50'
+  s.add_development_dependency 'rubocop', '~> 1.7'
   s.add_development_dependency 'rubocop-rspec', '~> 1.20'
   s.add_development_dependency 'simplecov', '~> 0.15.0'
 
