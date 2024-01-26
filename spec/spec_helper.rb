@@ -12,4 +12,8 @@ require 'rspec/its'
 RSpec.configure do |config|
   config.include TestFileHelpers
   config.include HostHelpers
+
+  config.expect_with :rspec do |c|
+    c.max_formatted_output_length = nil
+  end
 end
