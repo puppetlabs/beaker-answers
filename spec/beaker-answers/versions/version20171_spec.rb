@@ -18,7 +18,7 @@ describe BeakerAnswers::Version20171 do
       let(:hosts) { mono_hosts }
       let(:gold_role_answers) do
         {
-          "console_admin_password" => default_password,
+          "console_admin_password" => default_console_password,
           "puppet_enterprise::puppet_master_host" => hosts[0].hostname,
         }
       end

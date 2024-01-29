@@ -2,6 +2,7 @@ RSpec.shared_examples 'pe.conf' do
   let( :options )      { { :format => 'hiera' } }
   let( :answer_hiera ) { answers.answer_hiera }
   let( :default_password ) { '~!@#$%^*-/ aZ' }
+  let( :default_console_password ) { 'Puppetlabs-1' }
   let( :gold_db_answers ) do
     {
       "puppet_enterprise::activity_database_user" => 'adsfglkj',

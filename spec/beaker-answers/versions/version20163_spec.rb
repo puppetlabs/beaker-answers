@@ -19,7 +19,7 @@ describe BeakerAnswers::Version20163 do
                       basic_hosts }
       let( :gold_role_answers ) do
         {
-          "console_admin_password" => default_password,
+          "console_admin_password" => default_console_password,
           "puppet_enterprise::puppet_master_host" => basic_hosts[0].hostname,
         }
       end
@@ -31,7 +31,7 @@ describe BeakerAnswers::Version20163 do
     context 'for a split install' do
       let( :gold_role_answers ) do
         {
-          "console_admin_password" => default_password,
+          "console_admin_password" => default_console_password,
           "puppet_enterprise::puppet_master_host" => basic_hosts[0].hostname,
           "puppet_enterprise::console_host" => basic_hosts[1].hostname,
           "puppet_enterprise::puppetdb_host" => basic_hosts[2].hostname,

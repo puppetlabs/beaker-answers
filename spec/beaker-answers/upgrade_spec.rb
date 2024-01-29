@@ -66,7 +66,7 @@ describe BeakerAnswers::Upgrade38 do
       expect(answer[:q_puppetdb_database_name]).to eq('pe-puppetdb')
       expect(answer[:q_puppetdb_database_user]).to eq('mYpdBu3r')
       expect(answer[:q_puppetdb_database_password]).to eq("'~!@#$%^*-/ aZ'")
-      expect(answer[:q_puppet_enterpriseconsole_auth_password]).to eq("'~!@#$%^*-/ aZ'")
+      expect(answer[:q_puppet_enterpriseconsole_auth_password]).to eq("'Puppetlabs-1'")
       expect(answer[:q_puppetdb_port]).to eq(8081)
       expect(answer[:q_install]).to eq('y')
       expect(answer[:q_enable_future_parser]).to eq('y')

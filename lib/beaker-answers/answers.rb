@@ -10,7 +10,7 @@ module BeakerAnswers
     DEFAULT_ANSWERS =  StringifyHash.new.merge({
       :q_install                                     => 'y',
       :q_puppet_enterpriseconsole_auth_user_email    => 'admin@example.com',
-      :q_puppet_enterpriseconsole_auth_password      => '~!@#$%^*-/ aZ',
+      :q_puppet_enterpriseconsole_auth_password      => 'Puppetlabs-1',
       :q_puppet_enterpriseconsole_smtp_port          => 25,
       :q_puppet_enterpriseconsole_smtp_use_tls       => 'n',
       :q_verify_packages                             => 'y',
@@ -99,7 +99,6 @@ module BeakerAnswers
         end
         warn 'Only upgrades to version 3.8.x generate specific upgrade answers. Defaulting to full answers.'
       end
-
       # finds all potential version classes
       # discovers new version classes as they are added, no more crazy case statement
       version_classes = self.supported_versions
