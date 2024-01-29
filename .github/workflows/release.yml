@@ -41,7 +41,6 @@ jobs:
       with:
         tag: ${{ steps.nv.outputs.version }}
         token: ${{ secrets.GITHUB_TOKEN }}
-        bodyfile: release-notes.md
         draft: false
         prerelease: false
 
