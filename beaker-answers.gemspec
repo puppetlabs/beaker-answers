@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec', '~> 3.0'
   s.add_development_dependency 'rspec-its'
   s.add_development_dependency 'rubocop', '~> 1.53'
-  s.add_development_dependency 'rubocop-rspec', '~> 1.40'
+  s.add_development_dependency 'rubocop-rspec', '~> 2.29'
   s.add_development_dependency 'simplecov', '~> 0.22.0'
 
   # Documentation dependencies
